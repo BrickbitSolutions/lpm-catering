@@ -1,6 +1,8 @@
-package be.brickbit.lpm.catering.service;
+package be.brickbit.lpm.catering.controller;
 
+import be.brickbit.lpm.core.domain.User;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +12,7 @@ public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getHome(){
-        return "Hello World";
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return "{\"message\":\"Hello " + user.getUsername() + "\"}";
     }
 }

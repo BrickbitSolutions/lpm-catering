@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilde
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -30,15 +29,15 @@ public class AuthRepoConfig {
     LocalContainerEntityManagerFactoryBean userEntityManagerFactory(final EntityManagerFactoryBuilder builder) {
 
         return builder
-                .dataSource(datasource())
+                .dataSource(userDataSource())
                 .packages("be.brickbit.lpm.core.domain")
-                .persistenceUnit("userPersistenceUnit")
+                .persistenceUnit("users")
                 .build();
     }
 
     @Bean
     @ConfigurationProperties(prefix = "datasource.auth")
-    public DataSource datasource() {
+    public DataSource userDataSource() {
         return DataSourceBuilder.create().build();
     }
 }

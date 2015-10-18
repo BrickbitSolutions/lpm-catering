@@ -1,5 +1,6 @@
 package be.brickbit.lpm.catering.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.orm.jpa.EntityManagerFactoryBuilder;
@@ -7,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -19,27 +21,31 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "be.brickbit.lpm.catering.repository", entityManagerFactoryRef =
-        "entityManagerFactory", transactionManagerRef = "transactionManager")
+        "cateringEntityManagerFactory", transactionManagerRef = "cateringTransactionManager")
 @EnableTransactionManagement
 public class DefaultRepoConfig {
+
+    @Autowired
+    private Environment env;
+
     @Bean
     @Primary
-    PlatformTransactionManager userTransactionManager(@Qualifier("entityManagerFactory") final EntityManagerFactory
+    PlatformTransactionManager cateringTransactionManager(@Qualifier("cateringEntityManagerFactory") final EntityManagerFactory
                                                               factory) {
         return new JpaTransactionManager(factory);
     }
 
     @Bean
     @Primary
-    LocalContainerEntityManagerFactoryBean entityManagerFactory(final EntityManagerFactoryBuilder builder) {
-        return builder.dataSource(datasource()).packages("be.brickbit.lpm.catering.domain").persistenceUnit
-                ("persistenceUnit").build();
+    LocalContainerEntityManagerFactoryBean cateringEntityManagerFactory(final EntityManagerFactoryBuilder builder) {
+        return builder.dataSource(cateringDataSource()).packages("be.brickbit.lpm.catering.domain").persistenceUnit
+                ("catering").build();
     }
 
     @Bean
     @Primary
     @ConfigurationProperties(prefix = "datasource.primary")
-    public DataSource datasource() {
+    public DataSource cateringDataSource() {
         return DataSourceBuilder.create().build();
     }
 }
