@@ -5,9 +5,9 @@ import be.brickbit.lpm.catering.fixture.StockCorrectionCommandFixture;
 import be.brickbit.lpm.catering.fixture.StockCorrectionDtoFixture;
 import be.brickbit.lpm.catering.fixture.StockCorrectionFixture;
 import be.brickbit.lpm.catering.repository.StockCorrectionRepository;
-import be.brickbit.lpm.catering.service.stockcorrection.command.NewStockCorrectionCommand;
+import be.brickbit.lpm.catering.service.stockcorrection.command.StockCorrectionCommand;
 import be.brickbit.lpm.catering.service.stockcorrection.dto.StockCorrectionDto;
-import be.brickbit.lpm.catering.service.stockcorrection.mapper.NewStockCorrectionMapper;
+import be.brickbit.lpm.catering.service.stockcorrection.mapper.StockCorrectionCommandToEntityMapper;
 import be.brickbit.lpm.catering.service.stockcorrection.mapper.StockCorrectionDtoMapper;
 import be.brickbit.lpm.core.domain.User;
 import org.junit.Test;
@@ -33,21 +33,24 @@ public class StockCorrectionServiceTest {
     private StockCorrectionDtoMapper stockCorrectionDtoMapper;
 
     @Mock
-    private NewStockCorrectionMapper newStockCorrectionMapper;
+    private StockCorrectionCommandToEntityMapper stockCorrectionCommandToEntityMapper;
 
     @InjectMocks
     private StockCorrectionService stockCorrectionService;
 
     @Test
     public void testSaveStockCorrection() throws Exception {
-        NewStockCorrectionCommand command = StockCorrectionCommandFixture.getNewStockCorrectionCommand();
+        StockCorrectionCommand command = StockCorrectionCommandFixture.getNewStockCorrectionCommand();
         StockCorrection stockCorrection = StockCorrectionFixture.getStockCorrection();
+        StockCorrectionDto dto = StockCorrectionDtoFixture.getStockCorrectionDto();
         User user = new User();
 
-        when(newStockCorrectionMapper.map(command)).thenReturn(stockCorrection);
-        stockCorrectionService.saveStockCorrection(command, user);
+        when(stockCorrectionCommandToEntityMapper.map(command)).thenReturn(stockCorrection);
+        when(stockCorrectionDtoMapper.map(stockCorrection)).thenReturn(dto);
+        StockCorrectionDto result = stockCorrectionService.save(command, user, stockCorrectionDtoMapper);
 
         verify(stockCorrectionRepository).save(stockCorrection);
+        assertThat(result).isSameAs(dto);
     }
 
     @Test
@@ -59,7 +62,7 @@ public class StockCorrectionServiceTest {
         when(stockCorrectionRepository.findAll()).thenReturn(stockCorrections);
         when(stockCorrectionDtoMapper.map(stockCorrection)).thenReturn(dto);
 
-        List<StockCorrectionDto> result = stockCorrectionService.findAll();
+        List<StockCorrectionDto> result = stockCorrectionService.findAll(stockCorrectionDtoMapper);
 
         assertThat(result.size()).isEqualTo(stockCorrections.size());
         assertThat(result.get(0)).isSameAs(dto);

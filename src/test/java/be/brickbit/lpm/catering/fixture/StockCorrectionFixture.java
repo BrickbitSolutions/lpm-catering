@@ -12,7 +12,7 @@ public class StockCorrectionFixture {
         stockCorrection.setTimestamp(LocalDateTime.now());
         stockCorrection.setStockProduct(StockProductFixture.getStockProduct());
         stockCorrection.setQuantity(10);
-        stockCorrection.setUserId(1);
+        stockCorrection.setUserId(1L);
 
         return stockCorrection;
     }

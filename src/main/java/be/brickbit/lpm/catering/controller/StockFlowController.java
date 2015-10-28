@@ -1,9 +1,11 @@
 package be.brickbit.lpm.catering.controller;
 
-import be.brickbit.lpm.catering.service.stockcorrection.IStockCorrectionService;
 import be.brickbit.lpm.catering.service.stockcorrection.command.StockCorrectionCommand;
 import be.brickbit.lpm.catering.service.stockcorrection.dto.StockCorrectionDto;
-import be.brickbit.lpm.catering.service.stockcorrection.mapper.StockCorrectionDtoMapper;
+import be.brickbit.lpm.catering.service.stockflow.IStockFlowService;
+import be.brickbit.lpm.catering.service.stockflow.command.StockFlowCommand;
+import be.brickbit.lpm.catering.service.stockflow.dto.StockFlowDto;
+import be.brickbit.lpm.catering.service.stockflow.mapper.StockFlowDtoMapper;
 import be.brickbit.lpm.core.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,26 +18,26 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/stock/correction")
-public class StockCorrectionController {
+@RequestMapping("/stock/flow")
+public class StockFlowController {
 
     @Autowired
-    private IStockCorrectionService stockCorrectionService;
+    private IStockFlowService stockFlowService;
 
     @Autowired
-    private StockCorrectionDtoMapper stockCorrectionDtoMapper;
+    private StockFlowDtoMapper stockFlowDtoMapper;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
-    public List<StockCorrectionDto> getAllStockProducts(){
-        return stockCorrectionService.findAll(stockCorrectionDtoMapper);
+    public List<StockFlowDto> getAll(){
+        return stockFlowService.findAll(stockFlowDtoMapper);
     }
 
     @RequestMapping(value = "/save")
     @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public StockCorrectionDto saveNewStockProduct(@RequestBody @Valid StockCorrectionCommand command){
+    public StockFlowDto save(@RequestBody @Valid StockFlowCommand command){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return stockCorrectionService.save(command, user, stockCorrectionDtoMapper);
+        return stockFlowService.save(command, user, stockFlowDtoMapper);
     }
 }

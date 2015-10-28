@@ -10,7 +10,7 @@ import java.util.Set;
 public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String username;
     private String password;
     @Column(name = "firstname")
@@ -51,7 +51,7 @@ public class User implements UserDetails{
         this.credentialsNonExpired = true;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

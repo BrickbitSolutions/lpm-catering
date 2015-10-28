@@ -5,7 +5,7 @@ import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.fixture.StockCorrectionCommandFixture;
 import be.brickbit.lpm.catering.fixture.StockProductFixture;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
-import be.brickbit.lpm.catering.service.stockcorrection.command.NewStockCorrectionCommand;
+import be.brickbit.lpm.catering.service.stockcorrection.command.StockCorrectionCommand;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,17 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class NewStockCorrectionMapperTest {
+public class StockCorrectionCommandToEntityMapperTest {
 
     @Mock
     private StockProductRepository stockProductRepository;
 
     @InjectMocks
-    private NewStockCorrectionMapper stockCorrectionMapper;
+    private StockCorrectionCommandToEntityMapper stockCorrectionMapper;
 
     @Test
     public void testMap() throws Exception {
-        NewStockCorrectionCommand command = StockCorrectionCommandFixture.getNewStockCorrectionCommand();
+        StockCorrectionCommand command = StockCorrectionCommandFixture.getNewStockCorrectionCommand();
         StockProduct product = StockProductFixture.getStockProduct();
 
         when(stockProductRepository.findOne(command.getStockProductId())).thenReturn(product);

@@ -1,10 +1,10 @@
 package be.brickbit.lpm.catering.fixture;
 
-import be.brickbit.lpm.catering.service.stockcorrection.command.NewStockCorrectionCommand;
+import be.brickbit.lpm.catering.service.stockcorrection.command.StockCorrectionCommand;
 
 public class StockCorrectionCommandFixture {
-    public static NewStockCorrectionCommand getNewStockCorrectionCommand(){
-        NewStockCorrectionCommand command = new NewStockCorrectionCommand();
+    public static StockCorrectionCommand getNewStockCorrectionCommand(){
+        StockCorrectionCommand command = new StockCorrectionCommand();
 
         command.setQuantity(-1);
         command.setMessage("Crew Consumption");

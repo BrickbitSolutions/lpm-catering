@@ -2,18 +2,18 @@ package be.brickbit.lpm.catering.service.stockproduct.mapper;
 
 import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.fixture.StockProductCommandFixture;
-import be.brickbit.lpm.catering.service.stockproduct.command.SaveStockProductCommand;
+import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SaveStockProductMapperTest {
+public class StockProductCommandToEntityMapperTest {
 
-    private SaveStockProductMapper mapper = new SaveStockProductMapper();
+    private StockProductCommandToEntityMapper mapper = new StockProductCommandToEntityMapper();
 
     @Test
     public void testMapNoStock() throws Exception {
-        SaveStockProductCommand command = StockProductCommandFixture.getSaveCommand();
+        StockProductCommand command = StockProductCommandFixture.getSaveCommand();
         command.setStockLevel(0);
 
         StockProduct stockProduct = mapper.map(command);
@@ -28,7 +28,7 @@ public class SaveStockProductMapperTest {
 
     @Test
     public void testMapBaseStock() throws Exception {
-        SaveStockProductCommand command = StockProductCommandFixture.getSaveCommand();
+        StockProductCommand command = StockProductCommandFixture.getSaveCommand();
         command.setStockLevel(10);
 
         StockProduct stockProduct = mapper.map(command);

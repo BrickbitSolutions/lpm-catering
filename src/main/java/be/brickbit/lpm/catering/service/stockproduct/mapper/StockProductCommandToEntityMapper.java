@@ -1,14 +1,14 @@
 package be.brickbit.lpm.catering.service.stockproduct.mapper;
 
 import be.brickbit.lpm.catering.domain.StockProduct;
-import be.brickbit.lpm.catering.service.AbstractMapper;
-import be.brickbit.lpm.catering.service.stockproduct.command.SaveStockProductCommand;
+import be.brickbit.lpm.infrastructure.mapper.Mapper;
+import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SaveStockProductMapper extends AbstractMapper<SaveStockProductCommand, StockProduct> {
+public class StockProductCommandToEntityMapper implements Mapper<StockProductCommand, StockProduct> {
     @Override
-    public StockProduct map(SaveStockProductCommand source) {
+    public StockProduct map(StockProductCommand source) {
         StockProduct stockProduct = new StockProduct();
 
         stockProduct.setName(source.getName());

@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 
-public class NewStockCorrectionCommand {
+public class StockCorrectionCommand {
     @NotNull(message = "Product Id is required.")
     private Long stockProductId;
     @NotBlank(message = "Message is required.")

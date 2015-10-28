@@ -21,7 +21,7 @@ public class StockCorrection {
     private LocalDateTime timestamp;
 
     @Column(name = "USER_ID")
-    private Integer userId;
+    private Long userId;
 
     @ManyToOne
     @JoinColumn(name = "STOCK_PRODUCT_ID")
@@ -59,11 +59,11 @@ public class StockCorrection {
         timestamp = someTimestamp;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer someUserId) {
+    public void setUserId(Long someUserId) {
         userId = someUserId;
     }
 

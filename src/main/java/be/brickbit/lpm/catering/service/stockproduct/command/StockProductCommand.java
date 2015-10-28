@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class SaveStockProductCommand {
+public class StockProductCommand {
     @NotBlank(message = "name cannot be empty.")
     private String name;
     @NotNull(message = "stockLevel must be set.")

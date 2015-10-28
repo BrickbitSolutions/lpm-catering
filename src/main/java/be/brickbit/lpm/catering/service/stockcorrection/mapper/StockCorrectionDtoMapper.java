@@ -1,7 +1,11 @@
 package be.brickbit.lpm.catering.service.stockcorrection.mapper;
 
 import be.brickbit.lpm.catering.domain.StockCorrection;
-import be.brickbit.lpm.catering.service.AbstractMapper;
+import be.brickbit.lpm.catering.service.user.dto.UserDto;
+import be.brickbit.lpm.catering.service.user.mapper.UserDtoMapper;
+import be.brickbit.lpm.core.service.IUserService;
+import be.brickbit.lpm.core.service.impl.UserService;
+import be.brickbit.lpm.infrastructure.mapper.Mapper;
 import be.brickbit.lpm.catering.service.stockcorrection.dto.StockCorrectionDto;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.repository.UserRepository;
@@ -9,14 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StockCorrectionDtoMapper extends AbstractMapper<StockCorrection, StockCorrectionDto> {
+public class StockCorrectionDtoMapper implements StockCorrectionMapper<StockCorrectionDto> {
 
     @Autowired
-    private UserRepository userRepository;
+    private IUserService userService;
+
+    @Autowired
+    private UserDtoMapper userDtoMapper;
 
     @Override
     public StockCorrectionDto map(StockCorrection someStockCorrection) {
-        User user = userRepository.findOne(someStockCorrection.getUserId());
+        UserDto user = userService.findOne(someStockCorrection.getUserId(), userDtoMapper);
 
         return new StockCorrectionDto(
                 someStockCorrection.getStockProduct().getName(),

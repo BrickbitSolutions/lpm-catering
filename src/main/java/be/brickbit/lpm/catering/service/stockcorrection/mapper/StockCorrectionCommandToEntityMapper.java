@@ -3,20 +3,22 @@ package be.brickbit.lpm.catering.service.stockcorrection.mapper;
 import be.brickbit.lpm.catering.domain.StockCorrection;
 import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
-import be.brickbit.lpm.catering.service.AbstractMapper;
-import be.brickbit.lpm.catering.service.stockcorrection.command.NewStockCorrectionCommand;
+import be.brickbit.lpm.infrastructure.mapper.Mapper;
+import be.brickbit.lpm.catering.service.stockcorrection.command.StockCorrectionCommand;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class NewStockCorrectionMapper extends AbstractMapper<NewStockCorrectionCommand, StockCorrection> {
+@Component
+public class StockCorrectionCommandToEntityMapper implements Mapper<StockCorrectionCommand, StockCorrection> {
 
     @Autowired
     private StockProductRepository stockProductRepository;
 
     @Override
-    public StockCorrection map(NewStockCorrectionCommand command) {
+    public StockCorrection map(StockCorrectionCommand command) {
         Optional<StockProduct> stockProduct = Optional.of(stockProductRepository.findOne(command.getStockProductId()));
 
         if(stockProduct.isPresent()){
