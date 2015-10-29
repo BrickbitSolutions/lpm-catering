@@ -37,7 +37,7 @@ public class StockProductController {
         return stockProductService.findAllByTypeAndClearance(type, clearance, stockProductDtoMapper);
     }
 
-    @RequestMapping(value = "/save")
+    @RequestMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public StockProductDto saveNewStockProduct(@RequestBody @Valid StockProductCommand command){

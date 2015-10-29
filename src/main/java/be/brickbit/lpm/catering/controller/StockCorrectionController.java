@@ -31,7 +31,7 @@ public class StockCorrectionController {
         return stockCorrectionService.findAll(stockCorrectionDtoMapper);
     }
 
-    @RequestMapping(value = "/save")
+    @RequestMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public StockCorrectionDto saveNewStockProduct(@RequestBody @Valid StockCorrectionCommand command){

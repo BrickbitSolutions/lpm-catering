@@ -61,4 +61,20 @@ public class Product {
     public void setProductType(ProductType someProductType) {
         productType = someProductType;
     }
+
+    public ClearanceType getClearance() {
+        return clearance;
+    }
+
+    public void setClearance(ClearanceType someClearance) {
+        clearance = someClearance;
+    }
+
+    public List<ProductReceiptLine> getReceipt() {
+        return receipt;
+    }
+
+    public void setReceipt(List<ProductReceiptLine> someReceipt) {
+        receipt = someReceipt;
+    }
 }

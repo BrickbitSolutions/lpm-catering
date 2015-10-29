@@ -18,4 +18,18 @@ public class StockProductFixture {
 
         return stockProduct;
     }
+
+    public static StockProduct getStockProductDuvel(){
+        StockProduct stockProduct = new StockProduct();
+
+        stockProduct.setId(2L);
+        stockProduct.setStockLevel(20);
+        stockProduct.setProductType(ProductType.DRINKS);
+        stockProduct.setClearance(ClearanceType.PLUS_18);
+        stockProduct.setName("Duvel 33cl");
+        stockProduct.setMaxConsumptions(1);
+        stockProduct.setRemainingConsumptions(1);
+
+        return stockProduct;
+    }
 }
