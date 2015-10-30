@@ -20,4 +20,13 @@ public class ProductReceiptLineFixture {
 
         return receiptLine;
     }
+
+    public static ProductReceiptLine getPizza(){
+        ProductReceiptLine receiptLine = new ProductReceiptLine();
+
+        receiptLine.setStockProduct(StockProductFixture.getStockProductPizza());
+        receiptLine.setQuantity(3);
+
+        return receiptLine;
+    }
 }

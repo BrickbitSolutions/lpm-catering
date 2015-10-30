@@ -12,16 +12,14 @@ public class ProductDto {
     private BigDecimal price;
     private ProductType productType;
     private ClearanceType clearanceType;
-    private List<ReceiptDto> receipt;
 
     public ProductDto(Long someId, String someName, BigDecimal somePrice, ProductType someProductType, ClearanceType
-            someClearanceType, List<ReceiptDto> someReceipt) {
+            someClearanceType) {
         id = someId;
         name = someName;
         price = somePrice;
         productType = someProductType;
         clearanceType = someClearanceType;
-        receipt = someReceipt;
     }
 
     public Long getId() {
@@ -44,7 +42,4 @@ public class ProductDto {
         return clearanceType;
     }
 
-    public List<ReceiptDto> getReceipt() {
-        return receipt;
-    }
 }

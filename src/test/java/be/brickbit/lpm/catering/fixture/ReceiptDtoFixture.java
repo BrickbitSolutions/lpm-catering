@@ -9,4 +9,11 @@ public class ReceiptDtoFixture {
                 2
         );
     }
+
+    public static ReceiptDto getReceiptLinePizza(){
+        return new ReceiptDto(
+                3L,
+                1
+        );
+    }
 }

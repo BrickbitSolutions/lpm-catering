@@ -32,4 +32,18 @@ public class StockProductFixture {
 
         return stockProduct;
     }
+
+    public static StockProduct getStockProductPizza(){
+        StockProduct stockProduct = new StockProduct();
+
+        stockProduct.setId(3L);
+        stockProduct.setStockLevel(20);
+        stockProduct.setProductType(ProductType.FOOD);
+        stockProduct.setClearance(ClearanceType.ANY);
+        stockProduct.setName("Pizza Margarita");
+        stockProduct.setMaxConsumptions(1);
+        stockProduct.setRemainingConsumptions(1);
+
+        return stockProduct;
+    }
 }

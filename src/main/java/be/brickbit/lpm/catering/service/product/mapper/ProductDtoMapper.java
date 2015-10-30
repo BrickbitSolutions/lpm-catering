@@ -10,9 +10,6 @@ import java.util.stream.Collectors;
 @Component
 public class ProductDtoMapper implements ProductMapper<ProductDto> {
 
-    @Autowired
-    private ReceiptDtoMapper receiptDtoMapper;
-
     @Override
     public ProductDto map(Product someProduct) {
         return new ProductDto(
@@ -20,8 +17,7 @@ public class ProductDtoMapper implements ProductMapper<ProductDto> {
                 someProduct.getName(),
                 someProduct.getPrice(),
                 someProduct.getProductType(),
-                someProduct.getClearance(),
-                someProduct.getReceipt().stream().map(receiptDtoMapper::map).collect(Collectors.toList())
+                someProduct.getClearance()
         );
     }
 }

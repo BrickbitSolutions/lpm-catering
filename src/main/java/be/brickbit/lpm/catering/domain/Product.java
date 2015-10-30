@@ -30,6 +30,10 @@ public class Product {
     @JoinColumn(name = "PRODUCT_ID", nullable = false, unique = true)
     private List<ProductReceiptLine> receipt;
 
+    @OneToOne
+    @JoinColumn(name = "PRODUCT_ID", nullable = false, unique = true)
+    private ProductPreparation preparation;
+
     public Long getId() {
         return id;
     }
@@ -76,5 +80,13 @@ public class Product {
 
     public void setReceipt(List<ProductReceiptLine> someReceipt) {
         receipt = someReceipt;
+    }
+
+    public ProductPreparation getPreparation() {
+        return preparation;
+    }
+
+    public void setPreparation(ProductPreparation somePreparation) {
+        preparation = somePreparation;
     }
 }
