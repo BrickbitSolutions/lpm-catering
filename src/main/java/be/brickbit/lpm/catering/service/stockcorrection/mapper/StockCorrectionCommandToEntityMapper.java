@@ -19,7 +19,7 @@ public class StockCorrectionCommandToEntityMapper implements Mapper<StockCorrect
 
     @Override
     public StockCorrection map(StockCorrectionCommand command) {
-        Optional<StockProduct> stockProduct = Optional.of(stockProductRepository.findOne(command.getStockProductId()));
+        Optional<StockProduct> stockProduct = Optional.ofNullable(stockProductRepository.findOne(command.getStockProductId()));
 
         if(stockProduct.isPresent()){
             StockCorrection stockCorrection = new StockCorrection();

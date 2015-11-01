@@ -1,0 +1,15 @@
+-- // DDL_Add_Order
+-- Migration SQL that makes the change goes here.
+
+CREATE TABLE PRODUCT_ORDER(
+  ID INTEGER AUTO_INCREMENT,
+  TOTAL_PRICE DOUBLE NOT NULL,
+  TIMESTAMP TIMESTAMP NOT NULL,
+  USER_ID INTEGER NOT NULL,
+  PRIMARY KEY PK_PRODUCT_ORDER(ID)
+);
+
+-- //@UNDO
+-- SQL to undo the change goes here.
+
+DROP TABLE PRODUCT_ORDER;

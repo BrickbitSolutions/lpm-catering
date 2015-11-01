@@ -20,7 +20,7 @@ public class ReceiptCommandToEntityMapper implements Mapper<ReceiptLineCommand,P
     @Override
     public ProductReceiptLine map(ReceiptLineCommand someReceiptLineCommand) {
 
-        Optional<StockProduct> stockProduct = Optional.of(stockProductRepository.findOne(someReceiptLineCommand.getStockProductId()));
+        Optional<StockProduct> stockProduct = Optional.ofNullable(stockProductRepository.findOne(someReceiptLineCommand.getStockProductId()));
 
         if(stockProduct.isPresent()){
             ProductReceiptLine receiptLine = new ProductReceiptLine();
