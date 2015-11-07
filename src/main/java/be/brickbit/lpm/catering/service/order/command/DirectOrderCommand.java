@@ -1,9 +1,13 @@
 package be.brickbit.lpm.catering.service.order.command;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class DirectOrderCommand {
+    @NotNull(message = "User id cannot be empty.")
     private Long userId;
+    @Valid
     private List<OrderLineCommand> orderLines;
 
     public Long getUserId() {

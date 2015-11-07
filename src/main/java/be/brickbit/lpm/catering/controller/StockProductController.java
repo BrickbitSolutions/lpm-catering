@@ -6,6 +6,7 @@ import be.brickbit.lpm.catering.service.stockproduct.IStockProductService;
 import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.dto.StockProductDto;
 import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductDtoMapper;
+import be.brickbit.lpm.infrastructure.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,9 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
 @RequestMapping(value = "stockproduct")
-public class StockProductController {
+public class StockProductController extends AbstractController{
 
     @Autowired
     private IStockProductService stockProductService;
@@ -31,13 +31,13 @@ public class StockProductController {
         return stockProductService.findAll(stockProductDtoMapper);
     }
 
-    @RequestMapping(value = "/all/{type}/{clearance}")
+    @RequestMapping(value = "/all/{type}/{clearance}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
     public List<StockProductDto> getAllStockProductsByTypeAndClearance(@PathVariable("type") ProductType type, @PathVariable("clearance") ClearanceType clearance){
         return stockProductService.findAllByTypeAndClearance(type, clearance, stockProductDtoMapper);
     }
 
-    @RequestMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public StockProductDto saveNewStockProduct(@RequestBody @Valid StockProductCommand command){
