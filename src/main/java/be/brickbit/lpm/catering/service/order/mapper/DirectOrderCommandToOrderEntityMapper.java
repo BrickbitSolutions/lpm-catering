@@ -1,6 +1,7 @@
 package be.brickbit.lpm.catering.service.order.mapper;
 
 import be.brickbit.lpm.catering.domain.Order;
+import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.exceptions.EntityNotFoundException;
 import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
 import be.brickbit.lpm.core.domain.User;
@@ -33,6 +34,7 @@ public class DirectOrderCommandToOrderEntityMapper implements Mapper<DirectOrder
             order.setUserId(user.get().getId());
             order.setTimestamp(LocalDateTime.now());
             order.setOrderLines(directOrderCommand.getOrderLines().stream().map(orderLineCommandToEntityMapper::map).collect(Collectors.toList()));
+            order.setOrderStatus(OrderStatus.QUEUED);
 
             return order;
         }else{

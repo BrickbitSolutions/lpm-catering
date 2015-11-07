@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-//TODO: Add Order Status to DTO + Unit Test
-
 @Component
 public class OrderDtoMapper implements OrderMapper<OrderDto> {
 
@@ -23,7 +21,7 @@ public class OrderDtoMapper implements OrderMapper<OrderDto> {
                 order.getOrderLines().stream().map(o -> o.getProduct().getPrice()).reduce(BigDecimal::add).get(),
                 order.getTimestamp(),
                 getUsername(order.getUserId()),
-                null
+                order.getOrderStatus()
         );
     }
 

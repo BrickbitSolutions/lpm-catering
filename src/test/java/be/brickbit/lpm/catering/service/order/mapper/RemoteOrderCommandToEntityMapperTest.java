@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.service.order.mapper;
 
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.OrderLine;
+import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.fixture.OrderLineFixture;
 import be.brickbit.lpm.catering.fixture.RemoteOrderCommandFixture;
 import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
@@ -40,6 +41,7 @@ public class RemoteOrderCommandToEntityMapperTest {
         assertThat(order.getOrderLines()).hasSize(2);
         assertThat(order.getOrderLines().get(0)).isSameAs(jupilerOrderLine);
         assertThat(order.getOrderLines().get(1)).isSameAs(pizzaOrderLine);
+        assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.QUEUED);
 
     }
 }

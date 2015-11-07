@@ -1,7 +1,6 @@
 package be.brickbit.lpm.catering.domain;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,6 +24,10 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ORDER_ID")
     private List<OrderLine> orderLines;
+
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     public Long getId() {
         return id;
@@ -64,5 +67,13 @@ public class Order {
 
     public void setOrderLines(List<OrderLine> orderLines) {
         this.orderLines = orderLines;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

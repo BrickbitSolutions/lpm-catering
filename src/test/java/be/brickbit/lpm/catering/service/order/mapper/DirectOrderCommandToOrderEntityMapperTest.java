@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.service.order.mapper;
 
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.OrderLine;
+import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.exceptions.EntityNotFoundException;
 import be.brickbit.lpm.catering.fixture.DirectOrderCommandFixture;
 import be.brickbit.lpm.catering.fixture.OrderLineFixture;
@@ -50,6 +51,8 @@ public class DirectOrderCommandToOrderEntityMapperTest {
         assertThat(order.getOrderLines().get(0)).isSameAs(jupilerOrderLine);
         assertThat(order.getOrderLines().get(1)).isSameAs(pizzaOrderLine);
         assertThat(order.getUserId()).isEqualTo(cateringAdmin.getId());
+        assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.QUEUED);
+
     }
 
     @Test(expected = EntityNotFoundException.class)

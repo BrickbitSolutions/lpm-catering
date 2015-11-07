@@ -1,6 +1,7 @@
 package be.brickbit.lpm.catering.service.order.mapper;
 
 import be.brickbit.lpm.catering.domain.Order;
+import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
 import be.brickbit.lpm.infrastructure.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,12 @@ public class RemoteOrderCommandToEntityMapper implements Mapper<RemoteOrderComma
 
     @Override
     public Order map(RemoteOrderCommand remoteOrderCommand) {
-            Order order = new Order();
+        Order order = new Order();
 
-            order.setTimestamp(LocalDateTime.now());
-            order.setOrderLines(remoteOrderCommand.getOrderLines().stream().map(orderLineCommandToEntityMapper::map).collect(Collectors.toList()));
+        order.setTimestamp(LocalDateTime.now());
+        order.setOrderLines(remoteOrderCommand.getOrderLines().stream().map(orderLineCommandToEntityMapper::map).collect(Collectors.toList()));
+        order.setOrderStatus(OrderStatus.QUEUED);
 
-            return order;
+        return order;
     }
 }
