@@ -1,6 +1,5 @@
 package be.brickbit.lpm.catering.controller;
 
-import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.service.product.IProductService;
 import be.brickbit.lpm.catering.service.product.command.ProductCommand;
 import be.brickbit.lpm.catering.service.product.dto.ProductDetailsDto;
