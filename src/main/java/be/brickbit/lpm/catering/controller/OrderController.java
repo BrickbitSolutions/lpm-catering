@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.controller;
 
 import be.brickbit.lpm.catering.service.order.IOrderService;
 import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
+import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
 import be.brickbit.lpm.catering.service.order.dto.OrderDto;
 import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
 import be.brickbit.lpm.infrastructure.AbstractController;
@@ -30,9 +31,16 @@ public class OrderController extends AbstractController {
     }
 
     @RequestMapping(value = "/direct", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto saveDirectOrder(@RequestBody @Valid DirectOrderCommand command){
         return orderService.placeDirectOrder(command, orderDtoMapper, getCurrentUser());
+    }
+
+    @RequestMapping(value = "/remote", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    @PreAuthorize(value = "hasAnyRole('USER')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrderDto saveRemoteOrder(@RequestBody @Valid RemoteOrderCommand command){
+        return orderService.placeRemoteOrder(command, orderDtoMapper, getCurrentUser());
     }
 }
