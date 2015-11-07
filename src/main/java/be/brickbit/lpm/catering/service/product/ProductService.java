@@ -7,7 +7,9 @@ import be.brickbit.lpm.catering.service.product.mapper.ProductCommandToEntityMap
 import be.brickbit.lpm.catering.service.product.mapper.ProductMapper;
 import be.brickbit.lpm.infrastructure.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductService extends AbstractService<Product> implements IProductService {
@@ -19,6 +21,7 @@ public class ProductService extends AbstractService<Product> implements IProduct
     private ProductCommandToEntityMapper productCommandToEntityMapper;
 
     @Override
+    @Transactional
     public <T> T save(ProductCommand command, ProductMapper<T> dtoMapper) {
         Product product = productCommandToEntityMapper.map(command);
         productRepository.save(product);
@@ -26,6 +29,7 @@ public class ProductService extends AbstractService<Product> implements IProduct
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         productRepository.delete(id);
     }

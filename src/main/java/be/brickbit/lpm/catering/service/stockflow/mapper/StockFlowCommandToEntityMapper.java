@@ -21,7 +21,7 @@ public class StockFlowCommandToEntityMapper implements Mapper<StockFlowCommand, 
     @Override
     public StockFlow map(StockFlowCommand someStockFlowCommand) {
 
-        Optional<StockProduct> stockProduct = Optional.of(stockProductRepository.findOne(someStockFlowCommand.getStockProductId()));
+        Optional<StockProduct> stockProduct = Optional.ofNullable(stockProductRepository.findOne(someStockFlowCommand.getStockProductId()));
 
         if(stockProduct.isPresent()) {
             StockFlow stockFlow = new StockFlow();
