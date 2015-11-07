@@ -11,4 +11,13 @@ public class OrderLineCommandFixture {
 
         return command;
     }
+
+    public static OrderLineCommand getOrderLineCommand2(){
+        OrderLineCommand command = new OrderLineCommand();
+
+        command.setProductId(2L);
+        command.setQuanity(1);
+
+        return command;
+    }
 }

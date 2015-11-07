@@ -30,10 +30,9 @@ public class DirectOrderCommandToOrderEntityMapper implements Mapper<DirectOrder
         if(user.isPresent()) {
             Order order = new Order();
 
-            order.setUser(user.get());
+            order.setUserId(user.get().getId());
             order.setTimestamp(LocalDateTime.now());
             order.setOrderLines(directOrderCommand.getOrderLines().stream().map(orderLineCommandToEntityMapper::map).collect(Collectors.toList()));
-            order.setTotalPrice(order.getOrderLines().stream().map(o -> o.getProduct().getPrice()).reduce(BigDecimal::add).get());
 
             return order;
         }else{

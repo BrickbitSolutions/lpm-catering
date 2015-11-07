@@ -1,7 +1,5 @@
 package be.brickbit.lpm.catering.domain;
 
-import be.brickbit.lpm.core.domain.User;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,19 +13,14 @@ public class Order {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "TOTAL_PRICE")
-    private BigDecimal totalPrice;
-
     @Column(name = "TIME_ON_ORDER")
     private LocalDateTime timestamp;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User user;
+    @Column(name = "USER_ID")
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "PLACED_BY_USER_ID")
-    private User placedByUser;
+    @Column(name = "PLACED_BY_USER_ID")
+    private Long placedByUserId;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ORDER_ID")
@@ -41,14 +34,6 @@ public class Order {
         this.id = id;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
@@ -57,20 +42,20 @@ public class Order {
         this.timestamp = timestamp;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public User getPlacedByUser() {
-        return placedByUser;
+    public Long getPlacedByUserId() {
+        return placedByUserId;
     }
 
-    public void setPlacedByUser(User placedByUser) {
-        this.placedByUser = placedByUser;
+    public void setPlacedByUserId(Long placedByUserId) {
+        this.placedByUserId = placedByUserId;
     }
 
     public List<OrderLine> getOrderLines() {

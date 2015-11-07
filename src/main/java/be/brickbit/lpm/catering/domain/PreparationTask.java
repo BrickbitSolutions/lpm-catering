@@ -26,8 +26,8 @@ public class PreparationTask {
     @JoinColumn(name = "ORDERLINE_ID")
     private OrderLine orderLine;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    //@ManyToOne
+    //@JoinColumn(name = "USER_ID")
     private User user;
 
     public Long getId() {
