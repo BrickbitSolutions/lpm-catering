@@ -1,7 +1,6 @@
 package be.brickbit.lpm.catering.domain;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,12 +10,6 @@ public class StockFlow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-
-    @Column(name = "QUANTITY")
-    private Integer quantity;
-
-    @Column(name = "PRICE_PER_UNIT")
-    private BigDecimal pricePerUnit;
 
     @Column(name = "USER_ID")
     private Long userId;
@@ -41,22 +34,6 @@ public class StockFlow {
 
     public void setId(Long someId) {
         id = someId;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer someQuantity) {
-        quantity = someQuantity;
-    }
-
-    public BigDecimal getPricePerUnit() {
-        return pricePerUnit;
-    }
-
-    public void setPricePerUnit(BigDecimal somePricePerUnit) {
-        pricePerUnit = somePricePerUnit;
     }
 
     public Long getUserId() {
