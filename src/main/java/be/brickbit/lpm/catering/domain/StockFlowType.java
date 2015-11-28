@@ -4,5 +4,6 @@ public enum StockFlowType {
     SOLD,
     PURCHASED,
     CORRECTION,
-    RETURNED
+    RETURNED,
+    LOSS
 }

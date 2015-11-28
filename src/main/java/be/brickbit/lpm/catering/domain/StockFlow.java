@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "STOCK_FLOW")
@@ -24,9 +25,9 @@ public class StockFlow {
     @Column(name = "TIME_ON_ENTRY")
     private LocalDateTime timestamp;
 
-    @ManyToOne
-    @JoinColumn(name = "STOCK_PRODUCT_ID")
-    private StockProduct stockProduct;
+    @OneToMany
+    @JoinColumn(name = "STOCK_FLOW_ID")
+    private List<StockFlowDetail> details;
 
     public Long getId() {
         return id;
@@ -68,11 +69,11 @@ public class StockFlow {
         timestamp = someTimestamp;
     }
 
-    public StockProduct getStockProduct() {
-        return stockProduct;
+    public List<StockFlowDetail> getDetails() {
+        return details;
     }
 
-    public void setStockProduct(StockProduct someStockProduct) {
-        stockProduct = someStockProduct;
+    public void setDetails(List<StockFlowDetail> details) {
+        this.details = details;
     }
 }
