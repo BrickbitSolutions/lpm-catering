@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -39,5 +36,12 @@ public class StockFlowController extends AbstractController{
     @ResponseStatus(HttpStatus.CREATED)
     public StockFlowDto save(@RequestBody @Valid StockFlowCommand command){
         return stockFlowService.save(command, getCurrentUser(), stockFlowDtoMapper);
+    }
+
+    @RequestMapping(value = "/{stockFlowId}/process", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    public void processStockFlow(@PathVariable("stockFlowId") Long stockFlowId){
+        stockFlowService.processStockFlow(stockFlowId);
     }
 }
