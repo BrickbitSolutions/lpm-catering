@@ -4,16 +4,16 @@ import java.math.BigDecimal;
 
 public class StockFlowDetailDto {
     private String productName;
-    private Long quantity;
+    private Integer quantity;
     private BigDecimal pricePerUnit;
 
-    public StockFlowDetailDto(String productName, Long quantity, BigDecimal pricePerUnit) {
+    public StockFlowDetailDto(String productName, Integer quantity, BigDecimal pricePerUnit) {
         this.productName = productName;
         this.quantity = quantity;
         this.pricePerUnit = pricePerUnit;
     }
 
-    public Long getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 

@@ -22,11 +22,11 @@ public class StockFlowFixture {
         return stockFlow;
     }
 
-    private static StockFlowDetail getStockFlowDetail() {
+    public static StockFlowDetail getStockFlowDetail() {
         StockFlowDetail stockFlowDetail = new StockFlowDetail();
 
         stockFlowDetail.setStockProduct(StockProductFixture.getStockProduct());
-        stockFlowDetail.setQuantity(10L);
+        stockFlowDetail.setQuantity(10);
         stockFlowDetail.setPrice(new BigDecimal(3.5));
 
         return stockFlowDetail;

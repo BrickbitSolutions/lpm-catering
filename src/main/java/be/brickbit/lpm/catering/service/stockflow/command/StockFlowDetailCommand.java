@@ -9,7 +9,7 @@ public class StockFlowDetailCommand {
     private Long stockProductId;
     @NotNull(message = "Quantity is required.")
     @Min(value = 0, message = "Quantity cannot be negative")
-    private Long quantity;
+    private Integer quantity;
     @NotNull
     @Min(value = 0, message = "price cannot be negative.")
     private BigDecimal pricePerUnit;
@@ -22,11 +22,11 @@ public class StockFlowDetailCommand {
         this.stockProductId = stockProductId;
     }
 
-    public Long getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

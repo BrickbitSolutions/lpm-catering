@@ -8,4 +8,5 @@ import be.brickbit.lpm.infrastructure.Service;
 
 public interface IStockFlowService extends Service<StockFlow> {
     <T> T save(StockFlowCommand command, User someUser, StockFlowMapper<T> dtoMapper);
+    void processStockFlow(Long id);
 }

@@ -21,7 +21,7 @@ public class StockFlowCommandFixture {
         StockFlowDetailCommand stockFlowDetailCommand = new StockFlowDetailCommand();
 
         stockFlowDetailCommand.setPricePerUnit(BigDecimal.TEN);
-        stockFlowDetailCommand.setQuantity(5L);
+        stockFlowDetailCommand.setQuantity(5);
         stockFlowDetailCommand.setStockProductId(1L);
 
         return stockFlowDetailCommand;

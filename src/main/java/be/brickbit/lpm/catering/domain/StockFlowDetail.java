@@ -16,7 +16,7 @@ public class StockFlowDetail {
     private StockProduct stockProduct;
 
     @Column(name = "QUANTITY")
-    private Long quantity;
+    private Integer quantity;
 
     @Column(name = "PRICE")
     private BigDecimal price;
@@ -29,11 +29,11 @@ public class StockFlowDetail {
         this.id = id;
     }
 
-    public Long getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 

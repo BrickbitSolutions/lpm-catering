@@ -31,7 +31,7 @@ public class StockFlowDetailCommandToEntityMapperTest {
     public void testMap() throws Exception {
         StockFlowDetailCommand stockFlowDetail = new StockFlowDetailCommand();
         stockFlowDetail.setStockProductId(1L);
-        stockFlowDetail.setQuantity(5L);
+        stockFlowDetail.setQuantity(5);
         stockFlowDetail.setPricePerUnit(BigDecimal.TEN);
 
         StockProduct stockProduct = StockProductFixture.getStockProduct();

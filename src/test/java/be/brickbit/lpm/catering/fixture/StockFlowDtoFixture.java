@@ -17,7 +17,7 @@ public class StockFlowDtoFixture {
                 StockFlowType.PURCHASED,
                 false,
                 LocalDateTime.now(),
-                Collections.singletonList(new StockFlowDetailDto("Jupiler 33cl", 10L, new BigDecimal(3.5)))
+                Collections.singletonList(new StockFlowDetailDto("Jupiler 33cl", 10, new BigDecimal(3.5)))
         );
     }
 }
