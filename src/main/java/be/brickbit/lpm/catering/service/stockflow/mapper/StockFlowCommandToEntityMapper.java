@@ -11,31 +11,23 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class StockFlowCommandToEntityMapper implements Mapper<StockFlowCommand, StockFlow> {
 
     @Autowired
-    private StockProductRepository stockProductRepository;
+    private StockFlowDetailCommandToEntityMapper detailMapper;
 
     @Override
     public StockFlow map(StockFlowCommand someStockFlowCommand) {
-
-        Optional<StockProduct> stockProduct = Optional.ofNullable(stockProductRepository.findOne(someStockFlowCommand.getStockProductId()));
-
-        if(stockProduct.isPresent()) {
             StockFlow stockFlow = new StockFlow();
 
             stockFlow.setStockFlowType(someStockFlowCommand.getStockFlowType());
             stockFlow.setTimestamp(LocalDateTime.now());
             stockFlow.setIncluded(false);
-            stockFlow.setPricePerUnit(someStockFlowCommand.getPricePerUnit());
-            stockFlow.setQuantity(someStockFlowCommand.getQuantity());
-            stockFlow.setStockProduct(stockProduct.get());
+            stockFlow.setDetails(someStockFlowCommand.getStockFlowDetails().stream().map(detailMapper::map).collect(Collectors.toList()));
 
             return stockFlow;
-        }else{
-            throw new EntityNotFoundException("Invalid stock product");
-        }
     }
 }
