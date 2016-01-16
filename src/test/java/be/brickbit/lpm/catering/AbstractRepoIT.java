@@ -2,7 +2,6 @@ package be.brickbit.lpm.catering;
 
 import be.brickbit.lpm.catering.config.TestDefaultRepoConfig;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
@@ -22,9 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
         DbUnitTestExecutionListener.class })
 @Transactional
 @ActiveProfiles("test")
-public class AbstractRepoIT {
-    @Test
-    public void testNothing() throws Exception {
+public abstract class AbstractRepoIT {
 
-    }
 }

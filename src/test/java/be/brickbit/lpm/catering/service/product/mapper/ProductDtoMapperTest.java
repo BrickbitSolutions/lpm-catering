@@ -2,18 +2,13 @@ package be.brickbit.lpm.catering.service.product.mapper;
 
 import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.fixture.ProductFixture;
-import be.brickbit.lpm.catering.fixture.ReceiptDtoFixture;
 import be.brickbit.lpm.catering.service.product.dto.ProductDto;
-import be.brickbit.lpm.catering.service.product.dto.ReceiptDto;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductDtoMapperTest {

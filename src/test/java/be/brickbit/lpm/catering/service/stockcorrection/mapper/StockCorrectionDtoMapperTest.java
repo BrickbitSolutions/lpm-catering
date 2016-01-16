@@ -3,12 +3,9 @@ package be.brickbit.lpm.catering.service.stockcorrection.mapper;
 import be.brickbit.lpm.catering.domain.StockCorrection;
 import be.brickbit.lpm.catering.fixture.StockCorrectionFixture;
 import be.brickbit.lpm.catering.fixture.UserDtoFixture;
-import be.brickbit.lpm.catering.fixture.UserFixture;
 import be.brickbit.lpm.catering.service.stockcorrection.dto.StockCorrectionDto;
 import be.brickbit.lpm.catering.service.user.dto.UserDto;
 import be.brickbit.lpm.catering.service.user.mapper.UserDtoMapper;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.repository.UserRepository;
 import be.brickbit.lpm.core.service.impl.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.within;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)

@@ -5,7 +5,6 @@ import be.brickbit.lpm.catering.domain.StockFlowType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 public class StockFlowCommand {
     @NotNull(message = "Quantity is required.")

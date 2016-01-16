@@ -1,8 +1,15 @@
 package be.brickbit.lpm.catering.domain;
 
-import be.brickbit.lpm.core.domain.User;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,15 +27,15 @@ public class PreparationTask {
     private LocalDateTime startTime;
 
     @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @OneToOne
-    @JoinColumn(name = "ORDERLINE_ID")
+    @JoinColumn(name = "ORDER_LINE_ID")
     private OrderLine orderLine;
 
-    //@ManyToOne
-    //@JoinColumn(name = "USER_ID")
-    private User user;
+    @Column(name = "USER_ID")
+    private Long userId;
 
     public Long getId() {
         return id;
@@ -70,11 +77,11 @@ public class PreparationTask {
         this.orderLine = orderLine;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
