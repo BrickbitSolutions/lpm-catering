@@ -1,9 +1,9 @@
 package be.brickbit.lpm.catering.service.queue;
 
-import be.brickbit.lpm.catering.domain.Order;
-import be.brickbit.lpm.catering.domain.OrderLine;
+import be.brickbit.lpm.catering.service.queue.mapper.QueueMapper;
+
+import java.util.List;
 
 public interface IQueueService {
-    void queueTask(OrderLine orderLine);
-    void queueTasks(Order order);
+    <T> List<T> queueTasks(Long orderId, QueueMapper<T> dtoMapper);
 }
