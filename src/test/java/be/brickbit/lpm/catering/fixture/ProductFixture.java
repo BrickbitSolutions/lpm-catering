@@ -31,6 +31,7 @@ public class ProductFixture {
         product.setReceipt(Collections.singletonList(ProductReceiptLineFixture.getPizza()));
 
         ProductPreparation preparation = new ProductPreparation();
+        preparation.setId(1L);
         preparation.setQueueName("oven_queue");
         preparation.setTimer(40);
         preparation.setInstructions("Make sure oven is heated to 180 degrees.");

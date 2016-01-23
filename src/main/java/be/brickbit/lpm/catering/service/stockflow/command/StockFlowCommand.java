@@ -2,37 +2,16 @@ package be.brickbit.lpm.catering.service.stockflow.command;
 
 import be.brickbit.lpm.catering.domain.StockFlowType;
 
-import javax.validation.constraints.Min;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
+import java.util.List;
 
 public class StockFlowCommand {
-    @NotNull(message = "Quantity is required.")
-    @Min(value = 0, message = "Quantity cannot be negative")
-    private Integer quantity;
-    @NotNull
-    @Min(value = 0, message = "price cannot be negative.")
-    private BigDecimal pricePerUnit;
     @NotNull
     private StockFlowType stockFlowType;
+    @Valid
     @NotNull
-    private Long stockProductId;
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer someQuantity) {
-        quantity = someQuantity;
-    }
-
-    public BigDecimal getPricePerUnit() {
-        return pricePerUnit;
-    }
-
-    public void setPricePerUnit(BigDecimal somePricePerUnit) {
-        pricePerUnit = somePricePerUnit;
-    }
+    private List<StockFlowDetailCommand> stockFlowDetails;
 
     public StockFlowType getStockFlowType() {
         return stockFlowType;
@@ -42,11 +21,11 @@ public class StockFlowCommand {
         stockFlowType = someStockFlowType;
     }
 
-    public Long getStockProductId() {
-        return stockProductId;
+    public List<StockFlowDetailCommand> getStockFlowDetails() {
+        return stockFlowDetails;
     }
 
-    public void setStockProductId(Long someStockProductId) {
-        stockProductId = someStockProductId;
+    public void setStockFlowDetails(List<StockFlowDetailCommand> stockFlowDetails) {
+        this.stockFlowDetails = stockFlowDetails;
     }
 }

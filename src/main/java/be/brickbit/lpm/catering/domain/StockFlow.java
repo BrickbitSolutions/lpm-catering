@@ -1,17 +1,8 @@
 package be.brickbit.lpm.catering.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import java.math.BigDecimal;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "STOCK_FLOW")
@@ -20,12 +11,6 @@ public class StockFlow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-
-    @Column(name = "QUANTITY")
-    private Integer quantity;
-
-    @Column(name = "PRICE_PER_UNIT")
-    private BigDecimal pricePerUnit;
 
     @Column(name = "USER_ID")
     private Long userId;
@@ -40,9 +25,9 @@ public class StockFlow {
     @Column(name = "TIME_ON_ENTRY")
     private LocalDateTime timestamp;
 
-    @ManyToOne
-    @JoinColumn(name = "STOCK_PRODUCT_ID")
-    private StockProduct stockProduct;
+    @OneToMany
+    @JoinColumn(name = "STOCK_FLOW_ID")
+    private List<StockFlowDetail> details;
 
     public Long getId() {
         return id;
@@ -50,22 +35,6 @@ public class StockFlow {
 
     public void setId(Long someId) {
         id = someId;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer someQuantity) {
-        quantity = someQuantity;
-    }
-
-    public BigDecimal getPricePerUnit() {
-        return pricePerUnit;
-    }
-
-    public void setPricePerUnit(BigDecimal somePricePerUnit) {
-        pricePerUnit = somePricePerUnit;
     }
 
     public Long getUserId() {
@@ -100,11 +69,11 @@ public class StockFlow {
         timestamp = someTimestamp;
     }
 
-    public StockProduct getStockProduct() {
-        return stockProduct;
+    public List<StockFlowDetail> getDetails() {
+        return details;
     }
 
-    public void setStockProduct(StockProduct someStockProduct) {
-        stockProduct = someStockProduct;
+    public void setDetails(List<StockFlowDetail> details) {
+        this.details = details;
     }
 }

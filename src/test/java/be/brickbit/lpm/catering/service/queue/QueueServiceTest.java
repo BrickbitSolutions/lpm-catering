@@ -30,6 +30,9 @@ public class QueueServiceTest {
     @Mock
     private OrderRepository orderRepository;
 
+    @Mock
+    private KitchenQueueDtoMapper mapper;
+
     @InjectMocks
     private QueueService service;
 
@@ -38,9 +41,10 @@ public class QueueServiceTest {
     public void testQueueTasks() throws Exception {
         Order order = OrderFixture.getOrder();
         when(orderRepository.findOne(order.getId())).thenReturn(order);
+        when(mapper.map(any(PreparationTask.class))).thenReturn(new KitchenQueueDto());
 
         Long preparationTasks = order.getOrderLines().stream().filter(orderLine -> orderLine.getProduct().getPreparation() != null).count();
-        List<KitchenQueueDto> result = service.queueTasks(order.getId(), new KitchenQueueDtoMapper());
+        List<KitchenQueueDto> result = service.queueTasks(order.getId(), mapper);
 
         verify(preparationTaskRepository, times(preparationTasks.intValue())).save(any(PreparationTask.class));
         assertThat(result.size()).isEqualTo(preparationTasks.intValue());
