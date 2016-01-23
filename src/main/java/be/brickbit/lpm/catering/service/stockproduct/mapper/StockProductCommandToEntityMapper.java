@@ -1,8 +1,8 @@
 package be.brickbit.lpm.catering.service.stockproduct.mapper;
 
 import be.brickbit.lpm.catering.domain.StockProduct;
-import be.brickbit.lpm.infrastructure.mapper.Mapper;
 import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
+import be.brickbit.lpm.infrastructure.mapper.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component

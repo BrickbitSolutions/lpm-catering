@@ -2,20 +2,17 @@ package be.brickbit.lpm.catering.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "STOCK_FLOW")
-public class StockFlow {
+@Table(name = "STOCK_CORRECTION")
+public class StockCorrection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -24,21 +21,14 @@ public class StockFlow {
     @Column(name = "QUANTITY")
     private Integer quantity;
 
-    @Column(name = "PRICE_PER_UNIT")
-    private BigDecimal pricePerUnit;
+    @Column(name = "MESSAGE")
+    private String message;
+
+    @Column(name = "CORRECTION_TIME")
+    private LocalDateTime timestamp;
 
     @Column(name = "USER_ID")
     private Long userId;
-
-    @Column(name = "TYPE")
-    @Enumerated(EnumType.STRING)
-    private StockFlowType stockFlowType;
-
-    @Column(name = "INCLUDED")
-    private Boolean included;
-
-    @Column(name = "TIME_ON_ENTRY")
-    private LocalDateTime timestamp;
 
     @ManyToOne
     @JoinColumn(name = "STOCK_PRODUCT_ID")
@@ -60,36 +50,12 @@ public class StockFlow {
         quantity = someQuantity;
     }
 
-    public BigDecimal getPricePerUnit() {
-        return pricePerUnit;
+    public String getMessage() {
+        return message;
     }
 
-    public void setPricePerUnit(BigDecimal somePricePerUnit) {
-        pricePerUnit = somePricePerUnit;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long someUserId) {
-        userId = someUserId;
-    }
-
-    public StockFlowType getStockFlowType() {
-        return stockFlowType;
-    }
-
-    public void setStockFlowType(StockFlowType someStockFlowType) {
-        stockFlowType = someStockFlowType;
-    }
-
-    public Boolean getIncluded() {
-        return included;
-    }
-
-    public void setIncluded(Boolean someIncluded) {
-        included = someIncluded;
+    public void setMessage(String someMessage) {
+        message = someMessage;
     }
 
     public LocalDateTime getTimestamp() {
@@ -98,6 +64,14 @@ public class StockFlow {
 
     public void setTimestamp(LocalDateTime someTimestamp) {
         timestamp = someTimestamp;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long someUserId) {
+        userId = someUserId;
     }
 
     public StockProduct getStockProduct() {

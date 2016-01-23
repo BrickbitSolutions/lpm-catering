@@ -1,6 +1,9 @@
 package be.brickbit.lpm.catering.fixture;
 
-import be.brickbit.lpm.catering.domain.*;
+import be.brickbit.lpm.catering.domain.ClearanceType;
+import be.brickbit.lpm.catering.domain.Product;
+import be.brickbit.lpm.catering.domain.ProductPreparation;
+import be.brickbit.lpm.catering.domain.ProductType;
 
 import java.math.BigDecimal;
 import java.util.Collections;

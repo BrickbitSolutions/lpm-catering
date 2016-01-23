@@ -1,7 +1,11 @@
 package be.brickbit.lpm.catering.service.order;
 
 import be.brickbit.lpm.catering.domain.Order;
-import be.brickbit.lpm.catering.fixture.*;
+import be.brickbit.lpm.catering.fixture.DirectOrderCommandFixture;
+import be.brickbit.lpm.catering.fixture.OrderDtoFixture;
+import be.brickbit.lpm.catering.fixture.OrderFixture;
+import be.brickbit.lpm.catering.fixture.RemoteOrderCommandFixture;
+import be.brickbit.lpm.catering.fixture.UserFixture;
 import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
 import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;

@@ -2,8 +2,6 @@ package be.brickbit.lpm.catering;
 
 import be.brickbit.lpm.Application;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
@@ -23,10 +21,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
         DbUnitTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-public class AbstractIT {
-    @Test
-    @Ignore
-    public void testNothing() throws Exception {
+public abstract class AbstractIT {
 
-    }
 }

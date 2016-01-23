@@ -30,16 +30,23 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         Order order = directOrderCommandMapper.map(command);
         order.setPlacedByUserId(user.getId());
         orderRepository.save(order);
+        queueTasks(order);
         return dtoMapper.map(order);
     }
 
     @Override
+    @Transactional
     public <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, User user) {
         Order order = remoteOrderCommandToEntityMapper.map(command);
         order.setPlacedByUserId(user.getId());
         order.setUserId(user.getId());
         orderRepository.save(order);
+        queueTasks(order);
         return dtoMapper.map(order);
+    }
+
+    private void queueTasks(Order order) {
+
     }
 
     @Override
