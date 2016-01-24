@@ -18,6 +18,6 @@ public class WebsocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
-        //No endpoints needed as we are just pushing to topics (queues)
+        stompEndpointRegistry.addEndpoint("/push").withSockJS();
     }
 }
