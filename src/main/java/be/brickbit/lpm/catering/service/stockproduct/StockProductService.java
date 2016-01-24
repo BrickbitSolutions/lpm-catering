@@ -7,7 +7,6 @@ import be.brickbit.lpm.catering.repository.StockProductRepository;
 import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductCommandToEntityMapper;
 import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductMapper;
-import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.infrastructure.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

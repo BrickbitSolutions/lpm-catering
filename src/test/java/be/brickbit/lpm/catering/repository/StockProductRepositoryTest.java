@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
         type = DatabaseOperation.CLEAN_INSERT
 )
 public class StockProductRepositoryTest extends AbstractRepoIT {
-
     @Autowired(required = true)
     private StockProductRepository stockProductRepository;
 

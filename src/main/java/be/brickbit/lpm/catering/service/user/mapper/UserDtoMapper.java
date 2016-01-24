@@ -2,7 +2,6 @@ package be.brickbit.lpm.catering.service.user.mapper;
 
 import be.brickbit.lpm.catering.service.user.dto.UserDto;
 import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.infrastructure.mapper.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component

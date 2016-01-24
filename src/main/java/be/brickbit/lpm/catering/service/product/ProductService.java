@@ -7,7 +7,6 @@ import be.brickbit.lpm.catering.service.product.mapper.ProductCommandToEntityMap
 import be.brickbit.lpm.catering.service.product.mapper.ProductMapper;
 import be.brickbit.lpm.infrastructure.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

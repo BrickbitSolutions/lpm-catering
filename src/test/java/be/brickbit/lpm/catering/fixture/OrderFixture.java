@@ -2,7 +2,6 @@ package be.brickbit.lpm.catering.fixture;
 
 import be.brickbit.lpm.catering.domain.Order;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 

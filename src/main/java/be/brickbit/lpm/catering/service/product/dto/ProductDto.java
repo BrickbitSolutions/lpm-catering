@@ -4,7 +4,6 @@ import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.ProductType;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class ProductDto {
     private Long id;

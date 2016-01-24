@@ -1,6 +1,9 @@
 package be.brickbit.lpm.catering.fixture;
 
-import be.brickbit.lpm.catering.domain.*;
+import be.brickbit.lpm.catering.domain.ClearanceType;
+import be.brickbit.lpm.catering.domain.Product;
+import be.brickbit.lpm.catering.domain.ProductPreparation;
+import be.brickbit.lpm.catering.domain.ProductType;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -28,6 +31,7 @@ public class ProductFixture {
         product.setReceipt(Collections.singletonList(ProductReceiptLineFixture.getPizza()));
 
         ProductPreparation preparation = new ProductPreparation();
+        preparation.setId(1L);
         preparation.setQueueName("oven_queue");
         preparation.setTimer(40);
         preparation.setInstructions("Make sure oven is heated to 180 degrees.");
