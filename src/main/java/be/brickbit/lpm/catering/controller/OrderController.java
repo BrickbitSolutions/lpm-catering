@@ -1,14 +1,9 @@
 package be.brickbit.lpm.catering.controller;
 
-import be.brickbit.lpm.catering.service.order.IOrderService;
-import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
-import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
-import be.brickbit.lpm.catering.service.order.dto.OrderDto;
-import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
-import be.brickbit.lpm.catering.service.queue.QueueService;
-import be.brickbit.lpm.catering.service.queue.dto.KitchenQueueDto;
-import be.brickbit.lpm.catering.service.queue.mapper.KitchenQueueDtoMapper;
-import be.brickbit.lpm.infrastructure.AbstractController;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,11 +13,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.List;
+import be.brickbit.lpm.catering.service.order.IOrderService;
+import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
+import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
+import be.brickbit.lpm.catering.service.order.dto.OrderDto;
+import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
+import be.brickbit.lpm.catering.service.queue.IQueueService;
+import be.brickbit.lpm.catering.service.queue.dto.KitchenQueueDto;
+import be.brickbit.lpm.catering.service.queue.mapper.KitchenQueueDtoMapper;
+import be.brickbit.lpm.infrastructure.AbstractController;
 
 @RequestMapping("/order")
+@RestController
 public class OrderController extends AbstractController {
     @Autowired
     private IOrderService orderService;
@@ -31,7 +35,7 @@ public class OrderController extends AbstractController {
     private OrderDtoMapper orderDtoMapper;
 
     @Autowired
-    private QueueService queueService;
+    private IQueueService queueService;
 
     @Autowired
     private KitchenQueueDtoMapper mapper;

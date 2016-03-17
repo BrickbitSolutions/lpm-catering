@@ -11,16 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 @RequestMapping(value = "stockproduct")
+@RestController
 public class StockProductController extends AbstractController{
 
     @Autowired
@@ -46,5 +50,17 @@ public class StockProductController extends AbstractController{
     @ResponseStatus(HttpStatus.CREATED)
     public StockProductDto saveNewStockProduct(@RequestBody @Valid StockProductCommand command){
         return stockProductService.save(command, stockProductDtoMapper);
+    }
+
+    @RequestMapping(value = "/types", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN'")
+    public List<ProductType> getAllProductTypes(){
+        return Arrays.asList(ProductType.values());
+    }
+
+    @RequestMapping(value = "/clearance", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN'")
+    public List<ClearanceType> getAllClearanceTypes(){
+        return Arrays.asList(ClearanceType.values());
     }
 }

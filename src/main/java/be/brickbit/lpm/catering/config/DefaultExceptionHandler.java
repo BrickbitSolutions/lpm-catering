@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@EnableWebMvc
 @ControllerAdvice
+@EnableWebMvc
 public class DefaultExceptionHandler {
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
