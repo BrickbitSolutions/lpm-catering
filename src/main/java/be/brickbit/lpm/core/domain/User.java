@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
-@Table(name = "LPM_USER_ID")
+@Table(name = "LPM_USER")
 public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class User implements UserDetails{
     private String email;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_AUTHORITY", joinColumns = {
-            @JoinColumn(name = "LPM_USER_ID", nullable = false),
+            @JoinColumn(name = "lpm_user_id", nullable = false),
     }, inverseJoinColumns = {
             @JoinColumn(name = "authority_id", nullable = false)
     })
