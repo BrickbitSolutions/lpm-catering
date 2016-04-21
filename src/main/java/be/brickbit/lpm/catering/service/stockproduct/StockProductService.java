@@ -31,6 +31,12 @@ public class StockProductService extends AbstractService<StockProduct> implement
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public <T> List<T> findAllByType(ProductType type, StockProductMapper<T> mapper){
+        return stockProductRepository.findByProductType(type).stream().map(mapper::map).collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public <T> T save(StockProductCommand command, StockProductMapper<T> dtoMapper) {
         StockProduct stockProduct = stockProductCommandToEntityMapper.map(command);

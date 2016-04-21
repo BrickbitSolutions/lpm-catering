@@ -28,7 +28,7 @@ public class OrderLineCommandToEntityMapperTest {
     @Test
     public void testMap() throws Exception {
         OrderLineCommand command = OrderLineCommandFixture.getOrderLineCommand();
-        Product product = ProductFixture.getProduct();
+        Product product = ProductFixture.getJupiler();
 
         when(productRepository.getOne(command.getProductId())).thenReturn(product);
 

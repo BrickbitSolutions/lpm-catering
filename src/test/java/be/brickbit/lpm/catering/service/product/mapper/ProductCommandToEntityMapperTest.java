@@ -28,8 +28,8 @@ public class ProductCommandToEntityMapperTest {
     @Test
     public void testMap() throws Exception {
         ProductCommand command = ProductCommandFixture.getProductCommand();
-        ProductReceiptLine receiptLine1 = ProductReceiptLineFixture.getReceiptLine1();
-        ProductReceiptLine receiptLine2 = ProductReceiptLineFixture.getReceiptLine2();
+        ProductReceiptLine receiptLine1 = ProductReceiptLineFixture.getCola();
+        ProductReceiptLine receiptLine2 = ProductReceiptLineFixture.getJupiler();
 
         when(receiptCommandToEntityMapper.map(command.getReceipt().get(0))).thenReturn(receiptLine1);
         when(receiptCommandToEntityMapper.map(command.getReceipt().get(1))).thenReturn(receiptLine2);
@@ -42,7 +42,7 @@ public class ProductCommandToEntityMapperTest {
         assertThat(product.getReceipt().size()).isEqualTo(2);
         assertThat(product.getReceipt().contains(receiptLine1)).isTrue();
         assertThat(product.getReceipt().contains(receiptLine2)).isTrue();
-        assertThat(product.getClearance()).isEqualTo(ClearanceType.PLUS_18);
+        assertThat(product.getClearance()).isEqualTo(ClearanceType.PLUS_16);
         assertThat(product.getPreparation()).isNull();
     }
 

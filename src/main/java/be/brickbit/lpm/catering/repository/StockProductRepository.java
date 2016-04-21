@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface StockProductRepository extends JpaRepository<StockProduct, Long> {
     List<StockProduct> findByProductTypeAndClearance(ProductType someType, ClearanceType someClearance);
+    List<StockProduct> findByProductType(ProductType someType);
 }

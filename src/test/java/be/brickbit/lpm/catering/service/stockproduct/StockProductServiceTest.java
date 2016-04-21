@@ -41,7 +41,7 @@ public class StockProductServiceTest {
 
     @Test
     public void testFindAllByTypeAndClearance() throws Exception {
-        StockProduct stockProduct = StockProductFixture.getStockProduct();
+        StockProduct stockProduct = StockProductFixture.getStockProductJupiler();
         List<StockProduct> stockProductList = Collections.singletonList(stockProduct);
         when(stockProductRepository.findByProductTypeAndClearance(ProductType.DRINKS, ClearanceType.PLUS_16))
                 .thenReturn(stockProductList);
@@ -50,6 +50,21 @@ public class StockProductServiceTest {
 
         List<StockProductDto> result = stockProductService.findAllByTypeAndClearance(ProductType.DRINKS,
                 ClearanceType.PLUS_16, mapper);
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0)).isSameAs(dto);
+    }
+
+    @Test
+    public void testFindAllByType() throws Exception {
+        StockProduct stockProduct = StockProductFixture.getStockProductJupiler();
+        List<StockProduct> stockProductList = Collections.singletonList(stockProduct);
+        when(stockProductRepository.findByProductType(ProductType.DRINKS))
+                .thenReturn(stockProductList);
+        StockProductDto dto = StockProductDtoFixture.getStockProductDto();
+        when(mapper.map(any(StockProduct.class))).thenReturn(dto);
+
+        List<StockProductDto> result = stockProductService.findAllByType(ProductType.DRINKS, mapper);
 
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0)).isSameAs(dto);

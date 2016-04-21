@@ -1,5 +1,8 @@
 package be.brickbit.lpm.catering.domain;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,12 +15,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.math.BigDecimal;
-import java.util.List;
+
+import lombok.Data;
 
 @Entity
 @Table(name = "PRODUCT")
-public class Product {
+public @Data class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false, unique = true)
@@ -29,6 +32,9 @@ public class Product {
     @Column(name = "PRICE")
     private BigDecimal price;
 
+    @Column(name = "AVAILABLE")
+    private Boolean available;
+
     @Column(name = "PRODUCT_TYPE")
     @Enumerated(EnumType.STRING)
     private ProductType productType;
@@ -37,67 +43,11 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ClearanceType clearance;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "PRODUCT_ID", nullable = false, unique = true)
     private List<ProductReceiptLine> receipt;
 
-    @OneToOne
-    @JoinColumn(name = "PRODUCT_ID", nullable = false, unique = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PREPARATION_ID", unique = true)
     private ProductPreparation preparation;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long someId) {
-        id = someId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String someName) {
-        name = someName;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal somePrice) {
-        price = somePrice;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType someProductType) {
-        productType = someProductType;
-    }
-
-    public ClearanceType getClearance() {
-        return clearance;
-    }
-
-    public void setClearance(ClearanceType someClearance) {
-        clearance = someClearance;
-    }
-
-    public List<ProductReceiptLine> getReceipt() {
-        return receipt;
-    }
-
-    public void setReceipt(List<ProductReceiptLine> someReceipt) {
-        receipt = someReceipt;
-    }
-
-    public ProductPreparation getPreparation() {
-        return preparation;
-    }
-
-    public void setPreparation(ProductPreparation somePreparation) {
-        preparation = somePreparation;
-    }
 }

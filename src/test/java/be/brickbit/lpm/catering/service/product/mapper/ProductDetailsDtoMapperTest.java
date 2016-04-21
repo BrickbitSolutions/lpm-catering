@@ -24,7 +24,7 @@ public class ProductDetailsDtoMapperTest {
 
     @Test
     public void testMap() throws Exception {
-        Product product = ProductFixture.getProduct();
+        Product product = ProductFixture.getJupiler();
         ReceiptDto receiptLine1Dto = ReceiptDtoFixture.getReceiptLine1Dto();
 
         when(receiptDtoMapper.map(product.getReceipt().get(0))).thenReturn(receiptLine1Dto);
@@ -40,7 +40,7 @@ public class ProductDetailsDtoMapperTest {
 
     @Test
     public void testMapFood() throws Exception {
-        Product product = ProductFixture.getProductPizza();
+        Product product = ProductFixture.getPizza();
         ReceiptDto receiptLine1Dto = ReceiptDtoFixture.getReceiptLinePizza();
 
         when(receiptDtoMapper.map(product.getReceipt().get(0))).thenReturn(receiptLine1Dto);

@@ -22,7 +22,7 @@ public class ProductDtoMapperTest {
 
     @Test
     public void testMap() throws Exception {
-        Product product = ProductFixture.getProduct();
+        Product product = ProductFixture.getJupiler();
         ProductDto productDto = mapper.map(product);
 
         assertThat(productDto.getClearanceType()).isEqualTo(product.getClearance());

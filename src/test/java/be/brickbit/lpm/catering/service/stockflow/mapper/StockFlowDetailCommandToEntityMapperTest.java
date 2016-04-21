@@ -6,7 +6,6 @@ import be.brickbit.lpm.catering.exceptions.EntityNotFoundException;
 import be.brickbit.lpm.catering.fixture.StockProductFixture;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
 import be.brickbit.lpm.catering.service.stockflow.command.StockFlowDetailCommand;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -34,7 +33,7 @@ public class StockFlowDetailCommandToEntityMapperTest {
         stockFlowDetail.setQuantity(5);
         stockFlowDetail.setPricePerUnit(BigDecimal.TEN);
 
-        StockProduct stockProduct = StockProductFixture.getStockProduct();
+        StockProduct stockProduct = StockProductFixture.getStockProductJupiler();
         when(stockProductRepository.findOne(stockFlowDetail.getStockProductId())).thenReturn(stockProduct);
 
         StockFlowDetail result = mapper.map(stockFlowDetail);

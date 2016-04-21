@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface IStockProductService extends Service<StockProduct>{
     <T> List<T> findAllByTypeAndClearance(ProductType type, ClearanceType clearance, StockProductMapper<T> mapper);
+    <T> List<T> findAllByType(ProductType type, StockProductMapper<T> mapper);
     <T> T save(StockProductCommand command, StockProductMapper<T> dtoMapper);
     void delete(Long id);
 }

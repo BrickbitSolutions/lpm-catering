@@ -1,7 +1,7 @@
 package be.brickbit.lpm.catering;
 
-import be.brickbit.lpm.Application;
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import org.flywaydb.test.annotation.FlywayTest;
+import org.flywaydb.test.junit.FlywayTestExecutionListener;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
@@ -12,14 +12,16 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-//TODO: FAILS ON DB UNIT
+import be.brickbit.lpm.Application;
+
 @SpringApplicationConfiguration(classes = {Application.class})
 @ActiveProfiles("test")
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
-        DbUnitTestExecutionListener.class })
+        FlywayTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)
+@FlywayTest
 @WebAppConfiguration
 public abstract class AbstractIT {
 

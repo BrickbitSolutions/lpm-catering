@@ -1,4 +1,0 @@
-<dataset>
-    <stockproduct id="1" name="Jupiler" stocklevel="3" max_consumptions="1" remaining_consumptions="1" clearance="PLUS_16" product_type="DRINKS"/>
-    <stockproduct id="2" name="Cola" stocklevel="3" max_consumptions="1" remaining_consumptions="1" clearance="ANY" product_type="DRINKS"/>
-</dataset>

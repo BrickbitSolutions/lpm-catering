@@ -19,7 +19,7 @@ public class StockProductDtoMapperTest {
 
     @Test
     public void testMap() throws Exception {
-        StockProduct stockProduct = StockProductFixture.getStockProduct();
+        StockProduct stockProduct = StockProductFixture.getStockProductJupiler();
         StockProductDto dto = mapper.map(stockProduct);
 
         assertThat(dto.getId()).isEqualTo(stockProduct.getId());

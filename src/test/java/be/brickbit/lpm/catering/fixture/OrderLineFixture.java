@@ -7,7 +7,7 @@ public class OrderLineFixture {
         OrderLine orderLine = new OrderLine();
 
         orderLine.setQuantity(1);
-        orderLine.setProduct(ProductFixture.getProduct());
+        orderLine.setProduct(ProductFixture.getJupiler());
 
         return orderLine;
     }
@@ -16,7 +16,7 @@ public class OrderLineFixture {
         OrderLine orderLine = new OrderLine();
 
         orderLine.setQuantity(1);
-        orderLine.setProduct(ProductFixture.getProductPizza());
+        orderLine.setProduct(ProductFixture.getPizza());
 
         return orderLine;
     }

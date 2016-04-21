@@ -26,7 +26,7 @@ public class ReceiptCommandToEntityMapperTest {
     @Test
     public void testMap() throws Exception {
         ReceiptLineCommand command = ReceiptCommandFixture.getReceiptLineCommand();
-        StockProduct stockProduct = StockProductFixture.getStockProduct();
+        StockProduct stockProduct = StockProductFixture.getStockProductJupiler();
 
         when(stockProductRepository.findOne(command.getStockProductId())).thenReturn(stockProduct);
 

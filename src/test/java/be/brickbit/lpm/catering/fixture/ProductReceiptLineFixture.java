@@ -3,20 +3,20 @@ package be.brickbit.lpm.catering.fixture;
 import be.brickbit.lpm.catering.domain.ProductReceiptLine;
 
 public class ProductReceiptLineFixture {
-    public static ProductReceiptLine getReceiptLine1(){
+    public static ProductReceiptLine getCola(){
         ProductReceiptLine receiptLine = new ProductReceiptLine();
 
-        receiptLine.setStockProduct(StockProductFixture.getStockProduct());
-        receiptLine.setQuantity(2);
+        receiptLine.setStockProduct(StockProductFixture.getStockProductJupiler());
+        receiptLine.setQuantity(1);
 
         return receiptLine;
     }
 
-    public static ProductReceiptLine getReceiptLine2(){
+    public static ProductReceiptLine getJupiler(){
         ProductReceiptLine receiptLine = new ProductReceiptLine();
 
-        receiptLine.setStockProduct(StockProductFixture.getStockProductDuvel());
-        receiptLine.setQuantity(2);
+        receiptLine.setStockProduct(StockProductFixture.getStockProductJupiler());
+        receiptLine.setQuantity(1);
 
         return receiptLine;
     }
@@ -26,6 +26,15 @@ public class ProductReceiptLineFixture {
 
         receiptLine.setStockProduct(StockProductFixture.getStockProductPizza());
         receiptLine.setQuantity(3);
+
+        return receiptLine;
+    }
+
+    public static ProductReceiptLine getLasagna(){
+        ProductReceiptLine receiptLine = new ProductReceiptLine();
+
+        receiptLine.setStockProduct(StockProductFixture.getStockProductLasagna());
+        receiptLine.setQuantity(1);
 
         return receiptLine;
     }

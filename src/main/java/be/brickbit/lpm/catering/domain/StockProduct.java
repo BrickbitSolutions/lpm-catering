@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.domain;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "STOCKPRODUCT")
-public class StockProduct {
+public @Data class StockProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -36,60 +38,4 @@ public class StockProduct {
     @Column(name = "PRODUCT_TYPE")
     @Enumerated(EnumType.STRING)
     private ProductType productType;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long someId) {
-        id = someId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String someName) {
-        name = someName;
-    }
-
-    public Integer getStockLevel() {
-        return stockLevel;
-    }
-
-    public void setStockLevel(Integer someStockLevel) {
-        stockLevel = someStockLevel;
-    }
-
-    public Integer getMaxConsumptions() {
-        return maxConsumptions;
-    }
-
-    public void setMaxConsumptions(Integer someMaxConsumptions) {
-        maxConsumptions = someMaxConsumptions;
-    }
-
-    public Integer getRemainingConsumptions() {
-        return remainingConsumptions;
-    }
-
-    public void setRemainingConsumptions(Integer someRemainingConsumptions) {
-        remainingConsumptions = someRemainingConsumptions;
-    }
-
-    public ClearanceType getClearance() {
-        return clearance;
-    }
-
-    public void setClearance(ClearanceType someClearance) {
-        clearance = someClearance;
-    }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType someProductType) {
-        productType = someProductType;
-    }
 }

@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.domain;
 
+import lombok.Data;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +18,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "PRODUCT_ORDER")
-public class Order {
+public @Data class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -38,52 +40,4 @@ public class Order {
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getPlacedByUserId() {
-        return placedByUserId;
-    }
-
-    public void setPlacedByUserId(Long placedByUserId) {
-        this.placedByUserId = placedByUserId;
-    }
-
-    public List<OrderLine> getOrderLines() {
-        return orderLines;
-    }
-
-    public void setOrderLines(List<OrderLine> orderLines) {
-        this.orderLines = orderLines;
-    }
-
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
 }

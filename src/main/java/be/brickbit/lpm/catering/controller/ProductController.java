@@ -1,5 +1,6 @@
 package be.brickbit.lpm.catering.controller;
 
+import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.service.product.IProductService;
 import be.brickbit.lpm.catering.service.product.command.ProductCommand;
 import be.brickbit.lpm.catering.service.product.dto.ProductDetailsDto;
@@ -46,6 +47,12 @@ public class ProductController extends AbstractController{
     @ResponseStatus(HttpStatus.OK)
     public List<ProductDto> getAllProducts(){
         return productService.findAll(productDtoMapper);
+    }
+
+    @RequestMapping(value = "/all/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductDto> getProductsByType(@PathVariable("type") ProductType productType) {
+        return productService.findAllByType(productType, productDtoMapper);
     }
 
     @RequestMapping(value = "/{id}/receipt", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
