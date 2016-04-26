@@ -44,6 +44,7 @@ public class ProductCommandToEntityMapperTest {
         assertThat(product.getReceipt().contains(receiptLine2)).isTrue();
         assertThat(product.getClearance()).isEqualTo(ClearanceType.PLUS_16);
         assertThat(product.getPreparation()).isNull();
+        assertThat(product.getAvailable()).isFalse();
     }
 
     @Test

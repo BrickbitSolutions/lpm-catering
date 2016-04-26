@@ -38,6 +38,7 @@ public class ProductCommandToEntityMapper implements Mapper<ProductCommand, Prod
         }
 
         product.setPreparation(createPreparation(someProductCommand));
+        product.setAvailable(false);
 
         return product;
     }

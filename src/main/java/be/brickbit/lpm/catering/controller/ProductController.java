@@ -55,6 +55,12 @@ public class ProductController extends AbstractController{
         return productService.findAllByType(productType, productDtoMapper);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ProductDto getProduct(@PathVariable("id") Long id) {
+        return productService.findOne(id, productDtoMapper);
+    }
+
     @RequestMapping(value = "/{id}/receipt", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
