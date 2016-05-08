@@ -7,7 +7,7 @@ public class OrderLineCommandFixture {
         OrderLineCommand command = new OrderLineCommand();
 
         command.setProductId(1L);
-        command.setQuanity(1);
+        command.setQuantity(1);
 
         return command;
     }
@@ -16,7 +16,7 @@ public class OrderLineCommandFixture {
         OrderLineCommand command = new OrderLineCommand();
 
         command.setProductId(2L);
-        command.setQuanity(1);
+        command.setQuantity(1);
 
         return command;
     }

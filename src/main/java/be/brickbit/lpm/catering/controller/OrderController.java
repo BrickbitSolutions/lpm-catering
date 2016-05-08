@@ -43,7 +43,7 @@ public class OrderController extends AbstractController {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    @RequestMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @RequestMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderDto> getAllOrders(){

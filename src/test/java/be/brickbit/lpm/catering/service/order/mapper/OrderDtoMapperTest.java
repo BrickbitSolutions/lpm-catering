@@ -4,6 +4,7 @@ import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.fixture.OrderFixture;
 import be.brickbit.lpm.catering.fixture.UserFixture;
 import be.brickbit.lpm.catering.service.order.dto.OrderDto;
+import be.brickbit.lpm.catering.util.DateUtils;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.repository.UserRepository;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class OrderDtoMapperTest {
         assertThat(result.getTotalPrice()).isEqualTo(new BigDecimal(11));
         assertThat(result.getId()).isEqualTo(order.getId());
         assertThat(result.getStatus()).isEqualTo(order.getOrderStatus());
-        assertThat(result.getTimestamp()).isEqualTo(order.getTimestamp());
+        assertThat(result.getTimestamp()).isEqualTo(order.getTimestamp().format(DateUtils.getDateFormat()));
         assertThat(result.getUsername()).isEqualTo(cateringAdmin.getUsername());
     }
 }

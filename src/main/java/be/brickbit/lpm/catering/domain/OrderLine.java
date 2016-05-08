@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ORDER_LINE")
+@Table(name = "PRODUCT_ORDER_LINE")
 public @Data class OrderLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

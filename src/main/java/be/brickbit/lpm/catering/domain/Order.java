@@ -24,7 +24,7 @@ public @Data class Order {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "TIME_ON_ORDER")
+    @Column(name = "TIMESTAMP")
     private LocalDateTime timestamp;
 
     @Column(name = "USER_ID")
@@ -34,10 +34,10 @@ public @Data class Order {
     private Long placedByUserId;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ORDER_ID")
+    @JoinColumn(name = "ORDER_ID", nullable = false)
     private List<OrderLine> orderLines;
-
     @Column(name = "STATUS")
+
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 }

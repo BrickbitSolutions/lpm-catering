@@ -35,7 +35,7 @@ public class OrderLineCommandToEntityMapperTest {
         OrderLine orderLine = mapper.map(command);
 
         assertThat(orderLine.getProduct()).isSameAs(product);
-        assertThat(orderLine.getQuantity()).isEqualTo(command.getQuanity());
+        assertThat(orderLine.getQuantity()).isEqualTo(command.getQuantity());
     }
 
     @Test(expected = EntityNotFoundException.class)

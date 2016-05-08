@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -22,9 +21,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice
@@ -80,17 +77,15 @@ public class DefaultExceptionHandler {
     public @ResponseBody
     Map<String, Object> handleValidationError(MethodArgumentNotValidException ex) throws IOException {
         Map<String, Object>  map = new HashMap<>();
-        map.put("error", "Validation of object failed");
+        map.put("error", "Bad Request");
+        map.put("cause", "Validation of object failed");
         Map<String, String> validationErrors = new HashMap<>();
-        //List<ValidationError> validationErrors = new ArrayList<>();
         for(ObjectError objectError : ex.getBindingResult().getAllErrors()){
             if(objectError instanceof FieldError) {
                 FieldError fieldError = (FieldError) objectError;
                 validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-                //validationErrors.add(new ValidationError(fieldError.getField(), fieldError.getDefaultMessage()));
             }else{
                 validationErrors.put("global", objectError.getDefaultMessage());
-                //validationErrors.add(new ValidationError("global", objectError.getDefaultMessage()));
             }
         }
         map.put("validationMessages", validationErrors);

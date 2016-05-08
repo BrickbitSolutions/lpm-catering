@@ -25,7 +25,7 @@ public class OrderLineCommandToEntityMapper implements Mapper<OrderLineCommand, 
             OrderLine orderLine = new OrderLine();
 
             orderLine.setProduct(product.get());
-            orderLine.setQuantity(orderLineCommand.getQuanity());
+            orderLine.setQuantity(orderLineCommand.getQuantity());
 
             return orderLine;
         }else{
