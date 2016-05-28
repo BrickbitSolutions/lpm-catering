@@ -10,12 +10,16 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 @Component
 public class OrderDtoMapper implements OrderMapper<OrderDto> {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrderLineDtoMapper orderLineMapper;
 
     @Override
     public OrderDto map(Order order) {
@@ -24,7 +28,8 @@ public class OrderDtoMapper implements OrderMapper<OrderDto> {
                 order.getOrderLines().stream().map(o -> o.getProduct().getPrice()).reduce(BigDecimal::add).get(),
                 order.getTimestamp().format(DateUtils.getDateFormat()),
                 getUsername(order.getUserId()),
-                order.getOrderStatus()
+                order.getOrderStatus(),
+                order.getOrderLines().stream().map(orderLineMapper::map).collect(Collectors.toList())
         );
     }
 

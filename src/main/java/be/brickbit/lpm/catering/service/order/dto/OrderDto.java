@@ -4,6 +4,7 @@ import be.brickbit.lpm.catering.domain.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class OrderDto {
     private Long id;
@@ -11,13 +12,16 @@ public class OrderDto {
     private String timestamp;
     private String username;
     private OrderStatus status;
+    private List<OrderLineDto> orderLines;
 
-    public OrderDto(Long id, BigDecimal totalPrice, String timestamp, String username, OrderStatus status) {
+    public OrderDto(Long id, BigDecimal totalPrice, String timestamp, String username, OrderStatus status,
+                    List<OrderLineDto> orderLines) {
         this.id = id;
         this.totalPrice = totalPrice;
         this.timestamp = timestamp;
         this.username = username;
         this.status = status;
+        this.orderLines = orderLines;
     }
 
     public Long getId() {
@@ -38,5 +42,9 @@ public class OrderDto {
 
     public OrderStatus getStatus() {
         return status;
+    }
+
+    public List<OrderLineDto> getOrderLines() {
+        return orderLines;
     }
 }
