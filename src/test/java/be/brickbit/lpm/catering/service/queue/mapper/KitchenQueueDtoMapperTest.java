@@ -2,7 +2,7 @@ package be.brickbit.lpm.catering.service.queue.mapper;
 
 import be.brickbit.lpm.catering.domain.PreparationTask;
 import be.brickbit.lpm.catering.fixture.PreparationTaskFixture;
-import be.brickbit.lpm.catering.service.queue.dto.KitchenQueueDto;
+import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,18 +10,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class KitchenQueueDtoMapperTest {
 
-    private KitchenQueueDtoMapper mapper;
+    private QueueDtoMapper mapper;
 
     @Before
     public void setUp() throws Exception {
-        mapper = new KitchenQueueDtoMapper();
+        mapper = new QueueDtoMapper();
     }
 
     @Test
     public void testMap() throws Exception {
         PreparationTask task = PreparationTaskFixture.getNewPreparationTask();
 
-        KitchenQueueDto result = mapper.map(task);
+        QueueDto result = mapper.map(task);
 
         assertThat(result.getTaskId()).isEqualTo(task.getId());
         assertThat(result.getDescription()).isEqualTo(task.getOrderLine().getQuantity() + "x " + task.getOrderLine().getProduct().getName());

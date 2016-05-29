@@ -48,7 +48,7 @@ public class DirectOrderCommandToOrderEntityMapperTest {
         assertThat(order.getOrderLines().get(0)).isSameAs(jupilerOrderLine);
         assertThat(order.getOrderLines().get(1)).isSameAs(pizzaOrderLine);
         assertThat(order.getUserId()).isEqualTo(cateringAdmin.getId());
-        assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.QUEUED);
+        assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.CREATED);
 
     }
 

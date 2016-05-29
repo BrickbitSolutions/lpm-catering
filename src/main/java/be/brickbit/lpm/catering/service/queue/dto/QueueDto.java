@@ -2,7 +2,7 @@ package be.brickbit.lpm.catering.service.queue.dto;
 
 import java.time.LocalDateTime;
 
-public class KitchenQueueDto {
+public class QueueDto {
     private Long taskId;
     private String description;
     private Integer duration;
@@ -14,7 +14,7 @@ public class KitchenQueueDto {
         return taskId;
     }
 
-    public KitchenQueueDto setTaskId(Long taskId) {
+    public QueueDto setTaskId(Long taskId) {
         this.taskId = taskId;
         return this;
     }
@@ -23,7 +23,7 @@ public class KitchenQueueDto {
         return description;
     }
 
-    public KitchenQueueDto setDescription(String description) {
+    public QueueDto setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -32,7 +32,7 @@ public class KitchenQueueDto {
         return duration;
     }
 
-    public KitchenQueueDto setDuration(Integer duration) {
+    public QueueDto setDuration(Integer duration) {
         this.duration = duration;
         return this;
     }
@@ -41,7 +41,7 @@ public class KitchenQueueDto {
         return instructions;
     }
 
-    public KitchenQueueDto setInstructions(String instructions) {
+    public QueueDto setInstructions(String instructions) {
         this.instructions = instructions;
         return this;
     }
@@ -50,7 +50,7 @@ public class KitchenQueueDto {
         return startTime;
     }
 
-    public KitchenQueueDto setStartTime(LocalDateTime startTime) {
+    public QueueDto setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -59,7 +59,7 @@ public class KitchenQueueDto {
         return queueName;
     }
 
-    public KitchenQueueDto setQueueName(String queueName) {
+    public QueueDto setQueueName(String queueName) {
         this.queueName = queueName;
         return this;
     }

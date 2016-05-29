@@ -1,14 +1,14 @@
 package be.brickbit.lpm.catering.service.queue.mapper;
 
 import be.brickbit.lpm.catering.domain.PreparationTask;
-import be.brickbit.lpm.catering.service.queue.dto.KitchenQueueDto;
+import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KitchenQueueDtoMapper implements QueueMapper<KitchenQueueDto> {
+public class QueueDtoMapper implements QueueMapper<QueueDto> {
     @Override
-    public KitchenQueueDto map(PreparationTask preparationTask) {
-        return new KitchenQueueDto()
+    public QueueDto map(PreparationTask preparationTask) {
+        return new QueueDto()
                 .setTaskId(preparationTask.getId())
                 .setDescription(getDescription(preparationTask))
                 .setInstructions(preparationTask.getOrderLine().getProduct().getPreparation().getInstructions())

@@ -29,6 +29,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     public <T> T placeDirectOrder(DirectOrderCommand command, OrderMapper<T> dtoMapper, User user) {
         Order order = directOrderCommandMapper.map(command);
         order.setPlacedByUserId(user.getId());
+        
         orderRepository.save(order);
         return dtoMapper.map(order);
     }

@@ -21,8 +21,8 @@ import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
 import be.brickbit.lpm.catering.service.order.dto.OrderDto;
 import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
 import be.brickbit.lpm.catering.service.queue.IQueueService;
-import be.brickbit.lpm.catering.service.queue.dto.KitchenQueueDto;
-import be.brickbit.lpm.catering.service.queue.mapper.KitchenQueueDtoMapper;
+import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
+import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
 import be.brickbit.lpm.infrastructure.AbstractController;
 
 @RequestMapping("/order")
@@ -38,7 +38,7 @@ public class OrderController extends AbstractController {
     private IQueueService queueService;
 
     @Autowired
-    private KitchenQueueDtoMapper mapper;
+    private QueueDtoMapper queueDtoMapper;
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -73,10 +73,10 @@ public class OrderController extends AbstractController {
     }
 
     private void queueTasks(OrderDto order) {
-       queueService.queueTasks(order.getId(), mapper).stream().forEach(this::pushToQueue);
+       queueService.queueTasks(order.getId(), queueDtoMapper).stream().forEach(this::pushToQueue);
     }
 
-    private void pushToQueue(KitchenQueueDto message){
-        messagingTemplate.convertAndSend("/topic/kitchen/" + message.getQueueName(), message);
+    private void pushToQueue(QueueDto message){
+        messagingTemplate.convertAndSend("/topic/queue/" + message.getQueueName(), message);
     }
 }

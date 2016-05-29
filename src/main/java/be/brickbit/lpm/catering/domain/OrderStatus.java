@@ -4,11 +4,12 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum OrderStatus {
-    QUEUED(0),
-    CANCELED(1),
-    IN_PROGRESS(2),
-    READY(3),
-    COMPLETED(4);
+    CREATED(0),
+    QUEUED(1),
+    CANCELED(2),
+    IN_PROGRESS(3),
+    READY(4),
+    COMPLETED(5);
 
     private Integer statusLevel;
 

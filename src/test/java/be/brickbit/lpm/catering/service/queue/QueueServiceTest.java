@@ -3,11 +3,10 @@ package be.brickbit.lpm.catering.service.queue;
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.PreparationTask;
 import be.brickbit.lpm.catering.fixture.OrderFixture;
-import be.brickbit.lpm.catering.fixture.OrderLineFixture;
 import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.repository.PreparationTaskRepository;
-import be.brickbit.lpm.catering.service.queue.dto.KitchenQueueDto;
-import be.brickbit.lpm.catering.service.queue.mapper.KitchenQueueDtoMapper;
+import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
+import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,7 +30,7 @@ public class QueueServiceTest {
     private OrderRepository orderRepository;
 
     @Mock
-    private KitchenQueueDtoMapper mapper;
+    private QueueDtoMapper mapper;
 
     @InjectMocks
     private QueueService service;
@@ -41,10 +40,10 @@ public class QueueServiceTest {
     public void testQueueTasks() throws Exception {
         Order order = OrderFixture.getOrder();
         when(orderRepository.findOne(order.getId())).thenReturn(order);
-        when(mapper.map(any(PreparationTask.class))).thenReturn(new KitchenQueueDto());
+        when(mapper.map(any(PreparationTask.class))).thenReturn(new QueueDto());
 
         Long preparationTasks = order.getOrderLines().stream().filter(orderLine -> orderLine.getProduct().getPreparation() != null).count();
-        List<KitchenQueueDto> result = service.queueTasks(order.getId(), mapper);
+        List<QueueDto> result = service.queueTasks(order.getId(), mapper);
 
         verify(preparationTaskRepository, times(preparationTasks.intValue())).save(any(PreparationTask.class));
         assertThat(result.size()).isEqualTo(preparationTasks.intValue());

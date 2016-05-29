@@ -22,7 +22,7 @@ public class RemoteOrderCommandToEntityMapper implements Mapper<RemoteOrderComma
 
         order.setTimestamp(LocalDateTime.now());
         order.setOrderLines(remoteOrderCommand.getOrderLines().stream().map(orderLineCommandToEntityMapper::map).collect(Collectors.toList()));
-        order.setOrderStatus(OrderStatus.QUEUED);
+        order.setOrderStatus(OrderStatus.CREATED);
 
         return order;
     }
