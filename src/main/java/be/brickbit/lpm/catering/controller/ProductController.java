@@ -36,14 +36,14 @@ public class ProductController extends AbstractController{
     private ProductDetailsDtoMapper productDetailsDtoMapper;
 
     @RequestMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto saveNewProduct(@RequestBody @Valid ProductCommand someProductCommand){
         return productService.save(someProductCommand, productDtoMapper);
     }
 
     @RequestMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<ProductDto> getAllProducts(){
         return productService.findAll(productDtoMapper);
@@ -62,7 +62,7 @@ public class ProductController extends AbstractController{
     }
 
     @RequestMapping(value = "/{id}/receipt", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public ProductDetailsDto getProductDetails(@PathVariable("id") Long id){
         return productService.findOne(id, productDetailsDtoMapper);

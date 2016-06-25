@@ -41,14 +41,14 @@ public class StockProductController extends AbstractController{
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<StockProductDto> getAllStockProducts(){
         return stockProductService.findAll(stockProductDtoMapper);
     }
 
     @RequestMapping(value = "/all/{type}/{clearance}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<StockProductDto> getAllStockProductsByTypeAndClearance(@PathVariable("type") ProductType type, @PathVariable("clearance") ClearanceType clearance){
         return stockProductService.findAllByTypeAndClearance(type, clearance, stockProductDtoMapper);
@@ -61,20 +61,20 @@ public class StockProductController extends AbstractController{
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public StockProductDto saveNewStockProduct(@RequestBody @Valid StockProductCommand command){
         return stockProductService.save(command, stockProductDtoMapper);
     }
 
     @RequestMapping(value = "/types", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN'")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN'")
     public List<ProductType> getAllProductTypes(){
         return Arrays.asList(ProductType.values());
     }
 
     @RequestMapping(value = "/clearance", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN'")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN'")
     public List<ClearanceType> getAllClearanceTypes(){
         return Arrays.asList(ClearanceType.values());
     }

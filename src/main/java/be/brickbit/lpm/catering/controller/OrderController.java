@@ -44,14 +44,14 @@ public class OrderController extends AbstractController {
     private SimpMessagingTemplate messagingTemplate;
 
     @RequestMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderDto> getAllOrders(){
         return orderService.findAll(orderDtoMapper);
     }
 
     @RequestMapping(value = "/direct", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto saveDirectOrder(@RequestBody @Valid DirectOrderCommand command){
         OrderDto order = orderService.placeDirectOrder(command, orderDtoMapper, getCurrentUser());

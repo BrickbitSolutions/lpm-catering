@@ -29,13 +29,13 @@ public class StockFlowController extends AbstractController{
     private StockFlowDtoMapper stockFlowDtoMapper;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     public List<StockFlowDto> getAll(){
         return stockFlowService.findAll(stockFlowDtoMapper);
     }
 
     @RequestMapping(value = "/add",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public StockFlowDto save(@RequestBody @Valid StockFlowCommand command){
         return stockFlowService.save(command, getCurrentUser(), stockFlowDtoMapper);
