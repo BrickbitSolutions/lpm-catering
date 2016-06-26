@@ -6,10 +6,9 @@ import be.brickbit.lpm.catering.domain.PreparationTask;
 import java.time.LocalDateTime;
 
 public class PreparationTaskFixture {
-    public static PreparationTask getNewPreparationTask(){
+    public static PreparationTask mutable(){
         PreparationTask task = new PreparationTask();
 
-        task.setId(1L);
         task.setOrderLine(OrderLineFixture.getPizzaOrderLine());
         task.setQueueTime(LocalDateTime.now());
         task.setStatus(OrderStatus.QUEUED);

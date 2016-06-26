@@ -44,4 +44,8 @@ public class QueueService implements IQueueService {
 
         return dtoMapper.map(preparationTaskRepository.save(task));
     }
+
+    public <T> List<T> findAllTasks(String queueName, QueueMapper<T> dtoMapper){
+        return preparationTaskRepository.findAllByQueueName(queueName).stream().map(dtoMapper::map).collect(Collectors.toList());
+    }
 }

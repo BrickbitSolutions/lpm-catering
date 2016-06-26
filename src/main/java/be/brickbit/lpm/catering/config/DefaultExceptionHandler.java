@@ -18,14 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-@EnableWebMvc
 public class DefaultExceptionHandler {
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,9 +34,10 @@ public class DefaultExceptionHandler {
             HttpMessageNotReadableException.class
     })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public @ResponseBody
+    public
+    @ResponseBody
     Map<String, Object> handleRequestException(Exception ex) {
-        Map<String, Object>  map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("error", "Request Error");
         map.put("cause", ex.getMessage());
         return map;
@@ -47,9 +46,10 @@ public class DefaultExceptionHandler {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     @ResponseStatus(value = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-    public @ResponseBody
+    public
+    @ResponseBody
     Map<String, Object> handleUnsupportedMediaTypeException(HttpMediaTypeNotSupportedException ex) throws IOException {
-        Map<String, Object>  map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("error", "Unsupported Media Type");
         map.put("cause", ex.getLocalizedMessage());
         map.put("supported", ex.getSupportedMediaTypes());
@@ -59,9 +59,10 @@ public class DefaultExceptionHandler {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody
+    public
+    @ResponseBody
     Map<String, Object> handleUncaughtException(Exception ex) throws IOException {
-        Map<String, Object>  map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("error", "Unknown Error");
         if (ex.getCause() != null) {
             map.put("cause", ex.getCause().getMessage());
@@ -74,17 +75,18 @@ public class DefaultExceptionHandler {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public @ResponseBody
+    public
+    @ResponseBody
     Map<String, Object> handleValidationError(MethodArgumentNotValidException ex) throws IOException {
-        Map<String, Object>  map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("error", "Bad Request");
         map.put("cause", "Validation of object failed");
         Map<String, String> validationErrors = new HashMap<>();
-        for(ObjectError objectError : ex.getBindingResult().getAllErrors()){
-            if(objectError instanceof FieldError) {
+        for (ObjectError objectError : ex.getBindingResult().getAllErrors()) {
+            if (objectError instanceof FieldError) {
                 FieldError fieldError = (FieldError) objectError;
                 validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-            }else{
+            } else {
                 validationErrors.put("global", objectError.getDefaultMessage());
             }
         }
@@ -95,8 +97,9 @@ public class DefaultExceptionHandler {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ExceptionHandler({NoHandlerFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public @ResponseBody
-    Map<String, Object> handleNotFoundException(Exception ex) throws IOException{
+    public
+    @ResponseBody
+    Map<String, Object> handleNotFoundException(Exception ex) throws IOException {
         Map<String, Object> map = new HashMap<>();
 
         map.put("error", "Resource not found");
@@ -106,7 +109,8 @@ public class DefaultExceptionHandler {
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ExceptionHandler({AccessDeniedException.class})
-    public @ResponseBody
+    public
+    @ResponseBody
     Map<String, Object> handleUnAuthorized(Exception ex) throws IOException {
 
         Map<String, Object> map = new HashMap<>();

@@ -19,7 +19,7 @@ public class KitchenQueueDtoMapperTest {
 
     @Test
     public void testMap() throws Exception {
-        PreparationTask task = PreparationTaskFixture.getNewPreparationTask();
+        PreparationTask task = PreparationTaskFixture.mutable();
 
         QueueDto result = mapper.map(task);
 

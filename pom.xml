@@ -80,6 +80,11 @@
             <version>${hibernate.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
         <!-- testing -->
         <dependency>
             <groupId>com.h2database</groupId>

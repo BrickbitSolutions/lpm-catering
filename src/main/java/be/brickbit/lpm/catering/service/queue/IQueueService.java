@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IQueueService {
     <T> List<T> queueTasks(Long orderId, QueueMapper<T> dtoMapper);
+    <T> List<T> findAllTasks(String QueueName, QueueMapper<T> dtoMapper);
 }

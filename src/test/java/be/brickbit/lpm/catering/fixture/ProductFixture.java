@@ -4,6 +4,7 @@ import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.domain.ProductPreparation;
 import be.brickbit.lpm.catering.domain.ProductType;
+import org.assertj.core.util.Lists;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -16,7 +17,7 @@ public class ProductFixture {
         product.setPrice(BigDecimal.ONE);
         product.setProductType(ProductType.DRINKS);
         product.setName("Jupiler");
-        product.setReceipt(Collections.singletonList(ProductReceiptLineFixture.getJupiler()));
+        product.setReceipt(Lists.newArrayList(ProductReceiptLineFixture.getJupiler()));
         product.setAvailable(true);
 
         return product;
@@ -29,7 +30,7 @@ public class ProductFixture {
         product.setPrice(BigDecimal.TEN);
         product.setProductType(ProductType.FOOD);
         product.setName("NomNomPizza");
-        product.setReceipt(Collections.singletonList(ProductReceiptLineFixture.getPizza()));
+        product.setReceipt(Lists.newArrayList(ProductReceiptLineFixture.getPizza()));
         product.setAvailable(true);
 
         ProductPreparation preparation = new ProductPreparation();
