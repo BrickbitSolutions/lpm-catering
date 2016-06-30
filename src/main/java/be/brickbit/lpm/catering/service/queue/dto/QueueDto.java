@@ -9,6 +9,7 @@ public class QueueDto {
     private String instructions;
     private LocalDateTime startTime;
     private String queueName;
+    private String comment;
 
     public Long getTaskId() {
         return taskId;
@@ -61,6 +62,15 @@ public class QueueDto {
 
     public QueueDto setQueueName(String queueName) {
         this.queueName = queueName;
+        return this;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public QueueDto setComment(String comment) {
+        this.comment = comment;
         return this;
     }
 }

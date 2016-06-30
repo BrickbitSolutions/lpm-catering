@@ -4,7 +4,8 @@ import java.util.List;
 
 public class CreateOrderCommand {
     private Long userToken;
-    List<OrderLineCommand> orderLins;
+    List<OrderLineCommand> orderLines;
+    private String comment;
 
     public Long getUserToken() {
         return userToken;
@@ -15,10 +16,18 @@ public class CreateOrderCommand {
     }
 
     public List<OrderLineCommand> getOrderLins() {
-        return orderLins;
+        return orderLines;
     }
 
     public void setOrderLins(List<OrderLineCommand> orderLins) {
-        this.orderLins = orderLins;
+        this.orderLines = orderLins;
+    }
+
+    public List<OrderLineCommand> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(List<OrderLineCommand> orderLines) {
+        this.orderLines = orderLines;
     }
 }

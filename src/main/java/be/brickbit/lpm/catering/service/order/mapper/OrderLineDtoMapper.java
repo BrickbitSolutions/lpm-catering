@@ -11,7 +11,8 @@ public class OrderLineDtoMapper implements Mapper<OrderLine, OrderLineDto>{
     public OrderLineDto map(OrderLine orderLine) {
         return new OrderLineDto(
                 orderLine.getQuantity(),
-                orderLine.getProduct().getName()
+                orderLine.getProduct().getName(),
+                orderLine.getStatus()
         );
     }
 }

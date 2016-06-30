@@ -3,10 +3,12 @@ package be.brickbit.lpm.catering.service.queue;
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.PreparationTask;
 import be.brickbit.lpm.catering.fixture.OrderFixture;
+import be.brickbit.lpm.catering.fixture.PreparationTaskFixture;
 import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.repository.PreparationTaskRepository;
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -43,9 +45,22 @@ public class QueueServiceTest {
         when(mapper.map(any(PreparationTask.class))).thenReturn(new QueueDto());
 
         Long preparationTasks = order.getOrderLines().stream().filter(orderLine -> orderLine.getProduct().getPreparation() != null).count();
-        List<QueueDto> result = service.queueTasks(order.getId(), mapper);
+        List<QueueDto> result = service.queueAllTasks(order.getId(), mapper);
 
         verify(preparationTaskRepository, times(preparationTasks.intValue())).save(any(PreparationTask.class));
         assertThat(result.size()).isEqualTo(preparationTasks.intValue());
+    }
+
+    @Test
+    public void findAllTasks() throws Exception {
+        final PreparationTask preparationTask = PreparationTaskFixture.mutable();
+        List<PreparationTask> tasks = Lists.newArrayList(preparationTask);
+        QueueDto dto = new QueueDto();
+        String queueName = "queueName";
+
+        when(preparationTaskRepository.findAllByQueueName(queueName)).thenReturn(tasks);
+        when(mapper.map(preparationTask)).thenReturn(dto);
+
+        assertThat(service.findAllTasks(queueName, mapper)).containsExactly(dto);
     }
 }

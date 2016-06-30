@@ -39,7 +39,6 @@ public class RemoteOrderCommandToEntityMapperTest {
         assertThat(order.getOrderLines()).hasSize(2);
         assertThat(order.getOrderLines().get(0)).isSameAs(jupilerOrderLine);
         assertThat(order.getOrderLines().get(1)).isSameAs(pizzaOrderLine);
-        assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.CREATED);
-
+        assertThat(order.getComment()).isEqualTo(command.getComment());
     }
 }

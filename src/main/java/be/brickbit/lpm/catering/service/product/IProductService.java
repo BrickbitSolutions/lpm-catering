@@ -16,4 +16,5 @@ public interface IProductService extends Service<Product> {
     <T> List<T> findAllByType(ProductType productType, ProductMapper<T> dtoMapper);
     <T> T save(ProductCommand command, ProductMapper<T> dtoMapper);
     void delete(Long id);
+    List<String> findAllQueueNames();
 }

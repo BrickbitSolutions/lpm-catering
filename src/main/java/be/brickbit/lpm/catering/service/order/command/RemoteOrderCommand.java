@@ -10,12 +10,23 @@ public class RemoteOrderCommand {
     @NotNull(message = "Orderlines may not be null")
     @Size(min = 1, message = "Order must have orderlines")
     private List<OrderLineCommand> orderLines;
+    private String comment;
 
     public List<OrderLineCommand> getOrderLines() {
         return orderLines;
     }
 
-    public void setOrderLines(List<OrderLineCommand> orderLines) {
+    public RemoteOrderCommand setOrderLines(List<OrderLineCommand> orderLines) {
         this.orderLines = orderLines;
+        return this;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public RemoteOrderCommand setComment(String comment) {
+        this.comment = comment;
+        return this;
     }
 }

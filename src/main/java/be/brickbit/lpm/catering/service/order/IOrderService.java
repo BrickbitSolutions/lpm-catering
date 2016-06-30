@@ -10,4 +10,5 @@ import be.brickbit.lpm.infrastructure.Service;
 public interface IOrderService extends Service<Order> {
     <T> T placeDirectOrder(DirectOrderCommand command, OrderMapper<T> dtoMapper, User user);
     <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, User user);
+    <T> T findOrderByOrderLineId(Long orderLineId, OrderMapper<T> dtoMapper);
 }

@@ -1,15 +1,13 @@
 package be.brickbit.lpm.catering.fixture;
 
-import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
-
 import java.util.Arrays;
 
+import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
+
 public class RemoteOrderCommandFixture {
-    public static RemoteOrderCommand getRemoteOrderCommand(){
-        RemoteOrderCommand command = new RemoteOrderCommand();
-
-        command.setOrderLines(Arrays.asList(OrderLineCommandFixture.getOrderLineCommand(), OrderLineCommandFixture.getOrderLineCommand2() ));
-
-        return command;
+	public static RemoteOrderCommand getRemoteOrderCommand(){
+        return new RemoteOrderCommand()
+                .setOrderLines(Arrays.asList(OrderLineCommandFixture.getOrderLineCommand(), OrderLineCommandFixture.getOrderLineCommand2()))
+                .setComment("Do not burn this shit you twat >:(");
     }
 }

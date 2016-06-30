@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 public class OrderDtoFixture {
     public static OrderDto getOrderDto(){
         return new OrderDto(1L, new BigDecimal(11), LocalDateTime.now().toString(), "jay", OrderStatus.QUEUED, Lists
-                .newArrayList(OrderLineDtoFixture.mutable()));
+                .newArrayList(OrderLineDtoFixture.mutable()), "I've got your name written in a rose tattoo :)");
     }
 }

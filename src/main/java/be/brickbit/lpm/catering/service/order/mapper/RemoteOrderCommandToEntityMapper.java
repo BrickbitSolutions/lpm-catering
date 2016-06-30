@@ -1,14 +1,14 @@
 package be.brickbit.lpm.catering.service.order.mapper;
 
-import be.brickbit.lpm.catering.domain.Order;
-import be.brickbit.lpm.catering.domain.OrderStatus;
-import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
-import be.brickbit.lpm.infrastructure.mapper.Mapper;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.stream.Collectors;
+import be.brickbit.lpm.catering.domain.Order;
+import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
+import be.brickbit.lpm.infrastructure.mapper.Mapper;
 
 @Component
 public class RemoteOrderCommandToEntityMapper implements Mapper<RemoteOrderCommand, Order> {
@@ -22,7 +22,7 @@ public class RemoteOrderCommandToEntityMapper implements Mapper<RemoteOrderComma
 
         order.setTimestamp(LocalDateTime.now());
         order.setOrderLines(remoteOrderCommand.getOrderLines().stream().map(orderLineCommandToEntityMapper::map).collect(Collectors.toList()));
-        order.setOrderStatus(OrderStatus.CREATED);
+        order.setComment(remoteOrderCommand.getComment());
 
         return order;
     }

@@ -50,4 +50,7 @@ public @Data class Product {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PREPARATION_ID", unique = true)
     private ProductPreparation preparation;
+
+    @Column(name = "ENABLE_DIRECT_QUEUEING")
+    private Boolean enableDirectQueueing;
 }

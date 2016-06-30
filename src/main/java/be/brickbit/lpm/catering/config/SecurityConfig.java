@@ -29,6 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/health").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/topic/**").permitAll()
+                .antMatchers("/socket/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

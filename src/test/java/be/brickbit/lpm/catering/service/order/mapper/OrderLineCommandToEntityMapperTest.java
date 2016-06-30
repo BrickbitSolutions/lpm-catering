@@ -1,6 +1,7 @@
 package be.brickbit.lpm.catering.service.order.mapper;
 
 import be.brickbit.lpm.catering.domain.OrderLine;
+import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.exceptions.EntityNotFoundException;
 import be.brickbit.lpm.catering.fixture.OrderLineCommandFixture;
@@ -36,6 +37,7 @@ public class OrderLineCommandToEntityMapperTest {
 
         assertThat(orderLine.getProduct()).isSameAs(product);
         assertThat(orderLine.getQuantity()).isEqualTo(command.getQuantity());
+        assertThat(orderLine.getStatus()).isEqualTo(OrderStatus.CREATED);
     }
 
     @Test(expected = EntityNotFoundException.class)

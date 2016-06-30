@@ -33,7 +33,7 @@ public class DirectOrderCommandToOrderEntityMapper implements Mapper<DirectOrder
             order.setUserId(user.get().getId());
             order.setTimestamp(LocalDateTime.now());
             order.setOrderLines(directOrderCommand.getOrderLines().stream().map(orderLineCommandToEntityMapper::map).collect(Collectors.toList()));
-            order.setOrderStatus(OrderStatus.CREATED);
+            order.setComment(directOrderCommand.getComment());
 
             return order;
         }else{

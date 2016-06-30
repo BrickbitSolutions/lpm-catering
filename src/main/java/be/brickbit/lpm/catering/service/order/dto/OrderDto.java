@@ -13,15 +13,17 @@ public class OrderDto {
     private String username;
     private OrderStatus status;
     private List<OrderLineDto> orderLines;
+    private String comment;
 
     public OrderDto(Long id, BigDecimal totalPrice, String timestamp, String username, OrderStatus status,
-                    List<OrderLineDto> orderLines) {
+                    List<OrderLineDto> orderLines, String comment) {
         this.id = id;
         this.totalPrice = totalPrice;
         this.timestamp = timestamp;
         this.username = username;
         this.status = status;
         this.orderLines = orderLines;
+        this.comment = comment;
     }
 
     public Long getId() {
@@ -46,5 +48,9 @@ public class OrderDto {
 
     public List<OrderLineDto> getOrderLines() {
         return orderLines;
+    }
+
+    public String getComment() {
+        return comment;
     }
 }

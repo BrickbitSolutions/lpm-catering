@@ -1,6 +1,7 @@
 package be.brickbit.lpm.catering.service.order.mapper;
 
 import be.brickbit.lpm.catering.domain.OrderLine;
+import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.exceptions.EntityNotFoundException;
 import be.brickbit.lpm.catering.repository.ProductRepository;
@@ -26,6 +27,7 @@ public class OrderLineCommandToEntityMapper implements Mapper<OrderLineCommand, 
 
             orderLine.setProduct(product.get());
             orderLine.setQuantity(orderLineCommand.getQuantity());
+            orderLine.setStatus(OrderStatus.CREATED);
 
             return orderLine;
         }else{

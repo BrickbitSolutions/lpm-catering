@@ -6,11 +6,10 @@ import java.util.Arrays;
 
 public class DirectOrderCommandFixture {
     public static DirectOrderCommand getDirectOrderCommand(){
-        DirectOrderCommand command = new DirectOrderCommand();
 
-        command.setUserId(1L);
-        command.setOrderLines(Arrays.asList(OrderLineCommandFixture.getOrderLineCommand(), OrderLineCommandFixture.getOrderLineCommand2()));
-
-        return command;
+        return new DirectOrderCommand()
+                .setUserId(1L)
+                .setOrderLines(Arrays.asList(OrderLineCommandFixture.getOrderLineCommand(), OrderLineCommandFixture.getOrderLineCommand2()))
+                .setComment("Go out in style!");
     }
 }

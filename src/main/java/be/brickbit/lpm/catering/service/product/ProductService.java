@@ -38,6 +38,11 @@ public class ProductService extends AbstractService<Product> implements IProduct
     }
 
     @Override
+    public List<String> findAllQueueNames(){
+        return productRepository.findAllQueueNames();
+    }
+
+    @Override
     public <T> List<T> findAllByType(ProductType productType, ProductMapper<T> dtoMapper) {
         return productRepository.findByProductType(productType).stream().map(dtoMapper::map).collect(Collectors.toList());
     }

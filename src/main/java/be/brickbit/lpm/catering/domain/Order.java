@@ -36,8 +36,7 @@ public @Data class Order {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ORDER_ID", nullable = false)
     private List<OrderLine> orderLines;
-    @Column(name = "STATUS")
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    @Column(name = "COMMENT")
+    private String comment;
 }

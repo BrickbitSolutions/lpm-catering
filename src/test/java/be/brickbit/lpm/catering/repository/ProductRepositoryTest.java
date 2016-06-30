@@ -41,4 +41,24 @@ public class ProductRepositoryTest extends AbstractRepoIT {
 		Product result = productRepository.findOne(newProduct.getId());
 		assertThat(result).isEqualTo(result);
 	}
+
+    @Test
+    public void findAllQueueNames() throws Exception {
+        Product product = ProductFixture.getPizza();
+        Product otherProduct = ProductFixture.getPizza();
+        otherProduct.getPreparation().setQueueName("SomeOtherQueueName");
+        insert(
+                product.getReceipt().get(0).getStockProduct(),
+                product.getPreparation(),
+                product,
+                otherProduct.getReceipt().get(0).getStockProduct(),
+                otherProduct.getPreparation(),
+                otherProduct
+        );
+
+        List<String> queueNames = productRepository.findAllQueueNames();
+
+        assertThat(queueNames).contains(product.getPreparation().getQueueName(), otherProduct.getPreparation().getQueueName());
+
+    }
 }

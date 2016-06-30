@@ -1,10 +1,13 @@
 package be.brickbit.lpm.catering.service.queue;
 
-import be.brickbit.lpm.catering.service.queue.mapper.QueueMapper;
-
 import java.util.List;
 
+import be.brickbit.lpm.catering.service.queue.mapper.QueueMapper;
+
 public interface IQueueService {
-    <T> List<T> queueTasks(Long orderId, QueueMapper<T> dtoMapper);
-    <T> List<T> findAllTasks(String QueueName, QueueMapper<T> dtoMapper);
+	<T> List<T> findAllTasks(String QueueName, QueueMapper<T> dtoMapper);
+
+	<T> List<T> queueAllTasks(Long orderId, QueueMapper<T> dtoMapper);
+
+	<T> List<T> queueAllTasksDirectOrder(Long orderId, QueueMapper<T> dtoMapper);
 }

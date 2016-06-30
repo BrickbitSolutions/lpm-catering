@@ -14,7 +14,7 @@ public class OrderFixture {
         order.setPlacedByUserId(1L);
         order.setTimestamp(LocalDateTime.now());
         order.setOrderLines(Arrays.asList(OrderLineFixture.getJupilerOrderLine(), OrderLineFixture.getPizzaOrderLine()));
-        order.setOrderStatus(OrderStatus.QUEUED);
+        order.setComment("Morena is een lekker ding :)");
 
         return order;
     }

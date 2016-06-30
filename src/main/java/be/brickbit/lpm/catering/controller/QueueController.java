@@ -1,5 +1,6 @@
 package be.brickbit.lpm.catering.controller;
 
+import be.brickbit.lpm.catering.service.product.IProductService;
 import be.brickbit.lpm.catering.service.queue.IQueueService;
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
@@ -22,6 +23,9 @@ public class QueueController {
     private IQueueService queueService;
 
     @Autowired
+    private IProductService productService;
+
+    @Autowired
     private QueueDtoMapper queueDtoMapper;
 
     @RequestMapping(value = "/{queueName}", method = RequestMethod.GET, produces = MediaType
@@ -30,5 +34,11 @@ public class QueueController {
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     public List<QueueDto> getQueueTasks(@PathVariable String queueName) {
         return queueService.findAllTasks(queueName, queueDtoMapper);
+    }
+
+    @RequestMapping(value = "/name/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<String> findAllQueueNames() {
+        return productService.findAllQueueNames();
     }
 }

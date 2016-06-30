@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import be.brickbit.lpm.catering.domain.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -56,7 +57,7 @@ public class OrderController extends AbstractController {
     public OrderDto saveDirectOrder(@RequestBody @Valid DirectOrderCommand command){
         OrderDto order = orderService.placeDirectOrder(command, orderDtoMapper, getCurrentUser());
 
-        queueTasks(order);
+        queueService.queueAllTasksDirectOrder(order.getId(), queueDtoMapper).stream().forEach(this::pushToQueue);
 
         return order;
     }
@@ -67,16 +68,12 @@ public class OrderController extends AbstractController {
     public OrderDto saveRemoteOrder(@RequestBody @Valid RemoteOrderCommand command){
         OrderDto order =  orderService.placeRemoteOrder(command, orderDtoMapper, getCurrentUser());
 
-        queueTasks(order);
+        queueService.queueAllTasks(order.getId(), queueDtoMapper).stream().forEach(this::pushToQueue);
 
         return order;
     }
 
-    private void queueTasks(OrderDto order) {
-       queueService.queueTasks(order.getId(), queueDtoMapper).stream().forEach(this::pushToQueue);
-    }
-
     private void pushToQueue(QueueDto message){
-        messagingTemplate.convertAndSend("/topic/queue/" + message.getQueueName(), message);
+        messagingTemplate.convertAndSend("/topic/kitchen.queue." + message.getQueueName(), message);
     }
 }

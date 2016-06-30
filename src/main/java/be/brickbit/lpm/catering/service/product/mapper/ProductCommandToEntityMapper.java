@@ -28,6 +28,7 @@ public class ProductCommandToEntityMapper implements Mapper<ProductCommand, Prod
         product.setReceipt(
                 someProductCommand.getReceipt().stream().map(receiptCommandToEntityMapper::map).collect(Collectors.toList())
         );
+        product.setEnableDirectQueueing(someProductCommand.getEnableDirectQueueing());
 
         OptionalInt maxClearanceLevel = product.getReceipt().stream().mapToInt(value -> value.getStockProduct().getClearance().getClearanceLevel()).max();
 

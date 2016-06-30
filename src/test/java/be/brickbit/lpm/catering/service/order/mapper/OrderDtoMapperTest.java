@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.service.order.mapper;
 
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.OrderLine;
+import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.fixture.OrderFixture;
 import be.brickbit.lpm.catering.fixture.OrderLineDtoFixture;
 import be.brickbit.lpm.catering.fixture.OrderLineFixture;
@@ -46,9 +47,10 @@ public class OrderDtoMapperTest {
 
         assertThat(result.getTotalPrice()).isEqualTo(new BigDecimal(11));
         assertThat(result.getId()).isEqualTo(order.getId());
-        assertThat(result.getStatus()).isEqualTo(order.getOrderStatus());
+        assertThat(result.getStatus()).isEqualTo(OrderStatus.CREATED);
         assertThat(result.getTimestamp()).isEqualTo(order.getTimestamp().format(DateUtils.getDateFormat()));
         assertThat(result.getUsername()).isEqualTo(cateringAdmin.getUsername());
         assertThat(result.getOrderLines().size()).isEqualTo(order.getOrderLines().size());
+        assertThat(result.getComment()).isEqualTo(order.getComment());
     }
 }
