@@ -17,12 +17,12 @@ public @Data class ProductReceiptLine {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", unique = true, nullable = false)
-    public Long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "STOCK_PRODUCT_ID", nullable = false)
-    public StockProduct stockProduct;
+    private StockProduct stockProduct;
 
     @Column(name = "QUANTITY")
-    public Integer quantity;
+    private Integer quantity;
 }

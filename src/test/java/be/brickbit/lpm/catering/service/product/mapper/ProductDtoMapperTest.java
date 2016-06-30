@@ -29,5 +29,9 @@ public class ProductDtoMapperTest {
         assertThat(productDto.getName()).isEqualTo(product.getName());
         assertThat(productDto.getProductType()).isEqualTo(product.getProductType());
         assertThat(productDto.getPrice()).isEqualTo(product.getPrice());
+        assertThat(productDto.getStockLevel()).isEqualTo(
+                product.getReceipt().get(0).getStockProduct().getStockLevel() / product.getReceipt().get(0).getQuantity()
+        );
+        assertThat(productDto.getAvgConsumption()).isEqualTo(1);
     }
 }
