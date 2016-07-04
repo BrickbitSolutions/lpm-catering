@@ -10,6 +10,7 @@ public class OrderLineDtoMapper implements Mapper<OrderLine, OrderLineDto>{
     @Override
     public OrderLineDto map(OrderLine orderLine) {
         return new OrderLineDto(
+                orderLine.getId(),
                 orderLine.getQuantity(),
                 orderLine.getProduct().getName(),
                 orderLine.getStatus()

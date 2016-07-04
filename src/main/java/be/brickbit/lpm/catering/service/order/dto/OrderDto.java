@@ -1,56 +1,22 @@
 package be.brickbit.lpm.catering.service.order.dto;
 
-import be.brickbit.lpm.catering.domain.OrderStatus;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
+import be.brickbit.lpm.catering.domain.OrderStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class OrderDto {
-    private Long id;
-    private BigDecimal totalPrice;
-    private String timestamp;
-    private String username;
-    private OrderStatus status;
-    private List<OrderLineDto> orderLines;
-    private String comment;
-
-    public OrderDto(Long id, BigDecimal totalPrice, String timestamp, String username, OrderStatus status,
-                    List<OrderLineDto> orderLines, String comment) {
-        this.id = id;
-        this.totalPrice = totalPrice;
-        this.timestamp = timestamp;
-        this.username = username;
-        this.status = status;
-        this.orderLines = orderLines;
-        this.comment = comment;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public List<OrderLineDto> getOrderLines() {
-        return orderLines;
-    }
-
-    public String getComment() {
-        return comment;
-    }
+	private Long id;
+	private BigDecimal totalPrice;
+	private String timestamp;
+	private String username;
+	private OrderStatus status;
+	private List<OrderLineDto> orderLines;
+	private String comment;
 }

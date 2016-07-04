@@ -19,7 +19,6 @@ public class ProductFixture {
         product.setName("Jupiler");
         product.setReceipt(Lists.newArrayList(ProductReceiptLineFixture.getJupiler()));
         product.setAvailable(true);
-        product.setEnableDirectQueueing(false);
 
         return product;
     }
@@ -33,7 +32,6 @@ public class ProductFixture {
         product.setName("NomNomPizza");
         product.setReceipt(Lists.newArrayList(ProductReceiptLineFixture.getPizza()));
         product.setAvailable(true);
-        product.setEnableDirectQueueing(true);
 
         ProductPreparation preparation = new ProductPreparation();
         preparation.setQueueName("oven_queue");

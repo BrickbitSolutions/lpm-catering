@@ -36,17 +36,6 @@ public class QueueService implements IQueueService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public <T> List<T> queueAllTasksDirectOrder(Long orderId, QueueMapper<T> dtoMapper) {
-        Order order = orderRepository.findOne(orderId);
-        return order.getOrderLines()
-                .stream()
-                .filter(orderLine -> orderLine.getProduct().getPreparation() != null)
-                .filter(orderLine -> orderLine.getProduct().getEnableDirectQueueing())
-                .map(orderLine -> queueTask(orderLine, dtoMapper))
-                .collect(Collectors.toList());
-    }
-
     private <T> T queueTask(OrderLine orderLine, QueueMapper<T> dtoMapper) {
         PreparationTask task = new PreparationTask();
 

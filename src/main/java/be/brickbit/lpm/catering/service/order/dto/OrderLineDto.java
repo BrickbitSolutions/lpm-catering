@@ -1,27 +1,16 @@
 package be.brickbit.lpm.catering.service.order.dto;
 
 import be.brickbit.lpm.catering.domain.OrderStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class OrderLineDto {
+    private Long id;
     private Integer quantity;
     private String product;
     private OrderStatus status;
-
-    public OrderLineDto(Integer quantity, String product, OrderStatus status) {
-        this.quantity = quantity;
-        this.product = product;
-        this.status = status;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public String getProduct() {
-        return product;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
 }

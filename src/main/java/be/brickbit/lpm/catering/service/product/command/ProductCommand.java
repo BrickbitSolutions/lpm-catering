@@ -21,7 +21,6 @@ public class ProductCommand {
     private List<ReceiptLineCommand> receipt;
     @Min(value = 0, message = "Time cannot be negative.")
     private Integer timerInMinutes;
-    @NotBlank(message = "Queue name is required.")
     private String queueName;
     private String instructions;
     private Boolean enableDirectQueueing;

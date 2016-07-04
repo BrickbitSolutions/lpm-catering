@@ -22,8 +22,9 @@ public class OrderLineDtoMapperTest {
 
         OrderLineDto result = mapper.map(source);
 
+        assertThat(result.getId()).isEqualTo(source.getId());
         assertThat(result.getProduct()).isEqualTo(source.getProduct().getName());
         assertThat(result.getQuantity()).isEqualTo(source.getQuantity());
+        assertThat(result.getStatus()).isEqualTo(source.getStatus());
     }
-
 }
