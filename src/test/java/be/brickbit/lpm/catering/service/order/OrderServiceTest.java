@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -47,6 +48,9 @@ public class OrderServiceTest {
 
     @Mock
     private OrderDtoMapper dtoMapper;
+
+    @Mock
+    private SimpMessagingTemplate messagingTemplate;
 
     @InjectMocks
     private OrderService orderService;
@@ -81,6 +85,7 @@ public class OrderServiceTest {
 
         OrderDto result = orderService.placeRemoteOrder(command, dtoMapper, UserFixture.getCateringAdmin());
 
+        verify(messagingTemplate).convertAndSend(any(String.class), any(OrderDto.class));
         assertThat(result).isSameAs(orderDto);
         verify(orderRepository).save(order);
     }
