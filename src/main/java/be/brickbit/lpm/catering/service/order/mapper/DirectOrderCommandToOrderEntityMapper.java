@@ -25,7 +25,7 @@ public class DirectOrderCommandToOrderEntityMapper implements Mapper<DirectOrder
 
     @Override
     public Order map(DirectOrderCommand directOrderCommand) {
-        Optional<User> user = Optional.ofNullable(userRepository.findOne(directOrderCommand.getUserId()));
+        Optional<User> user = userRepository.findBySeatNumber(directOrderCommand.getSeatNumber());
 
         if(user.isPresent()) {
             Order order = new Order();

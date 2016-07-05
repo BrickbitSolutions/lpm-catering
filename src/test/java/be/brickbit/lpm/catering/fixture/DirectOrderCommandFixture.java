@@ -7,9 +7,10 @@ import java.util.Arrays;
 public class DirectOrderCommandFixture {
     public static DirectOrderCommand getDirectOrderCommand(){
 
-        return new DirectOrderCommand()
-                .setUserId(1L)
-                .setOrderLines(Arrays.asList(OrderLineCommandFixture.getOrderLineCommand(), OrderLineCommandFixture.getOrderLineCommand2()))
-                .setComment("Go out in style!");
+        return new DirectOrderCommand(
+                1,
+                Arrays.asList(OrderLineCommandFixture.getOrderLineCommand(), OrderLineCommandFixture.getOrderLineCommand2()),
+                "Go out in style!"
+        );
     }
 }

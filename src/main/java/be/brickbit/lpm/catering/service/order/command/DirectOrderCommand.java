@@ -1,43 +1,26 @@
 package be.brickbit.lpm.catering.service.order.command;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class DirectOrderCommand {
-    @NotNull(message = "User id cannot be empty.")
-    private Long userId;
+    @NotNull(message = "Seat number cannot be empty.")
+    private Integer seatNumber;
     @Valid
     @NotNull(message = "Orderlines may not be null")
     @Size(min = 1, message = "Order must have orderlines")
     private List<OrderLineCommand> orderLines;
     private String comment;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public DirectOrderCommand setUserId(Long userId) {
-        this.userId = userId;
-        return this;
-    }
-
-    public List<OrderLineCommand> getOrderLines() {
-        return orderLines;
-    }
-
-    public DirectOrderCommand setOrderLines(List<OrderLineCommand> orderLines) {
-        this.orderLines = orderLines;
-        return this;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public DirectOrderCommand setComment(String comment) {
-        this.comment = comment;
-        return this;
-    }
 }

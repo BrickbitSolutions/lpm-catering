@@ -18,7 +18,6 @@ public class ProductCommandFixture {
                 ReceiptCommandFixture.getReceiptLineCommand(),
                 ReceiptCommandFixture.getReceiptLineCommand2())
         );
-        command.setEnableDirectQueueing(true);
 
         return command;
     }

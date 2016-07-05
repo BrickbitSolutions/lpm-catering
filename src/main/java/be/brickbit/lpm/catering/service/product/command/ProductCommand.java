@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -17,13 +18,13 @@ public class ProductCommand {
     @NotNull(message = "Product type is required.")
     private ProductType productType;
     @NotNull(message = "Product needs stock products.")
+    @Size(min = 1, message = "Product needs stock products.")
     @Valid
     private List<ReceiptLineCommand> receipt;
     @Min(value = 0, message = "Time cannot be negative.")
     private Integer timerInMinutes;
     private String queueName;
     private String instructions;
-    private Boolean enableDirectQueueing;
 
     public String getName() {
         return name;
@@ -79,13 +80,5 @@ public class ProductCommand {
 
     public void setInstructions(String someInstructions) {
         instructions = someInstructions;
-    }
-
-    public Boolean getEnableDirectQueueing() {
-        return enableDirectQueueing;
-    }
-
-    public void setEnableDirectQueueing(Boolean enableDirectQueueing) {
-        this.enableDirectQueueing = enableDirectQueueing;
     }
 }

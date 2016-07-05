@@ -16,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +40,7 @@ public class DirectOrderCommandToOrderEntityMapperTest {
         OrderLine jupilerOrderLine = OrderLineFixture.getJupilerOrderLine();
         OrderLine pizzaOrderLine = OrderLineFixture.getPizzaOrderLine();
 
-        when(userRepository.findOne(command.getUserId())).thenReturn(cateringAdmin);
+        when(userRepository.findBySeatNumber(command.getSeatNumber())).thenReturn(Optional.of(cateringAdmin));
         when(orderLineCommandToEntityMapper.map(command.getOrderLines().get(0))).thenReturn(jupilerOrderLine);
         when(orderLineCommandToEntityMapper.map(command.getOrderLines().get(1))).thenReturn(pizzaOrderLine);
 
@@ -53,6 +55,10 @@ public class DirectOrderCommandToOrderEntityMapperTest {
 
     @Test(expected = EntityNotFoundException.class)
     public void testException() throws Exception {
-        mapper.map(DirectOrderCommandFixture.getDirectOrderCommand());
+        final DirectOrderCommand directOrderCommand = DirectOrderCommandFixture.getDirectOrderCommand();
+
+        when(userRepository.findBySeatNumber(directOrderCommand.getSeatNumber())).thenReturn(Optional.empty());
+
+        mapper.map(directOrderCommand);
     }
 }

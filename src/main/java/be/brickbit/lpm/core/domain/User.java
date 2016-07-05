@@ -1,5 +1,6 @@
 package be.brickbit.lpm.core.domain;
 
+import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
@@ -12,21 +13,36 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
 @Table(name = "LPM_USER")
-public class User implements UserDetails{
+public @Data
+class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
+    @Column(name = "USERNAME")
     private String username;
+    @Column(name = "PASSWORD")
     private String password;
-    @Column(name = "firstname")
+    @Column(name = "FIRSTNAME")
     private String firstName;
-    @Column(name = "lastname")
+    @Column(name = "LASTNAME")
     private String lastName;
+    @Column(name = "BIRTHDATE")
+    private LocalDate birthDate;
+    @Column(name = "EMAIL")
     private String email;
+    @Column(name = "SEAT_NUMBER")
+    private Integer seatNumber;
+    @Column(name = "WALLET")
+    private BigDecimal wallet;
+    @Column(name = "MOOD")
+    private String mood;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_AUTHORITY", joinColumns = {
             @JoinColumn(name = "lpm_user_id", nullable = false),
@@ -40,48 +56,17 @@ public class User implements UserDetails{
     private boolean accountNonLocked;
     @Column(name = "CREDSNONEXPIRED")
     private boolean credentialsNonExpired;
+    @Column(name = "ENABLED")
     private boolean enabled;
 
-    public User(String username, String password, String firstName, String lastName, String email, Set<Authority>
-            authorities) {
-        this();
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.authorities = authorities;
-    }
-
-    public User() {
-        this.enabled = true;
-        this.accountNonExpired = true;
-        this.accountNonLocked = true;
-        this.credentialsNonExpired = true;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
+    @Override
     public String getUsername() {
         return username;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override
@@ -89,36 +74,23 @@ public class User implements UserDetails{
         return authorities;
     }
 
+    @Override
     public boolean isAccountNonExpired() {
         return accountNonExpired;
     }
 
+    @Override
     public boolean isAccountNonLocked() {
         return accountNonLocked;
     }
 
+    @Override
     public boolean isCredentialsNonExpired() {
         return credentialsNonExpired;
     }
 
+    @Override
     public boolean isEnabled() {
         return enabled;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        User user = (User) o;
-
-        return username.equals(user.username) && email.equals(user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = username.hashCode();
-        result = 31 * result + email.hashCode();
-        return result;
     }
 }
