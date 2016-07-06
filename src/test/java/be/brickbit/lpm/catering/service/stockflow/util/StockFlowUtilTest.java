@@ -2,7 +2,9 @@ package be.brickbit.lpm.catering.service.stockflow.util;
 
 import be.brickbit.lpm.catering.domain.StockFlowDetail;
 import be.brickbit.lpm.catering.domain.StockFlowType;
+import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.fixture.StockFlowFixture;
+import be.brickbit.lpm.catering.fixture.StockProductFixture;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,5 +44,13 @@ public class StockFlowUtilTest {
         StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
         Integer result = StockFlowUtil.calculateNewStock(detail, StockFlowType.PURCHASED);
         assertThat(result).isEqualTo(30);
+    }
+
+    @Test
+    public void testCalculateCurrentStockLevel__OneConsumption() throws Exception {
+        StockProduct product = StockProductFixture.getStockProductCola();
+        product.setRemainingConsumptions(1);
+        product.setMaxConsumptions(1);
+        product.setStockLevel(20);
     }
 }

@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.service.stockflow.util;
 
 import be.brickbit.lpm.catering.domain.StockFlowDetail;
 import be.brickbit.lpm.catering.domain.StockFlowType;
+import be.brickbit.lpm.catering.domain.StockProduct;
 
 public class StockFlowUtil {
     public static Integer calculateNewStock(StockFlowDetail stockFlowDetail, StockFlowType type){
@@ -27,5 +28,35 @@ public class StockFlowUtil {
 
     private static Integer deductQuantity(Integer stockLevel, Integer quantity) {
         return stockLevel - quantity;
+    }
+
+    public static Integer calculateCurrentStockLevel(StockProduct stockProduct) {
+        if(stockProduct.getMaxConsumptions() == 1){
+            return stockProduct.getStockLevel();
+        }else{
+            return (stockProduct.getStockLevel() * stockProduct.getMaxConsumptions()) + stockProduct.getRemainingConsumptions();
+        }
+    }
+
+    public static void calculateNewStockLevel(StockProduct stockProduct, Integer quantityToProcess) {
+        if(calculateCurrentStockLevel(stockProduct) < quantityToProcess){
+            throw new RuntimeException(String.format("Not enough '%s' in stock to process order!", stockProduct.getName()));
+        }
+
+        if(stockProduct.getMaxConsumptions() == 1){
+            stockProduct.setStockLevel(stockProduct.getStockLevel() - quantityToProcess);
+        }else{
+            if(stockProduct.getRemainingConsumptions() >= quantityToProcess){
+                stockProduct.setRemainingConsumptions(stockProduct.getRemainingConsumptions() - quantityToProcess);
+            }else{
+                Integer totalStockToSubtract = 1;
+                Integer quantityLeft = quantityToProcess - stockProduct.getRemainingConsumptions();
+                Integer remainingConsumptions = stockProduct.getMaxConsumptions() - (quantityLeft % stockProduct.getMaxConsumptions());
+                totalStockToSubtract += quantityLeft / stockProduct.getMaxConsumptions();
+
+                stockProduct.setStockLevel(stockProduct.getStockLevel() - totalStockToSubtract);
+                stockProduct.setRemainingConsumptions(remainingConsumptions);
+            }
+        }
     }
 }

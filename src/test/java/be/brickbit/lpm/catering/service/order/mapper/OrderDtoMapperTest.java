@@ -50,6 +50,7 @@ public class OrderDtoMapperTest {
         assertThat(result.getStatus()).isEqualTo(OrderStatus.CREATED);
         assertThat(result.getTimestamp()).isEqualTo(order.getTimestamp().format(DateUtils.getDateFormat()));
         assertThat(result.getUsername()).isEqualTo(cateringAdmin.getUsername());
+        assertThat(result.getSeatNumber()).isEqualTo(cateringAdmin.getSeatNumber());
         assertThat(result.getOrderLines().size()).isEqualTo(order.getOrderLines().size());
         assertThat(result.getComment()).isEqualTo(order.getComment());
     }

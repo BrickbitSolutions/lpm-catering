@@ -11,6 +11,7 @@ public class StockProductDtoFixture {
                 "Jupiler 33cl",
                 1,
                 1,
+                0,
                 20,
                 ClearanceType.PLUS_16,
                 ProductType.DRINKS

@@ -16,6 +16,7 @@ public class OrderDto {
 	private BigDecimal totalPrice;
 	private String timestamp;
 	private String username;
+    private Integer seatNumber;
 	private OrderStatus status;
 	private List<OrderLineDto> orderLines;
 	private String comment;

@@ -61,7 +61,6 @@ public class OrderController extends AbstractController {
     }
 
     @RequestMapping(value = "/{id}/process", method = RequestMethod.PUT)
-
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void processOrder(@PathVariable("id") Long id) {
         orderService.processOrder(id);

@@ -3,6 +3,7 @@ package be.brickbit.lpm.catering.service.product.mapper;
 import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.fixture.ProductFixture;
 import be.brickbit.lpm.catering.service.product.dto.ProductDto;
+import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,8 +31,8 @@ public class ProductDtoMapperTest {
         assertThat(productDto.getProductType()).isEqualTo(product.getProductType());
         assertThat(productDto.getPrice()).isEqualTo(product.getPrice());
         assertThat(productDto.getStockLevel()).isEqualTo(
-                product.getReceipt().get(0).getStockProduct().getStockLevel() / product.getReceipt().get(0).getQuantity()
+                StockFlowUtil.calculateCurrentStockLevel(product.getReceipt().get(0).getStockProduct()) / product.getReceipt().get(0).getQuantity()
         );
-        assertThat(productDto.getAvgConsumption()).isEqualTo(1);
+        assertThat(productDto.getAvgConsumption()).isEqualTo(product.getAvgConsumption());
     }
 }

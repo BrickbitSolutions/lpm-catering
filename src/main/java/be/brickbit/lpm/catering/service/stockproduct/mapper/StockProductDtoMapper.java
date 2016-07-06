@@ -13,6 +13,7 @@ public class StockProductDtoMapper implements StockProductMapper<StockProductDto
                 source.getName(),
                 source.getRemainingConsumptions(),
                 source.getMaxConsumptions(),
+                source.getAvgConsumption(),
                 source.getStockLevel(),
                 source.getClearance(),
                 source.getProductType());

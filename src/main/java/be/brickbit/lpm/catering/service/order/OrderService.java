@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import be.brickbit.lpm.catering.domain.OrderLine;
 import be.brickbit.lpm.catering.service.order.dto.OrderDto;
 import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
+import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -71,17 +72,13 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 			for (ProductReceiptLine receiptLine : product.getReceipt()) {
 				StockProduct stockProductToUpdate = receiptLine.getStockProduct();
 				Integer totalQuantity = receiptLine.getQuantity() * orderAmount;
-				if (stockProductToUpdate.getStockLevel() >= totalQuantity) {
-					stockProductToUpdate.setStockLevel(stockProductToUpdate.getStockLevel() - totalQuantity);
-					stockProductRepository.save(stockProductToUpdate);
-				} else {
-					throw new RuntimeException("Not enough stock to process order!");
-				}
+                StockFlowUtil.calculateNewStockLevel(stockProductToUpdate, totalQuantity);
+                stockProductRepository.save(stockProductToUpdate);
 			}
 		}
 	}
 
-	private void setOrderLineStatus(Order order, OrderStatus orderStatus) {
+    private void setOrderLineStatus(Order order, OrderStatus orderStatus) {
 		order.getOrderLines().stream()
 				.filter(line -> line.getProduct().getPreparation() == null)
 				.forEach(line -> line.setStatus(orderStatus));

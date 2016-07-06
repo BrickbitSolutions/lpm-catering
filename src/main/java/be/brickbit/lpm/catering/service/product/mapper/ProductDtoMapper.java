@@ -3,6 +3,7 @@ package be.brickbit.lpm.catering.service.product.mapper;
 import java.util.List;
 import java.util.OptionalInt;
 
+import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
 import org.springframework.stereotype.Component;
 
 import be.brickbit.lpm.catering.domain.Product;
@@ -20,12 +21,12 @@ public class ProductDtoMapper implements ProductMapper<ProductDto> {
 				someProduct.getPrice(),
 				someProduct.getProductType(),
 				someProduct.getClearance(),
-				1,
+				someProduct.getAvgConsumption(),
 				getStockLevel(someProduct.getReceipt()));
 	}
 
 	private Integer getStockLevel(List<ProductReceiptLine> receipt) {
-		OptionalInt result = receipt.stream().mapToInt(receiptLine -> receiptLine.getStockProduct().getStockLevel() / receiptLine.getQuantity()).min();
+		OptionalInt result = receipt.stream().mapToInt(receiptLine -> StockFlowUtil.calculateCurrentStockLevel(receiptLine.getStockProduct()) / receiptLine.getQuantity()).min();
 		if (result.isPresent()) {
 			return result.getAsInt();
 		} else {

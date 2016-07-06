@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
+import be.brickbit.lpm.core.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,11 +25,14 @@ public class OrderDtoMapper implements OrderMapper<OrderDto> {
 
 	@Override
 	public OrderDto map(Order order) {
+        User user = userRepository.findOne(order.getUserId());
+
 		return new OrderDto(
 				order.getId(),
 				order.getOrderLines().stream().map(o -> o.getProduct().getPrice()).reduce(BigDecimal::add).get(),
 				order.getTimestamp().format(DateUtils.getDateFormat()),
-				getUsername(order.getUserId()),
+				user.getUsername(),
+				user.getSeatNumber(),
 				getOrderStatus(order),
 				order.getOrderLines().stream().map(orderLineMapper::map).collect(Collectors.toList()),
                 order.getComment());
@@ -41,9 +45,5 @@ public class OrderDtoMapper implements OrderMapper<OrderDto> {
 		} else {
 			throw new RuntimeException("Invalid order status");
 		}
-	}
-
-	private String getUsername(Long userId) {
-		return userRepository.findOne(userId).getUsername();
 	}
 }

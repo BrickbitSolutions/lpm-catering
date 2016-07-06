@@ -38,4 +38,7 @@ public @Data class StockProduct {
     @Column(name = "PRODUCT_TYPE")
     @Enumerated(EnumType.STRING)
     private ProductType productType;
+
+    @Column(name = "AVG_CONSUMPTION")
+    private Integer avgConsumption;
 }
