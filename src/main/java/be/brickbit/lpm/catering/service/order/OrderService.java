@@ -55,17 +55,30 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 	@Override
 	@Transactional
 	public <T> T placeDirectOrder(DirectOrderCommand command, OrderMapper<T> dtoMapper, User user) {
-		updateStockLevels(command.getOrderLines());
+        updateStockLevels(command.getOrderLines());
 		Order order = directOrderCommandMapper.map(command);
 		order.setPlacedByUserId(user.getId());
 
+        checkValidOrder(order, user);
 		setOrderLineStatus(order, OrderStatus.COMPLETED);
 
 		orderRepository.save(order);
 		return dtoMapper.map(order);
 	}
 
-	private void updateStockLevels(List<OrderLineCommand> orderLines) {
+    private void checkValidOrder(Order order, User user) {
+        Long nrDisabledProducts =
+                order.getOrderLines().stream()
+                        .map(OrderLine::getProduct)
+                        .filter(p -> !p.getAvailable())
+                        .count();
+
+        if(nrDisabledProducts > 0){
+            throw new RuntimeException("Order contains disabled products!");
+        }
+    }
+
+    private void updateStockLevels(List<OrderLineCommand> orderLines) {
 		for (OrderLineCommand orderLine : orderLines) {
 			Integer orderAmount = orderLine.getQuantity();
 			Product product = productRepository.findOne(orderLine.getProductId());
@@ -92,6 +105,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 		order.setPlacedByUserId(user.getId());
 		order.setUserId(user.getId());
 
+        checkValidOrder(order, user);
         setOrderLineStatus(order, OrderStatus.READY);
 
 		orderRepository.save(order);

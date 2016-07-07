@@ -2,7 +2,7 @@ package be.brickbit.lpm.catering.controller;
 
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.service.product.IProductService;
-import be.brickbit.lpm.catering.service.product.command.ProductCommand;
+import be.brickbit.lpm.catering.service.product.command.CreateProductCommand;
 import be.brickbit.lpm.catering.service.product.dto.ProductDetailsDto;
 import be.brickbit.lpm.catering.service.product.dto.ProductDto;
 import be.brickbit.lpm.catering.service.product.mapper.ProductDetailsDtoMapper;
@@ -38,8 +38,8 @@ public class ProductController extends AbstractController{
     @RequestMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDto saveNewProduct(@RequestBody @Valid ProductCommand someProductCommand){
-        return productService.save(someProductCommand, productDtoMapper);
+    public ProductDto saveNewProduct(@RequestBody @Valid CreateProductCommand someCreateProductCommand){
+        return productService.save(someCreateProductCommand, productDtoMapper);
     }
 
     @RequestMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
@@ -49,16 +49,32 @@ public class ProductController extends AbstractController{
         return productService.findAll(productDtoMapper);
     }
 
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @RequestMapping(value = "/all/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<ProductDto> getProductsByType(@PathVariable("type") ProductType productType) {
         return productService.findAllByType(productType, productDtoMapper);
     }
 
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
+    @RequestMapping(value = "/all/{type}/enabled", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductDto> getEnabledProductsByType(@PathVariable("type") ProductType productType) {
+        return productService.findAllEnabledByType(productType, productDtoMapper);
+    }
+
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ProductDto getProduct(@PathVariable("id") Long id) {
         return productService.findOne(id, productDtoMapper);
+    }
+
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
+    @RequestMapping(value = "/{id}/available", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateProduct(@PathVariable("id") Long id) {
+        productService.toggleAvailability(id);
     }
 
     @RequestMapping(value = "/{id}/receipt", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)

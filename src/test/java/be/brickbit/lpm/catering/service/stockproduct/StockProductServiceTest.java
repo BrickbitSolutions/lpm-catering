@@ -1,8 +1,10 @@
 package be.brickbit.lpm.catering.service.stockproduct;
 
 import be.brickbit.lpm.catering.domain.ClearanceType;
+import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.domain.StockProduct;
+import be.brickbit.lpm.catering.fixture.ProductFixture;
 import be.brickbit.lpm.catering.fixture.StockProductDtoFixture;
 import be.brickbit.lpm.catering.fixture.StockProductFixture;
 import be.brickbit.lpm.catering.repository.StockProductRepository;

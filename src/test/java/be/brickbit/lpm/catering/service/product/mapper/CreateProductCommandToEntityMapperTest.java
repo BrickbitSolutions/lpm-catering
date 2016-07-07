@@ -6,7 +6,7 @@ import be.brickbit.lpm.catering.domain.ProductPreparation;
 import be.brickbit.lpm.catering.domain.ProductReceiptLine;
 import be.brickbit.lpm.catering.fixture.ProductCommandFixture;
 import be.brickbit.lpm.catering.fixture.ProductReceiptLineFixture;
-import be.brickbit.lpm.catering.service.product.command.ProductCommand;
+import be.brickbit.lpm.catering.service.product.command.CreateProductCommand;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,17 +17,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductCommandToEntityMapperTest {
+public class CreateProductCommandToEntityMapperTest {
 
     @Mock
     private ReceiptCommandToEntityMapper receiptCommandToEntityMapper;
 
     @InjectMocks
-    private ProductCommandToEntityMapper productCommandToEntityMapper;
+    private CreateProductCommandToEntityMapper productCommandToEntityMapper;
 
     @Test
     public void testMap() throws Exception {
-        ProductCommand command = ProductCommandFixture.getProductCommand();
+        CreateProductCommand command = ProductCommandFixture.getProductCommand();
         ProductReceiptLine receiptLine1 = ProductReceiptLineFixture.getCola();
         ProductReceiptLine receiptLine2 = ProductReceiptLineFixture.getJupiler();
 
@@ -49,7 +49,7 @@ public class ProductCommandToEntityMapperTest {
 
     @Test
     public void testMapFood() throws Exception {
-        ProductCommand command = ProductCommandFixture.getProductCommandFood();
+        CreateProductCommand command = ProductCommandFixture.getProductCommandFood();
         ProductReceiptLine receiptLine1 = ProductReceiptLineFixture.getPizza();
 
         when(receiptCommandToEntityMapper.map(command.getReceipt().get(0))).thenReturn(receiptLine1);

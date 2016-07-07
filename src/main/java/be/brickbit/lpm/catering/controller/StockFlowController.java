@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,5 +40,12 @@ public class StockFlowController extends AbstractController{
     @ResponseStatus(HttpStatus.CREATED)
     public StockFlowDto save(@RequestBody @Valid StockFlowCommand command){
         return stockFlowService.save(command, getCurrentUser(), stockFlowDtoMapper);
+    }
+
+    @RequestMapping(value = "/{id}/process", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    public void processStockFlowEntry(@PathVariable("id") Long id) {
+        stockFlowService.processStockFlow(id);
     }
 }

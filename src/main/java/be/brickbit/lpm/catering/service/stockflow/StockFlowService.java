@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.service.stockflow;
 
 import be.brickbit.lpm.catering.domain.StockFlow;
 import be.brickbit.lpm.catering.domain.StockFlowDetail;
+import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.repository.StockFlowRepository;
 import be.brickbit.lpm.catering.service.stockflow.command.StockFlowCommand;
 import be.brickbit.lpm.catering.service.stockflow.mapper.StockFlowCommandToEntityMapper;
@@ -12,6 +13,9 @@ import be.brickbit.lpm.infrastructure.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @Service
 public class StockFlowService extends AbstractService<StockFlow> implements IStockFlowService {
@@ -33,12 +37,23 @@ public class StockFlowService extends AbstractService<StockFlow> implements ISto
     @Override
     @Transactional
     public void processStockFlow(Long id) {
-        StockFlow stockFlow = stockFlowRepository.findOne(id);
+        StockFlow stockFlow = Optional.ofNullable(stockFlowRepository.findOne(id)).orElseThrow(this::throwStockFlowNotFoundException);
         for(StockFlowDetail detail : stockFlow.getDetails()){
-            detail.getStockProduct().setStockLevel(StockFlowUtil.calculateNewStock(detail, stockFlow.getStockFlowType()));
+            StockProduct stockProduct = detail.getStockProduct();
+
+            if(stockProduct.getRemainingConsumptions() == 0){
+                stockProduct.setRemainingConsumptions(stockProduct.getMaxConsumptions());
+                stockProduct.setStockLevel(StockFlowUtil.calculateNewStock(detail, stockFlow.getStockFlowType()) - 1);
+            }else{
+                stockProduct.setStockLevel(StockFlowUtil.calculateNewStock(detail, stockFlow.getStockFlowType()));
+            }
         }
         stockFlow.setIncluded(true);
         stockFlowRepository.save(stockFlow);
+    }
+
+    private EntityNotFoundException throwStockFlowNotFoundException() {
+        throw new EntityNotFoundException("Could not find stock flow entry.");
     }
 
     @Override

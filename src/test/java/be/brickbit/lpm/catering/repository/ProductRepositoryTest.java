@@ -17,18 +17,40 @@ public class ProductRepositoryTest extends AbstractRepoIT {
 	private ProductRepository productRepository;
 
 	@Test
-	public void testFindByProductType() throws Exception {
+	public void testFindEnabledByProductType() throws Exception {
         Product newProduct = ProductFixture.getPizza();
+        Product disabledProduct = ProductFixture.getPizza();
+        disabledProduct.setAvailable(false);
+
         insert(
                 newProduct.getReceipt().get(0).getStockProduct(),
-                newProduct
+                newProduct,
+                disabledProduct.getReceipt().get(0).getStockProduct(),
+                disabledProduct
         );
 
-		List<Product> result = productRepository.findByProductType(ProductType.FOOD);
+		List<Product> result = productRepository.findByProductTypeAndAvailableTrue(ProductType.FOOD);
 
-		assertThat(result).hasSize(1);
-		assertThat(result.get(0)).isEqualTo(newProduct);
+		assertThat(result).containsOnly(newProduct);
 	}
+
+    @Test
+    public void testFindByProductType() throws Exception {
+        Product newProduct = ProductFixture.getPizza();
+        Product disabledProduct = ProductFixture.getPizza();
+        disabledProduct.setAvailable(false);
+
+        insert(
+                newProduct.getReceipt().get(0).getStockProduct(),
+                newProduct,
+                disabledProduct.getReceipt().get(0).getStockProduct(),
+                disabledProduct
+        );
+
+        List<Product> result = productRepository.findByProductTypeAndAvailableTrue(ProductType.FOOD);
+
+        assertThat(result).containsOnly(newProduct, disabledProduct);
+    }
 
 	@Test
 	public void testSaveProduct() throws Exception {

@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProductCommand {
+public class CreateProductCommand {
     @NotBlank(message = "Name is required.")
     private String name;
     @NotNull(message = "Price is required.")

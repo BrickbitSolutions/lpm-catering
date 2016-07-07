@@ -34,5 +34,6 @@ public class ProductDtoMapperTest {
                 StockFlowUtil.calculateCurrentStockLevel(product.getReceipt().get(0).getStockProduct()) / product.getReceipt().get(0).getQuantity()
         );
         assertThat(productDto.getAvgConsumption()).isEqualTo(product.getAvgConsumption());
+        assertThat(productDto.getAvailable()).isEqualTo(product.getAvailable());
     }
 }

@@ -24,7 +24,7 @@ import be.brickbit.lpm.catering.repository.StockProductRepository;
 
 @Component
 public class StockLevelBatchServiceImpl implements StockLevelBatchService {
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private final Logger log = LoggerFactory.getLogger(StockLevelBatchService.class);
 
 	@Autowired
 	private OrderRepository orderRepository;

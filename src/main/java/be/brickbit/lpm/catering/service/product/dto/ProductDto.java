@@ -19,4 +19,5 @@ public class ProductDto {
     private ClearanceType clearanceType;
     private Integer avgConsumption;
     private Integer stockLevel;
+    private Boolean available;
 }

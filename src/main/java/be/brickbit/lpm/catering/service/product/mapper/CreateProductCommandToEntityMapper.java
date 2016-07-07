@@ -3,7 +3,7 @@ package be.brickbit.lpm.catering.service.product.mapper;
 import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.domain.ProductPreparation;
-import be.brickbit.lpm.catering.service.product.command.ProductCommand;
+import be.brickbit.lpm.catering.service.product.command.CreateProductCommand;
 import be.brickbit.lpm.infrastructure.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,20 +13,20 @@ import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 @Component
-public class ProductCommandToEntityMapper implements Mapper<ProductCommand, Product> {
+public class CreateProductCommandToEntityMapper implements Mapper<CreateProductCommand, Product> {
 
     @Autowired
     private ReceiptCommandToEntityMapper receiptCommandToEntityMapper;
 
     @Override
-    public Product map(ProductCommand someProductCommand) {
+    public Product map(CreateProductCommand someCreateProductCommand) {
         Product product = new Product();
 
-        product.setName(someProductCommand.getName());
-        product.setPrice(someProductCommand.getPrice());
-        product.setProductType(someProductCommand.getProductType());
+        product.setName(someCreateProductCommand.getName());
+        product.setPrice(someCreateProductCommand.getPrice());
+        product.setProductType(someCreateProductCommand.getProductType());
         product.setReceipt(
-                someProductCommand.getReceipt().stream().map(receiptCommandToEntityMapper::map).collect(Collectors.toList())
+                someCreateProductCommand.getReceipt().stream().map(receiptCommandToEntityMapper::map).collect(Collectors.toList())
         );
 
         OptionalInt maxClearanceLevel = product.getReceipt().stream().mapToInt(value -> value.getStockProduct().getClearance().getClearanceLevel()).max();
@@ -37,23 +37,23 @@ public class ProductCommandToEntityMapper implements Mapper<ProductCommand, Prod
             product.setClearance(ClearanceType.ANY);
         }
 
-        product.setPreparation(createPreparation(someProductCommand));
+        product.setPreparation(createPreparation(someCreateProductCommand));
         product.setAvailable(false);
 
         return product;
     }
 
-    private ProductPreparation createPreparation(ProductCommand someProductCommand) {
+    private ProductPreparation createPreparation(CreateProductCommand someCreateProductCommand) {
 
-        if(StringUtils.isEmpty(someProductCommand.getQueueName())){
+        if(StringUtils.isEmpty(someCreateProductCommand.getQueueName())){
             return null;
         }
 
         ProductPreparation productPreparation = new ProductPreparation();
 
-        productPreparation.setInstructions(someProductCommand.getInstructions());
-        productPreparation.setQueueName(someProductCommand.getQueueName());
-        productPreparation.setTimer(someProductCommand.getTimerInMinutes());
+        productPreparation.setInstructions(someCreateProductCommand.getInstructions());
+        productPreparation.setQueueName(someCreateProductCommand.getQueueName());
+        productPreparation.setTimer(someCreateProductCommand.getTimerInMinutes());
 
         return productPreparation;
     }
