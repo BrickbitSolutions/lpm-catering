@@ -47,7 +47,7 @@ public class ProductRepositoryTest extends AbstractRepoIT {
                 disabledProduct
         );
 
-        List<Product> result = productRepository.findByProductTypeAndAvailableTrue(ProductType.FOOD);
+        List<Product> result = productRepository.findByProductType(ProductType.FOOD);
 
         assertThat(result).containsOnly(newProduct, disabledProduct);
     }
