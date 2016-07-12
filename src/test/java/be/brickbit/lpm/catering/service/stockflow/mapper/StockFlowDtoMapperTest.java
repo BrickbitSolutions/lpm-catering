@@ -39,11 +39,9 @@ public class StockFlowDtoMapperTest {
 
         assertThat(dto.getId()).isEqualTo(stockFlow.getId());
         assertThat(dto.getTimestamp()).isEqualTo(stockFlow.getTimestamp());
-        assertThat(dto.getIncluded()).isEqualTo(stockFlow.getIncluded());
         assertThat(dto.getUsername()).isEqualTo(userDto.getUsername());
         assertThat(dto.getStockFlowDetails().size()).isEqualTo(stockFlow.getDetails().size());
         assertThat(dto.getStockFlowDetails().get(0).getProductName()).isEqualTo(stockFlow.getDetails().get(0).getStockProduct().getName());
         assertThat(dto.getStockFlowDetails().get(0).getQuantity()).isEqualTo(stockFlow.getDetails().get(0).getQuantity());
-        assertThat(dto.getStockFlowDetails().get(0).getPricePerUnit()).isEqualTo(stockFlow.getDetails().get(0).getPrice());
     }
 }

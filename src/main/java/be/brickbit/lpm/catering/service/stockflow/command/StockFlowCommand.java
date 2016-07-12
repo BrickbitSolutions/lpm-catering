@@ -1,31 +1,26 @@
 package be.brickbit.lpm.catering.service.stockflow.command;
 
-import be.brickbit.lpm.catering.domain.StockFlowType;
-
-import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
+import be.brickbit.lpm.catering.domain.StockFlowType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class StockFlowCommand {
-    @NotNull
-    private StockFlowType stockFlowType;
-    @Valid
-    @NotNull
-    private List<StockFlowDetailCommand> stockFlowDetails;
-
-    public StockFlowType getStockFlowType() {
-        return stockFlowType;
-    }
-
-    public void setStockFlowType(StockFlowType someStockFlowType) {
-        stockFlowType = someStockFlowType;
-    }
-
-    public List<StockFlowDetailCommand> getStockFlowDetails() {
-        return stockFlowDetails;
-    }
-
-    public void setStockFlowDetails(List<StockFlowDetailCommand> stockFlowDetails) {
-        this.stockFlowDetails = stockFlowDetails;
-    }
+	@NotNull
+	private StockFlowType stockFlowType;
+	@NotNull
+	private Long productId;
+	@NotNull
+	private ProductClass productClass;
+	@NotNull(message = "Quantity is required.")
+	@Min(value = 0, message = "Quantity cannot be negative")
+	private Integer quantity;
 }

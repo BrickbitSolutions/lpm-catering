@@ -14,7 +14,6 @@ public class StockFlowFixture {
 
         stockFlow.setUserId(1L);
         stockFlow.setTimestamp(LocalDateTime.now());
-        stockFlow.setIncluded(false);
         stockFlow.setStockFlowType(StockFlowType.PURCHASED);
         stockFlow.setDetails(Collections.singletonList(getStockFlowDetail()));
 
@@ -26,7 +25,6 @@ public class StockFlowFixture {
 
         stockFlowDetail.setStockProduct(StockProductFixture.getStockProductJupiler());
         stockFlowDetail.setQuantity(10);
-        stockFlowDetail.setPrice(new BigDecimal(3.5));
 
         return stockFlowDetail;
     }

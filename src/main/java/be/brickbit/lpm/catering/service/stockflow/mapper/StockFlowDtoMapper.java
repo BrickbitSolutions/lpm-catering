@@ -25,13 +25,12 @@ public class StockFlowDtoMapper implements StockFlowMapper<StockFlowDto> {
                 someStockFlow.getId(),
                 userService.findOne(someStockFlow.getUserId(), userDtoMapper).getUsername(),
                 someStockFlow.getStockFlowType(),
-                someStockFlow.getIncluded(),
                 someStockFlow.getTimestamp(),
                 someStockFlow.getDetails().stream().map(this::mapDetail).collect(Collectors.toList())
         );
     }
 
     public StockFlowDetailDto mapDetail(StockFlowDetail detail){
-        return new StockFlowDetailDto(detail.getStockProduct().getName(),detail.getQuantity(), detail.getPrice());
+        return new StockFlowDetailDto(detail.getStockProduct().getName(),detail.getQuantity());
     }
 }

@@ -1,43 +1,73 @@
 package be.brickbit.lpm.catering.service.stockflow.mapper;
 
-import be.brickbit.lpm.catering.domain.StockFlow;
-import be.brickbit.lpm.catering.domain.StockFlowDetail;
-import be.brickbit.lpm.catering.domain.StockFlowType;
-import be.brickbit.lpm.catering.service.stockflow.command.StockFlowCommand;
-import be.brickbit.lpm.catering.service.stockflow.command.StockFlowDetailCommand;
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomInt;
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Collections;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import be.brickbit.lpm.catering.domain.Product;
+import be.brickbit.lpm.catering.domain.StockFlow;
+import be.brickbit.lpm.catering.domain.StockFlowType;
+import be.brickbit.lpm.catering.domain.StockProduct;
+import be.brickbit.lpm.catering.fixture.ProductFixture;
+import be.brickbit.lpm.catering.fixture.StockProductFixture;
+import be.brickbit.lpm.catering.repository.ProductRepository;
+import be.brickbit.lpm.catering.repository.StockProductRepository;
+import be.brickbit.lpm.catering.service.stockflow.command.ProductClass;
+import be.brickbit.lpm.catering.service.stockflow.command.StockFlowCommand;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StockFlowCommandToEntityMapperTest {
-    @Mock
-    private StockFlowDetailCommandToEntityMapper detailMapper;
+	@Mock
+	private StockProductRepository stockProductRepository;
 
-    @InjectMocks
-    private StockFlowCommandToEntityMapper mapper;
+	@Mock
+	private ProductRepository productRepository;
 
-    @Test
-    public void testMap() throws Exception {
-        StockFlowCommand command = new StockFlowCommand();
-        StockFlowDetailCommand stockFlowDetailCommand = new StockFlowDetailCommand();
-        command.setStockFlowDetails(Collections.singletonList(stockFlowDetailCommand));
-        command.setStockFlowType(StockFlowType.PURCHASED);
+	@InjectMocks
+	private StockFlowCommandToEntityMapper mapper;
 
-        when(detailMapper.map(stockFlowDetailCommand)).thenReturn(new StockFlowDetail());
+	@Test
+	public void testMapStockProduct() throws Exception {
+		StockFlowCommand command = new StockFlowCommand();
+		command.setProductId(randomLong());
+		command.setProductClass(ProductClass.STOCKPRODUCT);
+		command.setQuantity(randomInt());
+		command.setStockFlowType(StockFlowType.PURCHASED);
 
-        StockFlow result = mapper.map(command);
+		StockProduct stockProductCola = StockProductFixture.getStockProductCola();
+		when(stockProductRepository.findOne(command.getProductId())).thenReturn(stockProductCola);
 
-        assertThat(result.getDetails().size()).isEqualTo(command.getStockFlowDetails().size());
-        assertThat(result.getStockFlowType()).isEqualTo(command.getStockFlowType());
-        assertThat(result.getIncluded()).isFalse();
-        assertThat(result.getTimestamp()).isNotNull();
-    }
+		StockFlow result = mapper.map(command);
+
+		assertThat(result.getDetails().size()).isEqualTo(1);
+		assertThat(result.getDetails().get(0).getQuantity()).isEqualTo(command.getQuantity());
+		assertThat(result.getDetails().get(0).getStockProduct()).isSameAs(stockProductCola);
+		assertThat(result.getStockFlowType()).isEqualTo(command.getStockFlowType());
+		assertThat(result.getTimestamp()).isNotNull();
+	}
+
+	@Test
+	public void testMapProduct() throws Exception {
+		StockFlowCommand command = new StockFlowCommand();
+		command.setProductId(randomLong());
+		command.setProductClass(ProductClass.PRODUCT);
+		command.setQuantity(randomInt());
+		command.setStockFlowType(StockFlowType.PURCHASED);
+
+		Product product = ProductFixture.getJupiler();
+		when(productRepository.findOne(command.getProductId())).thenReturn(product);
+
+		StockFlow result = mapper.map(command);
+
+		assertThat(result.getDetails().size()).isEqualTo(product.getReceipt().size());
+		assertThat(result.getStockFlowType()).isEqualTo(command.getStockFlowType());
+		assertThat(result.getTimestamp()).isNotNull();
+	}
 }

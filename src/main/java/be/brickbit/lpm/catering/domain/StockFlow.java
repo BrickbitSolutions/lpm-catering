@@ -21,13 +21,10 @@ public @Data class StockFlow {
     @Enumerated(EnumType.STRING)
     private StockFlowType stockFlowType;
 
-    @Column(name = "INCLUDED")
-    private Boolean included;
-
     @Column(name = "TIME_ON_ENTRY")
     private LocalDateTime timestamp;
 
-    @OneToMany
-    @JoinColumn(name = "STOCK_FLOW_ID")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "STOCK_FLOW_ID", nullable = false)
     private List<StockFlowDetail> details;
 }
