@@ -5,6 +5,7 @@ import be.brickbit.lpm.catering.domain.StockFlowDetail;
 import be.brickbit.lpm.catering.service.stockflow.dto.StockFlowDetailDto;
 import be.brickbit.lpm.catering.service.stockflow.dto.StockFlowDto;
 import be.brickbit.lpm.catering.service.user.mapper.UserDtoMapper;
+import be.brickbit.lpm.catering.util.DateUtils;
 import be.brickbit.lpm.core.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,12 +26,12 @@ public class StockFlowDtoMapper implements StockFlowMapper<StockFlowDto> {
                 someStockFlow.getId(),
                 userService.findOne(someStockFlow.getUserId(), userDtoMapper).getUsername(),
                 someStockFlow.getStockFlowType(),
-                someStockFlow.getTimestamp(),
+                someStockFlow.getTimestamp().format(DateUtils.getDateFormat()),
                 someStockFlow.getDetails().stream().map(this::mapDetail).collect(Collectors.toList())
         );
     }
 
-    public StockFlowDetailDto mapDetail(StockFlowDetail detail){
+    private StockFlowDetailDto mapDetail(StockFlowDetail detail){
         return new StockFlowDetailDto(detail.getStockProduct().getName(),detail.getQuantity());
     }
 }

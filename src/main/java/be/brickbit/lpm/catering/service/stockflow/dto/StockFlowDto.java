@@ -14,6 +14,6 @@ public class StockFlowDto {
     private Long id;
     private String username;
     private StockFlowType type;
-    private LocalDateTime timestamp;
+    private String timestamp;
     private List<StockFlowDetailDto> stockFlowDetails;
 }
