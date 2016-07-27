@@ -6,6 +6,7 @@ import be.brickbit.lpm.catering.fixture.UserDtoFixture;
 import be.brickbit.lpm.catering.service.stockflow.dto.StockFlowDto;
 import be.brickbit.lpm.catering.service.user.dto.UserDto;
 import be.brickbit.lpm.catering.service.user.mapper.UserDtoMapper;
+import be.brickbit.lpm.catering.util.DateUtils;
 import be.brickbit.lpm.core.service.IUserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +39,7 @@ public class StockFlowDtoMapperTest {
         StockFlowDto dto = mapper.map(stockFlow);
 
         assertThat(dto.getId()).isEqualTo(stockFlow.getId());
-        assertThat(dto.getTimestamp()).isEqualTo(stockFlow.getTimestamp());
+        assertThat(dto.getTimestamp()).isEqualTo(stockFlow.getTimestamp().format(DateUtils.getDateFormat()));
         assertThat(dto.getUsername()).isEqualTo(userDto.getUsername());
         assertThat(dto.getStockFlowDetails().size()).isEqualTo(stockFlow.getDetails().size());
         assertThat(dto.getStockFlowDetails().get(0).getProductName()).isEqualTo(stockFlow.getDetails().get(0).getStockProduct().getName());
