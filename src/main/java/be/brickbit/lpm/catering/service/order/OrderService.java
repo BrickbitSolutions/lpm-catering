@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import be.brickbit.lpm.catering.domain.OrderLine;
-import be.brickbit.lpm.catering.service.order.dto.OrderDto;
 import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
 import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,7 +121,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 
 	@Override
     public <T> List<T> findOrderByStatus(OrderStatus orderStatus, OrderMapper<T> dtoMapper) {
-        return orderRepository.findAllByOrderLinesStatus(orderStatus).stream().map(dtoMapper::map).collect(Collectors.toList());
+        return orderRepository.findDistinctByOrderLinesStatus(orderStatus).stream().map(dtoMapper::map).collect(Collectors.toList());
     }
 
     @Override

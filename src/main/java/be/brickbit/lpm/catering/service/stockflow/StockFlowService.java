@@ -41,9 +41,9 @@ public class StockFlowService extends AbstractService<StockFlow> implements ISto
 
 			if (stockProduct.getRemainingConsumptions() == 0) {
 				stockProduct.setRemainingConsumptions(stockProduct.getMaxConsumptions());
-				stockProduct.setStockLevel(StockFlowUtil.calculateNewStock(detail, stockFlow.getStockFlowType()) - 1);
+				stockProduct.setStockLevel(StockFlowUtil.processStockFlow(detail, stockFlow.getStockFlowType()) - 1);
 			} else {
-				stockProduct.setStockLevel(StockFlowUtil.calculateNewStock(detail, stockFlow.getStockFlowType()));
+				stockProduct.setStockLevel(StockFlowUtil.processStockFlow(detail, stockFlow.getStockFlowType()));
 			}
 		}
 	}

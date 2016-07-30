@@ -5,7 +5,7 @@ import be.brickbit.lpm.catering.domain.StockFlowType;
 import be.brickbit.lpm.catering.domain.StockProduct;
 
 public class StockFlowUtil {
-    public static Integer calculateNewStock(StockFlowDetail stockFlowDetail, StockFlowType type){
+    public static Integer processStockFlow(StockFlowDetail stockFlowDetail, StockFlowType type){
         switch (type){
             case CORRECTION:
                 return deductQuantity(stockFlowDetail.getStockProduct().getStockLevel(), stockFlowDetail.getQuantity());

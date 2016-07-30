@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
     Order findByOrderLinesId(Long orderLineId);
-    List<Order> findAllByOrderLinesStatus(OrderStatus status);
+    List<Order> findDistinctByOrderLinesStatus(OrderStatus status);
     List<Order> findAllByTimestampBetween(LocalDateTime beginTime, LocalDateTime endTime);
 }
