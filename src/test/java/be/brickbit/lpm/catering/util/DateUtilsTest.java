@@ -18,4 +18,11 @@ public class DateUtilsTest {
         assertThat(DateUtils.getDateFormat().format(time)).isEqualTo("04-05-1991 23:50:40");
     }
 
+    @Test
+    public void calculateDifference() throws Exception {
+        LocalDateTime start = LocalDateTime.of(1991, 5, 4, 23, 50, 40, 333);
+        LocalDateTime end = LocalDateTime.of(1991, 5, 4, 23, 51, 0, 333);
+
+        assertThat(DateUtils.calculateDifference(start, end)).isEqualTo(20);
+    }
 }

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.RandomUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class RandomValueUtil {
     public static String randomString(int length) {
@@ -41,5 +42,9 @@ public class RandomValueUtil {
 
     public static LocalDate randomLocalDate(){
         return LocalDate.now().plusDays(randomLong(0, 1024));
+    }
+
+    public static LocalDateTime randomLocalDateTime(){
+        return LocalDateTime.now().plusHours(randomInt()).plusMinutes(randomInt()).plusSeconds(randomInt());
     }
 }

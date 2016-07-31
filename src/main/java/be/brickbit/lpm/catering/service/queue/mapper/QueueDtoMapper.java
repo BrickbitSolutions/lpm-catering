@@ -4,9 +4,11 @@ import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.PreparationTask;
 import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
+import be.brickbit.lpm.catering.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -16,14 +18,29 @@ public class QueueDtoMapper implements QueueMapper<QueueDto> {
 
     @Override
     public QueueDto map(PreparationTask preparationTask) {
-        return new QueueDto()
-                .setTaskId(preparationTask.getId())
-                .setDescription(getDescription(preparationTask))
-                .setInstructions(preparationTask.getOrderLine().getProduct().getPreparation().getInstructions())
-                .setDuration(preparationTask.getOrderLine().getProduct().getPreparation().getTimer())
-                .setStartTime(preparationTask.getStartTime())
-                .setQueueName(preparationTask.getOrderLine().getProduct().getPreparation().getQueueName())
-                .setComment(findCommentFromOrder(preparationTask.getOrderLine().getId()));
+        return new QueueDto(
+                preparationTask.getId(),
+                getDescription(preparationTask),
+                preparationTask.getStartTime(),
+                preparationTask.getOrderLine().getProduct().getPreparation().getTimer(),
+                getTimeRemaining(preparationTask),
+                preparationTask.getOrderLine().getProduct().getPreparation().getInstructions(),
+                preparationTask.getOrderLine().getProduct().getPreparation().getQueueName(),
+                findCommentFromOrder(preparationTask.getOrderLine().getId())
+        );
+    }
+
+    private Long getTimeRemaining(PreparationTask preparationTask) {
+        if(preparationTask.getStartTime() != null){
+            Long remainingTime = preparationTask.getOrderLine().getProduct().getPreparation().getTimer() - DateUtils.calculateDifference(preparationTask.getStartTime(), LocalDateTime.now());
+            if(remainingTime >= 0){
+                return remainingTime;
+            }else{
+                return 0L;
+            }
+        }else{
+            return Long.valueOf(preparationTask.getOrderLine().getProduct().getPreparation().getTimer());
+        }
     }
 
     private String findCommentFromOrder(Long orderLineId) {
