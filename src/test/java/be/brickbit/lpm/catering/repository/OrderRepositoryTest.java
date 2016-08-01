@@ -15,7 +15,7 @@ public class OrderRepositoryTest extends AbstractRepoIT{
 
 	@Test
 	public void findByOrderLineId() throws Exception {
-        Order order = OrderFixture.getOrder();
+        Order order = OrderFixture.mutable();
 
         insert(
                 order.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),

@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.service.stockflow.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -82,7 +83,7 @@ public class StockFlowUtilTest {
 		product.setMaxConsumptions(5);
 		product.setStockLevel(1);
 
-		expectedException.expect(RuntimeException.class);
+		expectedException.expect(ServiceException.class);
 		expectedException.expectMessage(String.format("Not enough '%s' in stock to process order!", product.getName()));
 
 		StockFlowUtil.calculateNewStockLevel(product, 20);

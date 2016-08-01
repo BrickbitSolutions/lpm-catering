@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +16,7 @@ import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.repository.ProductRepository;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
 import be.brickbit.lpm.catering.service.stockflow.command.StockFlowCommand;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import be.brickbit.lpm.infrastructure.mapper.Mapper;
 
 @Component
@@ -44,7 +43,7 @@ public class StockFlowCommandToEntityMapper implements Mapper<StockFlowCommand, 
 			stockFlow.setDetails(createStockProductStockFlowDetail(someStockFlowCommand));
 			break;
 		default:
-			throw new RuntimeException("Product Class not valid.");
+			throw new ServiceException("Product Class not valid.");
 		}
 
 		return stockFlow;
@@ -61,7 +60,7 @@ public class StockFlowCommandToEntityMapper implements Mapper<StockFlowCommand, 
 			return Arrays.asList(detail);
 		}
 
-		throw new EntityNotFoundException("Stock Product not found.");
+		throw new ServiceException("Stock Product not found.");
 	}
 
 	private List<StockFlowDetail> createProductStockFlowDetail(StockFlowCommand stockFlowCommand) {
@@ -75,7 +74,7 @@ public class StockFlowCommandToEntityMapper implements Mapper<StockFlowCommand, 
 				return detail;
 			}).collect(Collectors.toList());
 		} else {
-			throw new EntityNotFoundException("Product not found.");
+			throw new ServiceException("Product not found.");
 		}
 	}
 }

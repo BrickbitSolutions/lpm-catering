@@ -1,4 +1,4 @@
-package be.brickbit.lpm.catering.service.resources;
+package be.brickbit.lpm.catering.controller;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -56,7 +57,7 @@ public class FileResourceController extends AbstractController {
             stream.write(file.getBytes());
             stream.close();
         }else{
-            throw new RuntimeException("File format not supported.");
+            throw new ServiceException("File format not supported.");
         }
     }
 }

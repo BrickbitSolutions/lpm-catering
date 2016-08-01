@@ -6,7 +6,6 @@ import be.brickbit.lpm.catering.fixture.OrderFixture;
 import be.brickbit.lpm.catering.fixture.PreparationTaskFixture;
 import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -32,7 +31,7 @@ public class KitchenQueueDtoMapperTest {
     public void testMap() throws Exception {
         PreparationTask task = PreparationTaskFixture.mutable();
         task.setStartTime(LocalDateTime.now().minusMinutes(15));
-        Order order = OrderFixture.getOrder();
+        Order order = OrderFixture.mutable();
 
         when(orderRepository.findByOrderLinesId(any(Long.class))).thenReturn(order);
 
@@ -53,7 +52,7 @@ public class KitchenQueueDtoMapperTest {
         PreparationTask task = PreparationTaskFixture.mutable();
         task.setStartTime(LocalDateTime.now().minusMinutes(15));
         task.getOrderLine().getProduct().getPreparation().setTimer(1000);
-        Order order = OrderFixture.getOrder();
+        Order order = OrderFixture.mutable();
 
         when(orderRepository.findByOrderLinesId(any(Long.class))).thenReturn(order);
 
@@ -66,7 +65,7 @@ public class KitchenQueueDtoMapperTest {
     public void testMap__NoStartTime() throws Exception {
         PreparationTask task = PreparationTaskFixture.mutable();
         task.setStartTime(null);
-        Order order = OrderFixture.getOrder();
+        Order order = OrderFixture.mutable();
 
         when(orderRepository.findByOrderLinesId(any(Long.class))).thenReturn(order);
 

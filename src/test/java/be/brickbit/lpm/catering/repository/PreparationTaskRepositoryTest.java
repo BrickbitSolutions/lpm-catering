@@ -20,7 +20,7 @@ public class PreparationTaskRepositoryTest extends AbstractRepoIT {
     @Test
     public void findAllByQueueName__In_Progress() throws Exception {
         PreparationTask preparationTask = PreparationTaskFixture.mutable();
-        Order order = OrderFixture.getOrder();
+        Order order = OrderFixture.mutable();
         preparationTask.setOrderLine(order.getOrderLines().get(1));
         preparationTask.setStatus(OrderStatus.QUEUED);
 
@@ -42,7 +42,7 @@ public class PreparationTaskRepositoryTest extends AbstractRepoIT {
     @Test
     public void findAllByQueueName__Queued() throws Exception {
         PreparationTask preparationTask = PreparationTaskFixture.mutable();
-        Order order = OrderFixture.getOrder();
+        Order order = OrderFixture.mutable();
         preparationTask.setOrderLine(order.getOrderLines().get(1));
         preparationTask.setStatus(OrderStatus.IN_PROGRESS);
 
@@ -64,7 +64,7 @@ public class PreparationTaskRepositoryTest extends AbstractRepoIT {
     @Test
     public void findAllByQueueName__NoValidStatus() throws Exception {
         PreparationTask preparationTask = PreparationTaskFixture.mutable();
-        Order order = OrderFixture.getOrder();
+        Order order = OrderFixture.mutable();
         preparationTask.setOrderLine(order.getOrderLines().get(1));
         preparationTask.setStatus(OrderStatus.COMPLETED);
 

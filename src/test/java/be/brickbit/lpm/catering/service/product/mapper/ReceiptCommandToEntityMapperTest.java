@@ -6,7 +6,10 @@ import be.brickbit.lpm.catering.fixture.ReceiptCommandFixture;
 import be.brickbit.lpm.catering.fixture.StockProductFixture;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
 import be.brickbit.lpm.catering.service.product.command.ReceiptLineCommand;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,6 +26,9 @@ public class ReceiptCommandToEntityMapperTest {
     @InjectMocks
     private ReceiptCommandToEntityMapper mapper;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Test
     public void testMap() throws Exception {
         ReceiptLineCommand command = ReceiptCommandFixture.getReceiptLineCommand();
@@ -34,5 +40,13 @@ public class ReceiptCommandToEntityMapperTest {
 
         assertThat(receiptLine.getQuantity()).isEqualTo(command.getQuantity());
         assertThat(receiptLine.getStockProduct()).isSameAs(stockProduct);
+    }
+
+    @Test
+    public void testMap__StockProductInvalid() throws Exception {
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage("Invalid stock product");
+
+        mapper.map(ReceiptCommandFixture.getReceiptLineCommand());
     }
 }

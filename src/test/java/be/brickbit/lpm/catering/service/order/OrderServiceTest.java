@@ -16,7 +16,6 @@ import be.brickbit.lpm.catering.service.order.dto.OrderDto;
 import be.brickbit.lpm.catering.service.order.mapper.DirectOrderCommandToOrderEntityMapper;
 import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
 import be.brickbit.lpm.catering.service.order.mapper.RemoteOrderCommandToEntityMapper;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -59,7 +58,7 @@ public class OrderServiceTest {
     public void testPlaceDirectOrder() throws Exception {
         DirectOrderCommand command = DirectOrderCommandFixture.getDirectOrderCommand();
 
-        Order order = OrderFixture.getOrder();
+        Order order = OrderFixture.mutable();
         OrderDto orderDto = OrderDtoFixture.getOrderDto();
 
         when(directOrderCommandMapper.map(command)).thenReturn(order);
@@ -76,7 +75,7 @@ public class OrderServiceTest {
     public void testPlaceRemoteOrder() throws Exception {
         RemoteOrderCommand command = RemoteOrderCommandFixture.getRemoteOrderCommand();
 
-        Order order = OrderFixture.getOrder();
+        Order order = OrderFixture.mutable();
         OrderDto orderDto = OrderDtoFixture.getOrderDto();
 
         when(remoteOrderCommandToEntityMapper.map(command)).thenReturn(order);

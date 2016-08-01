@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.domain;
 
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -26,7 +28,7 @@ public enum OrderStatus {
         if(orderStatus.isPresent()){
             return orderStatus.get();
         }else{
-            throw new RuntimeException("OrderStatus does not exist.");
+            throw new ServiceException("OrderStatus does not exist.");
         }
     }
 }

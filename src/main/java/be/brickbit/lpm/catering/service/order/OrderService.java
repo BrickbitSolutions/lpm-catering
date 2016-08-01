@@ -100,6 +100,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 	@Transactional
 	public <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, User user) {
 		updateStockLevels(command.getOrderLines());
+
 		Order order = remoteOrderCommandToEntityMapper.map(command);
 		order.setPlacedByUserId(user.getId());
 		order.setUserId(user.getId());

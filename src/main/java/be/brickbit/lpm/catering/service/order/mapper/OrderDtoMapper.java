@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
+import be.brickbit.lpm.catering.service.order.util.PriceUtil;
 import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +31,7 @@ public class OrderDtoMapper implements OrderMapper<OrderDto> {
 
 		return new OrderDto(
 				order.getId(),
-				order.getOrderLines().stream().map(o -> o.getProduct().getPrice()).reduce(BigDecimal::add).get(),
+				PriceUtil.calculateTotalPrice(order),
 				order.getTimestamp().format(DateUtils.getDateFormat()),
 				user.getUsername(),
 				user.getSeatNumber(),
@@ -43,7 +45,7 @@ public class OrderDtoMapper implements OrderMapper<OrderDto> {
 		if (statusLevel.isPresent()) {
 			return OrderStatus.from(statusLevel.getAsInt());
 		} else {
-			throw new RuntimeException("Invalid order status");
+			throw new ServiceException("Invalid order status");
 		}
 	}
 }

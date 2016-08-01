@@ -8,16 +8,21 @@ import be.brickbit.lpm.catering.fixture.OrderLineDtoFixture;
 import be.brickbit.lpm.catering.fixture.OrderLineFixture;
 import be.brickbit.lpm.catering.fixture.UserFixture;
 import be.brickbit.lpm.catering.service.order.dto.OrderDto;
+import be.brickbit.lpm.catering.service.order.util.PriceUtil;
 import be.brickbit.lpm.catering.util.DateUtils;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.repository.UserRepository;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -35,9 +40,12 @@ public class OrderDtoMapperTest {
     @InjectMocks
     private OrderDtoMapper mapper;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Test
     public void testMap() throws Exception {
-        Order order = OrderFixture.getOrder();
+        Order order = OrderFixture.mutable();
 
         User cateringAdmin = UserFixture.getCateringAdmin();
         when(userRepository.findOne(order.getUserId())).thenReturn(cateringAdmin);
@@ -45,7 +53,7 @@ public class OrderDtoMapperTest {
 
         OrderDto result = mapper.map(order);
 
-        assertThat(result.getTotalPrice()).isEqualTo(new BigDecimal(11));
+        assertThat(result.getTotalPrice()).isEqualTo(PriceUtil.calculateTotalPrice(order));
         assertThat(result.getId()).isEqualTo(order.getId());
         assertThat(result.getStatus()).isEqualTo(OrderStatus.CREATED);
         assertThat(result.getTimestamp()).isEqualTo(order.getTimestamp().format(DateUtils.getDateFormat()));

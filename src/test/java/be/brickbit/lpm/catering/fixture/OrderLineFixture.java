@@ -7,7 +7,7 @@ public class OrderLineFixture {
     public static OrderLine getJupilerOrderLine(){
         OrderLine orderLine = new OrderLine();
 
-        orderLine.setQuantity(1);
+        orderLine.setQuantity(2);
         orderLine.setProduct(ProductFixture.getJupiler());
         orderLine.setStatus(OrderStatus.CREATED);
 

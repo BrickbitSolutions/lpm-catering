@@ -26,7 +26,7 @@ public class CreateProductCommandToEntityMapperTest {
     private CreateProductCommandToEntityMapper productCommandToEntityMapper;
 
     @Test
-    public void testMap() throws Exception {
+    public void testMap__NoQueue() throws Exception {
         CreateProductCommand command = ProductCommandFixture.getProductCommand();
         ProductReceiptLine receiptLine1 = ProductReceiptLineFixture.getCola();
         ProductReceiptLine receiptLine2 = ProductReceiptLineFixture.getJupiler();
@@ -48,7 +48,7 @@ public class CreateProductCommandToEntityMapperTest {
     }
 
     @Test
-    public void testMapFood() throws Exception {
+    public void testMap__QueuePresent() throws Exception {
         CreateProductCommand command = ProductCommandFixture.getProductCommandFood();
         ProductReceiptLine receiptLine1 = ProductReceiptLineFixture.getPizza();
 
@@ -69,6 +69,11 @@ public class CreateProductCommandToEntityMapperTest {
         assertThat(preparation.getInstructions()).isEqualTo(command.getInstructions());
         assertThat(preparation.getQueueName()).isEqualTo(command.getQueueName());
         assertThat(preparation.getTimer()).isEqualTo(command.getTimerInMinutes());
+
+    }
+
+    @Test
+    public void testMap__e() throws Exception {
 
     }
 }

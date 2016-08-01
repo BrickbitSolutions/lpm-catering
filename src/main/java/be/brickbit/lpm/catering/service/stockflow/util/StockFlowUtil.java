@@ -3,6 +3,7 @@ package be.brickbit.lpm.catering.service.stockflow.util;
 import be.brickbit.lpm.catering.domain.StockFlowDetail;
 import be.brickbit.lpm.catering.domain.StockFlowType;
 import be.brickbit.lpm.catering.domain.StockProduct;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
 public class StockFlowUtil {
     public static Integer processStockFlow(StockFlowDetail stockFlowDetail, StockFlowType type){
@@ -18,7 +19,7 @@ public class StockFlowUtil {
             case SOLD:
                 return deductQuantity(stockFlowDetail.getStockProduct().getStockLevel(), stockFlowDetail.getQuantity());
             default:
-                    throw new RuntimeException("Calculation for Stock flow type '" + type.toString() + "' is not implemented.");
+                    throw new ServiceException("Calculation for Stock flow type '" + type.toString() + "' is not implemented.");
         }
     }
 
@@ -40,7 +41,7 @@ public class StockFlowUtil {
 
     public static void calculateNewStockLevel(StockProduct stockProduct, Integer quantityToProcess) {
         if(calculateCurrentStockLevel(stockProduct) < quantityToProcess){
-            throw new RuntimeException(String.format("Not enough '%s' in stock to process order!", stockProduct.getName()));
+            throw new ServiceException(String.format("Not enough '%s' in stock to process order!", stockProduct.getName()));
         }
 
         if(stockProduct.getMaxConsumptions() == 1){

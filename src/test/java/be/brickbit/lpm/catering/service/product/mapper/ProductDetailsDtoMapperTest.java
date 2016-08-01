@@ -23,7 +23,7 @@ public class ProductDetailsDtoMapperTest {
     private ProductDetailsDtoMapper mapper;
 
     @Test
-    public void testMap() throws Exception {
+    public void testMap__NoQueue() throws Exception {
         Product product = ProductFixture.getJupiler();
         ReceiptDto receiptLine1Dto = ReceiptDtoFixture.getReceiptLine1Dto();
 
@@ -39,7 +39,7 @@ public class ProductDetailsDtoMapperTest {
     }
 
     @Test
-    public void testMapFood() throws Exception {
+    public void testMap() throws Exception {
         Product product = ProductFixture.getPizza();
         ReceiptDto receiptLine1Dto = ReceiptDtoFixture.getReceiptLinePizza();
 

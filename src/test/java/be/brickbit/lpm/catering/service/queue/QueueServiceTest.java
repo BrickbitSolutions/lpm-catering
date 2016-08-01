@@ -39,8 +39,8 @@ public class QueueServiceTest {
 
     @Test
     //Should only queue tasks if there is a preparation defined for a product.
-    public void testQueueTasks() throws Exception {
-        Order order = OrderFixture.getOrder();
+    public void testQueueAllTasks() throws Exception {
+        Order order = OrderFixture.mutable();
         when(orderRepository.findOne(order.getId())).thenReturn(order);
         when(mapper.map(any(PreparationTask.class))).thenReturn(new QueueDto());
 

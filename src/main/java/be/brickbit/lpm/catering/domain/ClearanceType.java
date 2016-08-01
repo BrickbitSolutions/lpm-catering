@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.domain;
 
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -24,7 +26,7 @@ public enum ClearanceType {
         if(clearanceType.isPresent()){
             return clearanceType.get();
         }else{
-            throw new RuntimeException("Clearance does not exist.");
+            throw new ServiceException("Clearance does not exist.");
         }
     }
 }
