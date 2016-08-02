@@ -36,7 +36,8 @@ public class StockLevelBatchServiceImpl implements StockLevelBatchService {
 	private StockProductRepository stockProductRepository;
 
 	@Override
-	@Scheduled(cron = "0 0 0/1 1/1 * *") // run every hour
+	//@Scheduled(cron = "0 0 0/1 1/1 * *") // run every hour
+	// TODO: 02/08/16 : Reimplement with TDD! Code too complex and proved inefficient.
 	@Transactional
 	public void calculateAvgConsumption() {
 		log.debug("Calculating AVG Consumptions");
