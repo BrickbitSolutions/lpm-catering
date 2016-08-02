@@ -12,7 +12,7 @@ import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.fixture.ProductFixture;
 
-public class ProductRepositoryTest extends AbstractRepoIT {
+public class ProductRepositoryIT extends AbstractRepoIT {
 	@Autowired
 	private ProductRepository productRepository;
 

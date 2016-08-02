@@ -1,28 +1,30 @@
 package be.brickbit.lpm.catering;
 
-import org.flywaydb.test.annotation.FlywayTest;
-import org.flywaydb.test.junit.FlywayTestExecutionListener;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
+import javax.persistence.EntityManager;
 
-import be.brickbit.lpm.Application;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
-@SpringApplicationConfiguration(classes = {Application.class})
-@ActiveProfiles("test")
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class,
-        TransactionalTestExecutionListener.class,
-        FlywayTestExecutionListener.class })
-@RunWith(SpringJUnit4ClassRunner.class)
-@FlywayTest
-@WebAppConfiguration
+@Transactional
 public abstract class AbstractIT {
+	@Autowired
+	private EntityManager entityManager;
 
+	protected void insert(Object... entities) throws Exception {
+		for (Object entity : entities) {
+			save(entity);
+		}
+	}
+
+	private void save(Object object) {
+		if (entityManager.contains(object)) {
+			entityManager.merge(object);
+		} else {
+			entityManager.persist(object);
+		}
+	}
+
+	protected EntityManager getEntityManager() {
+		return entityManager;
+	}
 }

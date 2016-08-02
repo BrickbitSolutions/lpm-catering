@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OrderRepositoryTest extends AbstractRepoIT{
+public class OrderRepositoryIT extends AbstractRepoIT{
 
     @Autowired
     private OrderRepository orderRepository;
