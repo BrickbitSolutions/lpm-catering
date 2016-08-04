@@ -1,5 +1,6 @@
 package be.brickbit.lpm.catering.service.stockflow;
 
+import be.brickbit.lpm.catering.service.stockflow.command.StockCorrectionLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,20 +31,21 @@ public class StockFlowService extends AbstractService<StockFlow> implements ISto
 		stockFlow.setUserId(someUser.getId());
 
 		stockFlowRepository.save(stockFlow);
-		processStockFlow(stockFlow);
+
+		processStockFlow(stockFlow, command.getLevel());
 
 		return dtoMapper.map(stockFlow);
 	}
 
-	private void processStockFlow(StockFlow stockFlow) {
+	private void processStockFlow(StockFlow stockFlow, StockCorrectionLevel level) {
 		for (StockFlowDetail detail : stockFlow.getDetails()) {
-			StockProduct stockProduct = detail.getStockProduct();
-
-			if (stockProduct.getRemainingConsumptions() == 0) {
-				stockProduct.setRemainingConsumptions(stockProduct.getMaxConsumptions());
-				stockProduct.setStockLevel(StockFlowUtil.processStockFlow(detail, stockFlow.getStockFlowType()) - 1);
-			} else {
-				stockProduct.setStockLevel(StockFlowUtil.processStockFlow(detail, stockFlow.getStockFlowType()));
+			switch (level){
+				case STOCK:
+					StockFlowUtil.processStockFlow(detail, stockFlow.getStockFlowType());
+					break;
+				case CONSUMPTION:
+					StockFlowUtil.processConsumptionStockFlow(detail, stockFlow.getStockFlowType());
+					break;
 			}
 		}
 	}

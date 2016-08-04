@@ -20,36 +20,168 @@ public class StockFlowUtilTest {
 	@Test
 	public void testProcessStockFlowCorrection() throws Exception {
 		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
-		Integer result = StockFlowUtil.processStockFlow(detail, StockFlowType.CORRECTION);
-		assertThat(result).isEqualTo(10);
+		StockFlowUtil.processStockFlow(detail, StockFlowType.CORRECTION);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(10);
+	}
+
+	@Test
+	public void testConsumptionProcessStockFlowCorrection__EnoughConsumptionsLeft() throws Exception {
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(5);
+		detail.getStockProduct().setMaxConsumptions(6);
+		detail.getStockProduct().setRemainingConsumptions(6);
+		detail.getStockProduct().setStockLevel(4);
+		StockFlowUtil.processConsumptionStockFlow(detail, StockFlowType.CORRECTION);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
+		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(1);
+	}
+
+	@Test
+	public void testConsumptionProcessStockFlowCorrection__NotEnoughConsumptions() throws Exception {
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(5);
+		detail.getStockProduct().setMaxConsumptions(6);
+		detail.getStockProduct().setRemainingConsumptions(3);
+		detail.getStockProduct().setStockLevel(4);
+		StockFlowUtil.processConsumptionStockFlow(detail, StockFlowType.CORRECTION);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(3);
+		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(4);
+	}
+
+	@Test
+	public void testProcessStockFlow__QuantityTooBig() throws Exception {
+		expectedException.expect(ServiceException.class);
+		expectedException.expectMessage("Stock or Consumption level cannot fall below zero");
+
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(5);
+		detail.getStockProduct().setStockLevel(1);
+
+		StockFlowUtil.processStockFlow(detail, StockFlowType.LOSS);
 	}
 
 	@Test
 	public void testProcessStockFlowLoss() throws Exception {
 		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
-		Integer result = StockFlowUtil.processStockFlow(detail, StockFlowType.LOSS);
-		assertThat(result).isEqualTo(10);
+		StockFlowUtil.processStockFlow(detail, StockFlowType.LOSS);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(10);
+	}
+
+	@Test
+	public void testConsumptionProcessStockFlowLoss__EnoughConsumptionsLeft() throws Exception {
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(5);
+		detail.getStockProduct().setMaxConsumptions(6);
+		detail.getStockProduct().setRemainingConsumptions(6);
+		detail.getStockProduct().setStockLevel(4);
+		StockFlowUtil.processConsumptionStockFlow(detail, StockFlowType.LOSS);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
+		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(1);
+	}
+
+	@Test
+	public void testConsumptionProcessStockFlowLoss__NotEnoughConsumptions() throws Exception {
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(5);
+		detail.getStockProduct().setMaxConsumptions(6);
+		detail.getStockProduct().setRemainingConsumptions(3);
+		detail.getStockProduct().setStockLevel(4);
+		StockFlowUtil.processConsumptionStockFlow(detail, StockFlowType.LOSS);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(3);
+		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(4);
 	}
 
 	@Test
 	public void testProcessStockFlowReturned() throws Exception {
 		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
-		Integer result = StockFlowUtil.processStockFlow(detail, StockFlowType.RETURNED);
-		assertThat(result).isEqualTo(10);
+		StockFlowUtil.processStockFlow(detail, StockFlowType.RETURNED);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(10);
+	}
+
+	@Test
+	public void testConsumptionProcessStockFlowReturned__EnoughConsumptionsLeft() throws Exception {
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(5);
+		detail.getStockProduct().setMaxConsumptions(6);
+		detail.getStockProduct().setRemainingConsumptions(6);
+		detail.getStockProduct().setStockLevel(4);
+		StockFlowUtil.processConsumptionStockFlow(detail, StockFlowType.RETURNED);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
+		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(1);
+	}
+
+	@Test
+	public void testConsumptionProcessStockFlowReturned__NotEnoughConsumptions() throws Exception {
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(5);
+		detail.getStockProduct().setMaxConsumptions(6);
+		detail.getStockProduct().setRemainingConsumptions(3);
+		detail.getStockProduct().setStockLevel(4);
+		StockFlowUtil.processConsumptionStockFlow(detail, StockFlowType.RETURNED);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(3);
+		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(4);
 	}
 
 	@Test
 	public void testProcessStockFlowSold() throws Exception {
 		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
-		Integer result = StockFlowUtil.processStockFlow(detail, StockFlowType.SOLD);
-		assertThat(result).isEqualTo(10);
+		StockFlowUtil.processStockFlow(detail, StockFlowType.SOLD);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(10);
+	}
+
+	@Test
+	public void testConsumptionProcessStockFlowSold__LowerThanMax() throws Exception {
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(4);
+		detail.getStockProduct().setMaxConsumptions(6);
+		detail.getStockProduct().setRemainingConsumptions(5);
+		detail.getStockProduct().setStockLevel(4);
+		StockFlowUtil.processConsumptionStockFlow(detail, StockFlowType.SOLD);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
+		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(1);
+	}
+
+	@Test
+	public void testConsumptionProcessStockFlowSold__HigherThanMax() throws Exception {
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(5);
+		detail.getStockProduct().setMaxConsumptions(6);
+		detail.getStockProduct().setRemainingConsumptions(3);
+		detail.getStockProduct().setStockLevel(4);
+		StockFlowUtil.processConsumptionStockFlow(detail, StockFlowType.SOLD);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(3);
+		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(4);
 	}
 
 	@Test
 	public void testProcessStockFlowPurchased() throws Exception {
 		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
-		Integer result = StockFlowUtil.processStockFlow(detail, StockFlowType.PURCHASED);
-		assertThat(result).isEqualTo(30);
+		StockFlowUtil.processStockFlow(detail, StockFlowType.PURCHASED);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(30);
+	}
+
+	@Test
+	public void testConsumptionProcessStockFlowPurchased__LowerThanMax() throws Exception {
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(5);
+		detail.getStockProduct().setMaxConsumptions(6);
+		detail.getStockProduct().setRemainingConsumptions(1);
+		detail.getStockProduct().setStockLevel(4);
+		StockFlowUtil.processConsumptionStockFlow(detail, StockFlowType.PURCHASED);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
+		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(6);
+	}
+
+	@Test
+	public void testConsumptionProcessStockFlowPurchased__HigherThanMax() throws Exception {
+		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
+		detail.setQuantity(5);
+		detail.getStockProduct().setMaxConsumptions(6);
+		detail.getStockProduct().setRemainingConsumptions(3);
+		detail.getStockProduct().setStockLevel(4);
+		StockFlowUtil.processConsumptionStockFlow(detail, StockFlowType.PURCHASED);
+		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(5);
+		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(2);
 	}
 
 	@Test
@@ -77,7 +209,7 @@ public class StockFlowUtilTest {
 	}
 
 	@Test
-	public void testCalculateNewStockLevel__NoEnoughStock() throws Exception {
+	public void testCalculateNewStockLevel__NotEnoughStock() throws Exception {
 		StockProduct product = StockProductFixture.getStockProductCola();
 		product.setRemainingConsumptions(5);
 		product.setMaxConsumptions(5);
@@ -86,7 +218,7 @@ public class StockFlowUtilTest {
 		expectedException.expect(ServiceException.class);
 		expectedException.expectMessage(String.format("Not enough '%s' in stock to process order!", product.getName()));
 
-		StockFlowUtil.calculateNewStockLevel(product, 20);
+		StockFlowUtil.calculateNewStockLevel(product, -20);
 	}
 
 	@Test
@@ -96,7 +228,7 @@ public class StockFlowUtilTest {
         product.setMaxConsumptions(1);
         product.setStockLevel(5);
 
-        StockFlowUtil.calculateNewStockLevel(product, 1);
+        StockFlowUtil.calculateNewStockLevel(product, -1);
 
         assertThat(product.getStockLevel()).isEqualTo(4);
     }
@@ -108,7 +240,7 @@ public class StockFlowUtilTest {
         product.setMaxConsumptions(5);
         product.setStockLevel(5);
 
-        StockFlowUtil.calculateNewStockLevel(product, 1);
+        StockFlowUtil.calculateNewStockLevel(product, -1);
 
         assertThat(product.getRemainingConsumptions()).isEqualTo(4);
         assertThat(product.getMaxConsumptions()).isEqualTo(5);
@@ -122,7 +254,7 @@ public class StockFlowUtilTest {
         product.setMaxConsumptions(5);
         product.setStockLevel(5);
 
-        StockFlowUtil.calculateNewStockLevel(product, 2);
+        StockFlowUtil.calculateNewStockLevel(product, -2);
 
         assertThat(product.getRemainingConsumptions()).isEqualTo(4);
         assertThat(product.getMaxConsumptions()).isEqualTo(5);

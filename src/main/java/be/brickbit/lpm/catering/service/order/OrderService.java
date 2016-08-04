@@ -84,7 +84,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 			for (ProductReceiptLine receiptLine : product.getReceipt()) {
 				StockProduct stockProductToUpdate = receiptLine.getStockProduct();
 				Integer totalQuantity = receiptLine.getQuantity() * orderAmount;
-                StockFlowUtil.calculateNewStockLevel(stockProductToUpdate, totalQuantity);
+                StockFlowUtil.calculateNewStockLevel(stockProductToUpdate, totalQuantity * -1);
                 stockProductRepository.save(stockProductToUpdate);
 			}
 		}

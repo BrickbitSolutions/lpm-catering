@@ -19,7 +19,7 @@ public class StockFlowCommand {
 	@NotNull
 	private Long productId;
 	@NotNull
-	private ProductClass productClass;
+	private StockCorrectionLevel level;
 	@NotNull(message = "Quantity is required.")
 	@Min(value = 0, message = "Quantity cannot be negative")
 	private Integer quantity;

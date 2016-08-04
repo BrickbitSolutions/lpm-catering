@@ -34,17 +34,7 @@ public class StockFlowCommandToEntityMapper implements Mapper<StockFlowCommand, 
 
 		stockFlow.setStockFlowType(someStockFlowCommand.getStockFlowType());
 		stockFlow.setTimestamp(LocalDateTime.now());
-
-		switch (someStockFlowCommand.getProductClass()) {
-		case PRODUCT:
-			stockFlow.setDetails(createProductStockFlowDetail(someStockFlowCommand));
-			break;
-		case STOCKPRODUCT:
-			stockFlow.setDetails(createStockProductStockFlowDetail(someStockFlowCommand));
-			break;
-		default:
-			throw new ServiceException("Product Class not valid.");
-		}
+		stockFlow.setDetails(createStockProductStockFlowDetail(someStockFlowCommand));
 
 		return stockFlow;
 	}
