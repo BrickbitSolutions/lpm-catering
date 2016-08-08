@@ -33,6 +33,7 @@ public class StockFlowCommandToEntityMapper implements Mapper<StockFlowCommand, 
 		StockFlow stockFlow = new StockFlow();
 
 		stockFlow.setStockFlowType(someStockFlowCommand.getStockFlowType());
+		stockFlow.setLevel(someStockFlowCommand.getLevel());
 		stockFlow.setTimestamp(LocalDateTime.now());
 		stockFlow.setDetails(createStockProductStockFlowDetail(someStockFlowCommand));
 

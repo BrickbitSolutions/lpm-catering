@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 
 import be.brickbit.lpm.catering.domain.StockFlowType;
+import be.brickbit.lpm.catering.domain.StockCorrectionLevel;
 import be.brickbit.lpm.catering.service.stockflow.dto.StockFlowDetailDto;
 import be.brickbit.lpm.catering.service.stockflow.dto.StockFlowDto;
 import be.brickbit.lpm.catering.util.DateUtils;
@@ -14,6 +15,7 @@ public class StockFlowDtoFixture {
 				1L,
 				"jay",
 				StockFlowType.PURCHASED,
+				StockCorrectionLevel.STOCK,
 				LocalDateTime.now().format(DateUtils.getDateFormat()),
 				Collections.singletonList(new StockFlowDetailDto("Jupiler 33cl", 10)));
 	}

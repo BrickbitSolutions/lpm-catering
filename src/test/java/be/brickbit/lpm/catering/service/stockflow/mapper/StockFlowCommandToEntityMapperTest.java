@@ -46,6 +46,7 @@ public class StockFlowCommandToEntityMapperTest {
 		assertThat(result.getDetails().get(0).getQuantity()).isEqualTo(command.getQuantity());
 		assertThat(result.getDetails().get(0).getStockProduct()).isSameAs(stockProductCola);
 		assertThat(result.getStockFlowType()).isEqualTo(command.getStockFlowType());
+		assertThat(result.getLevel()).isEqualTo(command.getLevel());
 		assertThat(result.getTimestamp()).isNotNull();
 	}
 }

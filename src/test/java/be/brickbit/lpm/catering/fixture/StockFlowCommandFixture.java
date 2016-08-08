@@ -4,7 +4,7 @@ import static be.brickbit.lpm.catering.util.RandomValueUtil.randomInt;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
 
 import be.brickbit.lpm.catering.domain.StockFlowType;
-import be.brickbit.lpm.catering.service.stockflow.command.StockCorrectionLevel;
+import be.brickbit.lpm.catering.domain.StockCorrectionLevel;
 import be.brickbit.lpm.catering.service.stockflow.command.StockFlowCommand;
 
 public class StockFlowCommandFixture {

@@ -21,6 +21,10 @@ public @Data class StockFlow {
     @Enumerated(EnumType.STRING)
     private StockFlowType stockFlowType;
 
+    @Column(name = "LEVEL")
+    @Enumerated(EnumType.STRING)
+    private StockCorrectionLevel level;
+
     @Column(name = "TIME_ON_ENTRY")
     private LocalDateTime timestamp;
 

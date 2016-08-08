@@ -4,9 +4,11 @@ import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
+import be.brickbit.lpm.catering.service.stockproduct.command.EditStockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductCommandToEntityMapper;
 import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductMapper;
+import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductMerger;
 import be.brickbit.lpm.infrastructure.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class StockProductService extends AbstractService<StockProduct> implement
 
     @Autowired
     private StockProductCommandToEntityMapper stockProductCommandToEntityMapper;
+
+    @Autowired
+    private StockProductMerger stockProductMerger;
 
     @Override
     @Transactional(readOnly = true)
@@ -42,6 +47,12 @@ public class StockProductService extends AbstractService<StockProduct> implement
         StockProduct stockProduct = stockProductCommandToEntityMapper.map(command);
         stockProductRepository.save(stockProduct);
         return dtoMapper.map(stockProduct);
+    }
+
+    @Override
+    @Transactional
+    public void updateStockProduct(Long stockProductId, EditStockProductCommand command){
+        stockProductMerger.merge(command, stockProductRepository.findOne(stockProductId));
     }
 
     @Override

@@ -1,13 +1,12 @@
 package be.brickbit.lpm.catering.service.stockflow;
 
-import be.brickbit.lpm.catering.service.stockflow.command.StockCorrectionLevel;
+import be.brickbit.lpm.catering.domain.StockCorrectionLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import be.brickbit.lpm.catering.domain.StockFlow;
 import be.brickbit.lpm.catering.domain.StockFlowDetail;
-import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.repository.StockFlowRepository;
 import be.brickbit.lpm.catering.service.stockflow.command.StockFlowCommand;
 import be.brickbit.lpm.catering.service.stockflow.mapper.StockFlowCommandToEntityMapper;

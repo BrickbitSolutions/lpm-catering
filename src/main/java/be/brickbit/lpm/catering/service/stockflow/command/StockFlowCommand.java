@@ -3,6 +3,7 @@ package be.brickbit.lpm.catering.service.stockflow.command;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import be.brickbit.lpm.catering.domain.StockCorrectionLevel;
 import be.brickbit.lpm.catering.domain.StockFlowType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

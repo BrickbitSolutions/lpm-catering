@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import be.brickbit.lpm.catering.service.stockproduct.command.EditStockProductCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,6 +41,18 @@ public class StockProductController extends AbstractController{
         return stockProductService.findOne(productId, stockProductDtoMapper);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStockProduct(@PathVariable("id") Long id, @RequestBody @Valid EditStockProductCommand command) {
+        stockProductService.updateStockProduct(id, command);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteStockProduct(@PathVariable("id") Long id) {
+        stockProductService.delete(id);
+    }
+
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
@@ -68,13 +81,13 @@ public class StockProductController extends AbstractController{
     }
 
     @RequestMapping(value = "/types", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN'")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     public List<ProductType> getAllProductTypes(){
         return Arrays.asList(ProductType.values());
     }
 
     @RequestMapping(value = "/clearance", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN'")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     public List<ClearanceType> getAllClearanceTypes(){
         return Arrays.asList(ClearanceType.values());
     }

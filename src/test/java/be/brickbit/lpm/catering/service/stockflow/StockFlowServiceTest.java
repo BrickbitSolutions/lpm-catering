@@ -6,9 +6,8 @@ import static org.mockito.Mockito.when;
 
 import be.brickbit.lpm.catering.domain.StockFlowDetail;
 import be.brickbit.lpm.catering.domain.StockFlowType;
-import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.fixture.*;
-import be.brickbit.lpm.catering.service.stockflow.command.StockCorrectionLevel;
+import be.brickbit.lpm.catering.domain.StockCorrectionLevel;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

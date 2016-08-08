@@ -1,4 +1,4 @@
-package be.brickbit.lpm.catering.service.stockflow.command;
+package be.brickbit.lpm.catering.domain;
 
 public enum StockCorrectionLevel {
     CONSUMPTION,

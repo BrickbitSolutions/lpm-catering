@@ -1,13 +1,18 @@
 package be.brickbit.lpm.catering.service.stockproduct;
 
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
 
+import be.brickbit.lpm.catering.service.stockproduct.command.EditStockProductCommand;
+import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductMerger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -36,6 +41,9 @@ public class StockProductServiceTest {
 
 	@Mock
 	private StockProductCommandToEntityMapper stockProductCommandToEntityMapper;
+
+	@Mock
+	private StockProductMerger stockProductMerger;
 
 	@InjectMocks
 	private StockProductService stockProductService;
@@ -92,5 +100,20 @@ public class StockProductServiceTest {
 		verify(stockProductRepository).delete(1L);
 	}
 
+	@Test
+	public void testUpdate() throws Exception {
+		Long stockProductId = randomLong();
+		StockProduct stockProduct = StockProductFixture.getStockProductCola();
+		when(stockProductRepository.findOne(stockProductId)).thenReturn(stockProduct);
+
+		EditStockProductCommand command = new EditStockProductCommand();
+		command.setClearance(ClearanceType.PLUS_21);
+		command.setProductType(ProductType.FOOD);
+		command.setName(randomString());
+
+		stockProductService.updateStockProduct(stockProductId, command);
+
+		verify(stockProductMerger, times(1)).merge(command, stockProduct);
+	}
 
 }

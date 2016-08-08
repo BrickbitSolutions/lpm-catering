@@ -1,11 +1,10 @@
 package be.brickbit.lpm.catering.service.stockflow.dto;
 
 import be.brickbit.lpm.catering.domain.StockFlowType;
+import be.brickbit.lpm.catering.domain.StockCorrectionLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -14,6 +13,7 @@ public class StockFlowDto {
     private Long id;
     private String username;
     private StockFlowType type;
+    private StockCorrectionLevel level;
     private String timestamp;
     private List<StockFlowDetailDto> stockFlowDetails;
 }
