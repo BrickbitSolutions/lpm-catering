@@ -11,4 +11,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Order findByOrderLinesId(Long orderLineId);
     List<Order> findDistinctByOrderLinesStatus(OrderStatus status);
     List<Order> findAllByTimestampBetween(LocalDateTime beginTime, LocalDateTime endTime);
+    Integer countByOrderLinesProductId(Long productId);
 }

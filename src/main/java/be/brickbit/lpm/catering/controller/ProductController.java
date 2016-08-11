@@ -70,6 +70,13 @@ public class ProductController extends AbstractController{
         return productService.findOne(id, productDtoMapper);
     }
 
+    @PreAuthorize(value = "hasAnyRole('CATERING_ADMIN', 'ADMIN')")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProduct(@PathVariable("id") Long id) {
+        productService.delete(id);
+    }
+
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @RequestMapping(value = "/{id}/available", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)

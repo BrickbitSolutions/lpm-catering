@@ -1,5 +1,6 @@
 package be.brickbit.lpm.catering.service.product;
 
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomInt;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import be.brickbit.lpm.catering.domain.ProductType;
+import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,17 +31,20 @@ import be.brickbit.lpm.catering.service.product.mapper.ProductDtoMapper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductServiceTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
     @Mock
     private ProductRepository productRepository;
     @Mock
     private CreateProductCommandToEntityMapper productCommandToEntityMapper;
     @Mock
     private ProductDtoMapper dtoMapper;
+    @Mock
+    private OrderRepository orderRepository;
+
     @InjectMocks
     private ProductService productService;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testSaveProduct() throws Exception {
@@ -115,5 +120,26 @@ public class ProductServiceTest {
         List<ProductDto> result = productService.findAllEnabledByType(productType, dtoMapper);
 
         assertThat(result).hasSize(products.size());
+    }
+
+    @Test
+    public void deletesProduct__ProductIsUsed() throws Exception {
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage("Can not delete, product has entered order lifecycle.");
+
+        Long productId = randomLong();
+
+        when(orderRepository.countByOrderLinesProductId(productId)).thenReturn(randomInt(1, 999));
+
+        productService.delete(productId);
+    }
+
+    @Test
+    public void deletesProduct() throws Exception {
+        Long productId = randomLong();
+
+        when(orderRepository.countByOrderLinesProductId(productId)).thenReturn(0);
+
+        productService.delete(productId);
     }
 }

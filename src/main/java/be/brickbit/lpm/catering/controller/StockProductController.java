@@ -49,6 +49,7 @@ public class StockProductController extends AbstractController{
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     public void deleteStockProduct(@PathVariable("id") Long id) {
         stockProductService.delete(id);
     }

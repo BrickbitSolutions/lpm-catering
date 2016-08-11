@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import be.brickbit.lpm.catering.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,9 @@ public class ProductService extends AbstractService<Product> implements IProduct
 
 	@Autowired
 	private CreateProductCommandToEntityMapper productCommandToEntityMapper;
+
+	@Autowired
+	private OrderRepository orderRepository;
 
 	@Override
 	@Transactional
@@ -54,6 +58,16 @@ public class ProductService extends AbstractService<Product> implements IProduct
 	@Override
 	public <T> List<T> findAllEnabledByType(ProductType productType, ProductMapper<T> dtoMapper) {
 		return productRepository.findByProductTypeAndAvailableTrue(productType).stream().map(dtoMapper::map).collect(Collectors.toList());
+	}
+
+	@Transactional
+	@Override
+	public void delete(Long id){
+		if(orderRepository.countByOrderLinesProductId(id) > 0){
+			throw new ServiceException("Can not delete, product has entered order lifecycle.");
+		}
+
+		productRepository.delete(id);
 	}
 
 	private ServiceException throwNotFoundException() {
