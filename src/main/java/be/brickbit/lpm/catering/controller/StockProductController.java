@@ -48,7 +48,7 @@ public class StockProductController extends AbstractController{
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStockProduct(@PathVariable("id") Long id) {
         stockProductService.delete(id);
     }

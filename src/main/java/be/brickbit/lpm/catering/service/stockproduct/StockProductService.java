@@ -3,6 +3,7 @@ package be.brickbit.lpm.catering.service.stockproduct;
 import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.domain.StockProduct;
+import be.brickbit.lpm.catering.repository.ProductRepository;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
 import be.brickbit.lpm.catering.service.stockproduct.command.EditStockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
@@ -10,6 +11,7 @@ import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductCommandT
 import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductMapper;
 import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductMerger;
 import be.brickbit.lpm.infrastructure.AbstractService;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,9 @@ public class StockProductService extends AbstractService<StockProduct> implement
 
     @Autowired
     private StockProductMerger stockProductMerger;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -58,6 +63,10 @@ public class StockProductService extends AbstractService<StockProduct> implement
     @Override
     @Transactional
     public void delete(Long id){
+        if(productRepository.countByReceiptStockProductId(id) > 0){
+            throw new ServiceException("Can not delete, stock product is in use.");
+        }
+
         stockProductRepository.delete(id);
     }
 

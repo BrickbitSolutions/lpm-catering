@@ -10,7 +10,9 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long>{
     List<Product> findByProductTypeAndAvailableTrue(ProductType someType);
     List<Product> findByProductType(ProductType someType);
+    Integer countByReceiptStockProductId(Long stockProductId);
 
     @Query("SELECT DISTINCT p.preparation.queueName FROM Product p")
     List<String> findAllQueueNames();
+
 }
