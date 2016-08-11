@@ -63,8 +63,14 @@ public class ProductService extends AbstractService<Product> implements IProduct
 	@Transactional
 	@Override
 	public void delete(Long id){
+		Product product = Optional.ofNullable(productRepository.findOne(id)).orElseThrow(this::throwNotFoundException);
+
+		if(product.getAvailable()){
+			throw new ServiceException("Cannot delete, product still enabled.");
+		}
+
 		if(orderRepository.countByOrderLinesProductId(id) > 0){
-			throw new ServiceException("Can not delete, product has entered order lifecycle.");
+			throw new ServiceException("Cannot delete, product has entered order lifecycle.");
 		}
 
 		productRepository.delete(id);

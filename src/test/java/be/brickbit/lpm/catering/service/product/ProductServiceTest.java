@@ -125,10 +125,42 @@ public class ProductServiceTest {
     @Test
     public void deletesProduct__ProductIsUsed() throws Exception {
         expectedException.expect(ServiceException.class);
-        expectedException.expectMessage("Can not delete, product has entered order lifecycle.");
+        expectedException.expectMessage("Cannot delete, product has entered order lifecycle.");
 
         Long productId = randomLong();
 
+        Product product = ProductFixture.getJupiler();
+        product.setAvailable(false);
+
+        when(productRepository.findOne(productId)).thenReturn(product);
+        when(orderRepository.countByOrderLinesProductId(productId)).thenReturn(randomInt(1, 999));
+
+        productService.delete(productId);
+    }
+
+    @Test
+    public void deletesProduct__ProductEnabled() throws Exception {
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage("Cannot delete, product still enabled.");
+
+        Long productId = randomLong();
+
+        Product product = ProductFixture.getJupiler();
+        product.setAvailable(true);
+
+        when(productRepository.findOne(productId)).thenReturn(product);
+
+        productService.delete(productId);
+    }
+
+    @Test
+    public void deletesProduct__ProductNotExisting() throws Exception {
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage("Product not found");
+
+        Long productId = randomLong();
+
+        when(productRepository.findOne(productId)).thenReturn(null);
         when(orderRepository.countByOrderLinesProductId(productId)).thenReturn(randomInt(1, 999));
 
         productService.delete(productId);
@@ -138,6 +170,10 @@ public class ProductServiceTest {
     public void deletesProduct() throws Exception {
         Long productId = randomLong();
 
+        Product product = ProductFixture.getJupiler();
+        product.setAvailable(false);
+
+        when(productRepository.findOne(productId)).thenReturn(product);
         when(orderRepository.countByOrderLinesProductId(productId)).thenReturn(0);
 
         productService.delete(productId);
