@@ -39,6 +39,8 @@ public class ProductServiceTest {
     private ProductDtoMapper dtoMapper;
     @Mock
     private OrderRepository orderRepository;
+    @Mock
+    private ProductImageService productImageService;
 
     @InjectMocks
     private ProductService productService;
@@ -178,6 +180,7 @@ public class ProductServiceTest {
 
         productService.delete(productId);
 
+        verify(productImageService, times(1)).deleteProductImage(productId.toString());
         verify(productRepository, times(1)).delete(product);
     }
 }

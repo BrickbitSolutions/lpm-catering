@@ -30,6 +30,9 @@ public class ProductService extends AbstractService<Product> implements IProduct
 	@Autowired
 	private OrderRepository orderRepository;
 
+	@Autowired
+	private ProductImageService productImageService;
+
 	@Override
 	@Transactional
 	public <T> T save(CreateProductCommand command, ProductMapper<T> dtoMapper) {
@@ -73,6 +76,7 @@ public class ProductService extends AbstractService<Product> implements IProduct
 			throw new ServiceException("Cannot delete, product has entered order lifecycle.");
 		}
 
+		productImageService.deleteProductImage(Long.toString(id));
 		productRepository.delete(product);
 	}
 

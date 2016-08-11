@@ -1,62 +1,52 @@
 package be.brickbit.lpm.catering.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Iterator;
-
+import be.brickbit.lpm.catering.service.product.ProductImageService;
+import be.brickbit.lpm.infrastructure.AbstractController;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
-import be.brickbit.lpm.infrastructure.AbstractController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/file")
 public class FileResourceController extends AbstractController {
 
-	@Value("${lpm.storage.images.products}")
-	private String productImageLocation;
+    @Autowired
+    private ProductImageService productImageService;
 
-	@RequestMapping(value = "/image/product/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
-	@PreAuthorize(value = "hasAnyRole('USER')")
-	public ResponseEntity<InputStreamResource> getProductImage(@PathVariable("id") String id) throws IOException {
-		File image = new File(Paths.get(productImageLocation, id + ".png").toString());
+    @RequestMapping(value = "/image/product/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_PNG_VALUE)
+    @PreAuthorize(value = "hasAnyRole('USER')")
+    public ResponseEntity<InputStreamResource> getProductImage(@PathVariable("id") String id) throws IOException {
+        Optional<File> image = productImageService.getProductImage(id);
 
-		if (image.exists()) {
-			return ResponseEntity.ok(new InputStreamResource(new FileInputStream(image)));
-		} else {
-			return ResponseEntity.ok((new InputStreamResource(this.getClass().getClassLoader().getResourceAsStream("nocover.png"))));
-		}
-	}
+        if (image.isPresent()) {
+            return ResponseEntity.ok(new InputStreamResource(new FileInputStream(image.get())));
+        } else {
+            return ResponseEntity.ok((new InputStreamResource(this.getClass().getClassLoader().getResourceAsStream("nocover.png"))));
+        }
+    }
 
     @RequestMapping(value = "/image/product/{id}", method = RequestMethod.POST)
     @PreAuthorize(value = "hasAnyRole('CATERING_ADMIN', 'ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateProductImage(MultipartHttpServletRequest request, @PathVariable("id") String id) throws IOException{
-        Iterator<String> itr=request.getFileNames();
-        MultipartFile file=request.getFile(itr.next());
-        if(file.getContentType().equals("image/png")) {
-            File newImage = new File(Paths.get(productImageLocation, id + ".png").toString());
-            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(newImage));
-            stream.write(file.getBytes());
-            stream.close();
-        }else{
+    public void updateProductImage(MultipartHttpServletRequest request, @PathVariable("id") String id) throws IOException {
+        Iterator<String> itr = request.getFileNames();
+        MultipartFile file = request.getFile(itr.next());
+        if (file.getContentType().equals("image/png")) {
+            productImageService.saveProductImage(id, file.getBytes());
+        } else {
             throw new ServiceException("File format not supported.");
         }
     }
