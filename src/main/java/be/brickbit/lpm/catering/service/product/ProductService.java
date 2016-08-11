@@ -73,7 +73,7 @@ public class ProductService extends AbstractService<Product> implements IProduct
 			throw new ServiceException("Cannot delete, product has entered order lifecycle.");
 		}
 
-		productRepository.delete(id);
+		productRepository.delete(product);
 	}
 
 	private ServiceException throwNotFoundException() {

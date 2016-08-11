@@ -4,6 +4,7 @@ import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.repository.ProductRepository;
+import be.brickbit.lpm.catering.repository.StockFlowRepository;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
 import be.brickbit.lpm.catering.service.stockproduct.command.EditStockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +35,9 @@ public class StockProductService extends AbstractService<StockProduct> implement
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private StockFlowRepository stockFlowRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -63,11 +68,17 @@ public class StockProductService extends AbstractService<StockProduct> implement
     @Override
     @Transactional
     public void delete(Long id){
-        if(productRepository.countByReceiptStockProductId(id) > 0){
-            throw new ServiceException("Can not delete, stock product is in use.");
+        StockProduct stockProduct = Optional.ofNullable(stockProductRepository.findOne(id)).orElseThrow(this::throwStockProductNotFoundException);
+
+        if(productRepository.countByReceiptStockProductId(id) > 0 || stockFlowRepository.countByDetailsStockProduct(stockProduct) > 0){
+            throw new ServiceException("Can not delete, stock product entered lifecycle.");
         }
 
-        stockProductRepository.delete(id);
+        stockProductRepository.delete(stockProduct);
+    }
+
+    private ServiceException throwStockProductNotFoundException() {
+        throw new ServiceException("Stock product not found");
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import be.brickbit.lpm.catering.repository.ProductRepository;
+import be.brickbit.lpm.catering.repository.StockFlowRepository;
 import be.brickbit.lpm.catering.service.stockproduct.command.EditStockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductMerger;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
@@ -52,6 +53,9 @@ public class StockProductServiceTest {
 
 	@Mock
 	private ProductRepository productRepository;
+
+	@Mock
+	private StockFlowRepository stockFlowRepository;
 
 	@InjectMocks
 	private StockProductService stockProductService;
@@ -108,21 +112,53 @@ public class StockProductServiceTest {
 	@Test
 	public void deletesStockProduct() throws Exception {
 		Long stockProductId = randomLong();
+		StockProduct stockProduct = StockProductFixture.getStockProductCola();
+
+		when(stockProductRepository.findOne(stockProductId)).thenReturn(stockProduct);
+		when(stockFlowRepository.countByDetailsStockProduct(stockProduct)).thenReturn(0);
 		when(productRepository.countByReceiptStockProductId(stockProductId)).thenReturn(0);
 
 		stockProductService.delete(stockProductId);
 
-		verify(stockProductRepository).delete(stockProductId);
+		verify(stockProductRepository).delete(stockProduct);
+	}
+
+	@Test
+	public void deletesStockProduct__StockProductNotExisting() throws Exception {
+		expectedException.expect(ServiceException.class);
+		expectedException.expectMessage("Stock product not found");
+
+		Long stockProductId = randomLong();
+
+		stockProductService.delete(stockProductId);
 	}
 
 	@Test
 	public void deletesStockProduct__StockProductInUse() throws Exception {
 		expectedException.expect(ServiceException.class);
-		expectedException.expectMessage("Can not delete, stock product is in use.");
+		expectedException.expectMessage("Can not delete, stock product entered lifecycle.");
 
 		Long stockProductId = randomLong();
 
+		StockProduct stockProduct = StockProductFixture.getStockProductCola();
+		when(stockProductRepository.findOne(stockProductId)).thenReturn(stockProduct);
+		when(stockFlowRepository.countByDetailsStockProduct(stockProduct)).thenReturn(0);
 		when(productRepository.countByReceiptStockProductId(stockProductId)).thenReturn(randomInt(1, 999));
+
+		stockProductService.delete(stockProductId);
+	}
+
+	@Test
+	public void deletesStockProduct__StockProductInStockEntries() throws Exception {
+		expectedException.expect(ServiceException.class);
+		expectedException.expectMessage("Can not delete, stock product entered lifecycle.");
+
+		Long stockProductId = randomLong();
+		StockProduct stockProduct = StockProductFixture.getStockProductCola();
+
+		when(stockProductRepository.findOne(stockProductId)).thenReturn(stockProduct);
+		when(stockFlowRepository.countByDetailsStockProduct(stockProduct)).thenReturn(randomInt(1, 999));
+		when(productRepository.countByReceiptStockProductId(stockProductId)).thenReturn(0);
 
 		stockProductService.delete(stockProductId);
 	}

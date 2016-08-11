@@ -177,5 +177,7 @@ public class ProductServiceTest {
         when(orderRepository.countByOrderLinesProductId(productId)).thenReturn(0);
 
         productService.delete(productId);
+
+        verify(productRepository, times(1)).delete(product);
     }
 }

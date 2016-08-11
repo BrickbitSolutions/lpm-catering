@@ -14,7 +14,7 @@ import be.brickbit.lpm.catering.domain.ProductType;
 import java.util.List;
 
 public class StockProductRepositoryIT extends AbstractRepoIT {
-    @Autowired(required = true)
+    @Autowired
     private StockProductRepository stockProductRepository;
 
     @Test
