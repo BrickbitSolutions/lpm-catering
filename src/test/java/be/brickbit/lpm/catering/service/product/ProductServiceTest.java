@@ -9,8 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import be.brickbit.lpm.catering.domain.ProductPreparation;
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.repository.OrderRepository;
+import be.brickbit.lpm.catering.service.product.command.EditProductCommand;
+import be.brickbit.lpm.catering.service.product.command.EditProductPreparationCommand;
+import be.brickbit.lpm.catering.service.product.mapper.ProductMerger;
+import be.brickbit.lpm.catering.service.product.mapper.ProductPreparationMerger;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,6 +46,10 @@ public class ProductServiceTest {
     private OrderRepository orderRepository;
     @Mock
     private ProductImageService productImageService;
+    @Mock
+    private ProductMerger productMerger;
+    @Mock
+    private ProductPreparationMerger productPreparationMerger;
 
     @InjectMocks
     private ProductService productService;
@@ -182,5 +191,39 @@ public class ProductServiceTest {
 
         verify(productImageService, times(1)).deleteProductImage(productId.toString());
         verify(productRepository, times(1)).delete(product);
+    }
+
+    @Test
+    public void updatesProduct() throws Exception {
+        Long productId = randomLong();
+
+        Product product = ProductFixture.getJupiler();
+        EditProductCommand command = new EditProductCommand();
+        ProductDto productDto = new ProductDto();
+
+        when(productRepository.findOne(productId)).thenReturn(product);
+        when(dtoMapper.map(product)).thenReturn(productDto);
+
+        ProductDto result = productService.updateProduct(productId, command, dtoMapper);
+
+        verify(productMerger, times(1)).merge(command, product);
+        assertThat(result).isSameAs(productDto);
+    }
+
+    @Test
+    public void updatesProductPreparation() throws Exception {
+        Long productId = randomLong();
+
+        Product product = ProductFixture.getJupiler();
+        EditProductPreparationCommand command = new EditProductPreparationCommand();
+        ProductDto productDto = new ProductDto();
+
+        when(productRepository.findOne(productId)).thenReturn(product);
+        when(dtoMapper.map(product)).thenReturn(productDto);
+
+        ProductDto result = productService.updateProductPreparation(productId, command, dtoMapper);
+
+        verify(productPreparationMerger, times(1)).merge(command, product);
+        assertThat(result).isSameAs(productDto);
     }
 }

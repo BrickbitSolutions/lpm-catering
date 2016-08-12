@@ -3,6 +3,8 @@ package be.brickbit.lpm.catering.controller;
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.service.product.IProductService;
 import be.brickbit.lpm.catering.service.product.command.CreateProductCommand;
+import be.brickbit.lpm.catering.service.product.command.EditProductCommand;
+import be.brickbit.lpm.catering.service.product.command.EditProductPreparationCommand;
 import be.brickbit.lpm.catering.service.product.dto.ProductDetailsDto;
 import be.brickbit.lpm.catering.service.product.dto.ProductDto;
 import be.brickbit.lpm.catering.service.product.mapper.ProductDetailsDtoMapper;
@@ -63,6 +65,20 @@ public class ProductController extends AbstractController{
         return productService.findAllEnabledByType(productType, productDtoMapper);
     }
 
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ProductDto updateProduct(@PathVariable("id") Long id, @RequestBody @Valid EditProductCommand command) {
+        return productService.updateProduct(id, command, productDtoMapper);
+    }
+
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
+    @RequestMapping(value = "/{id}/preparation", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ProductDto updateProductPreparation(@PathVariable("id") Long id, @RequestBody @Valid EditProductPreparationCommand command) {
+        return productService.updateProductPreparation(id, command, productDtoMapper);
+    }
+
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -80,7 +96,7 @@ public class ProductController extends AbstractController{
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @RequestMapping(value = "/{id}/available", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateProduct(@PathVariable("id") Long id) {
+    public void updateProductAvailability(@PathVariable("id") Long id) {
         productService.toggleAvailability(id);
     }
 

@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.service.product.command.EditProductCommand;
+import be.brickbit.lpm.catering.service.product.command.EditProductPreparationCommand;
 import be.brickbit.lpm.catering.service.product.mapper.ProductMerger;
+import be.brickbit.lpm.catering.service.product.mapper.ProductPreparationMerger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,9 @@ public class ProductService extends AbstractService<Product> implements IProduct
 
 	@Autowired
 	private ProductMerger productMerger;
+
+	@Autowired
+	private ProductPreparationMerger productPreparationMerger;
 
 	@Override
 	@Transactional
@@ -74,6 +79,16 @@ public class ProductService extends AbstractService<Product> implements IProduct
 		Product product = Optional.ofNullable(productRepository.findOne(productId)).orElseThrow(this::throwNotFoundException);
 
 		productMerger.merge(command, product);
+
+		return dtoMapper.map(product);
+	}
+
+	@Override
+	@Transactional
+	public <T> T updateProductPreparation(Long productId, EditProductPreparationCommand command, ProductMapper<T> dtoMapper){
+		Product product = Optional.ofNullable(productRepository.findOne(productId)).orElseThrow(this::throwNotFoundException);
+
+		productPreparationMerger.merge(command, product);
 
 		return dtoMapper.map(product);
 	}
