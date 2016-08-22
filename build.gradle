@@ -13,10 +13,13 @@ apply plugin: 'java'
 
 group = 'be.brickbit'
 version = '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
-     mavenCentral()
+    mavenCentral()
 }
+
 dependencies {
     //Spring
     compile 'org.springframework.boot:spring-boot-starter-web'
