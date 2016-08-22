@@ -12,10 +12,10 @@ public class StockFlowUtil {
             case LOSS:
             case RETURNED:
             case SOLD:
-                stockFlowDetail.getStockProduct().setStockLevel(deductQuantity(stockFlowDetail.getStockProduct().getStockLevel(), stockFlowDetail.getQuantity()));
+                deductStock(stockFlowDetail.getStockProduct(), stockFlowDetail.getQuantity());
                 break;
             case PURCHASED:
-                stockFlowDetail.getStockProduct().setStockLevel(addQuantity(stockFlowDetail.getStockProduct().getStockLevel(), stockFlowDetail.getQuantity()));
+                addStock(stockFlowDetail.getStockProduct(), stockFlowDetail.getQuantity());
                 break;
             default:
                 throw new ServiceException("Calculation for Stock flow type '" + type.toString() + "' is not implemented.");
@@ -38,16 +38,23 @@ public class StockFlowUtil {
         }
     }
 
-    private static Integer addQuantity(Integer stockLevel, Integer quantity) {
-        return stockLevel + quantity;
+    private static void addStock(StockProduct stockProduct, Integer quantity) {
+        Integer quantityToAdd = quantity;
+
+        if(stockProduct.getRemainingConsumptions() == 0){
+            stockProduct.setRemainingConsumptions(stockProduct.getMaxConsumptions());
+            quantityToAdd--;
+        }
+
+        stockProduct.setStockLevel(stockProduct.getStockLevel() + quantityToAdd);
     }
 
-    private static Integer deductQuantity(Integer stockLevel, Integer quantity) {
-        if(quantity > stockLevel){
+    private static void deductStock(StockProduct stockProduct, Integer quantity) {
+        if(quantity > stockProduct.getStockLevel()){
             throw new ServiceException("Stock or Consumption level cannot fall below zero");
         }
 
-        return stockLevel - quantity;
+        stockProduct.setStockLevel(stockProduct.getStockLevel() - quantity);
     }
 
     public static Integer calculateCurrentStockLevel(StockProduct stockProduct) {
@@ -59,7 +66,7 @@ public class StockFlowUtil {
     }
 
 
-    private static void deductStock(StockProduct stockProduct, Integer quantityToProcess){
+    private static void deductStockConsumptions(StockProduct stockProduct, Integer quantityToProcess){
         if(calculateCurrentStockLevel(stockProduct) < quantityToProcess){
             throw new ServiceException(String.format("Not enough '%s' in stock to process order!", stockProduct.getName()));
         }
@@ -81,7 +88,7 @@ public class StockFlowUtil {
         }
     }
 
-    private static void addStock(StockProduct stockProduct, Integer quantityToProcess){
+    private static void addStockConsumptions(StockProduct stockProduct, Integer quantityToProcess){
         Integer quantityWithRemainingConsumptions = quantityToProcess + stockProduct.getRemainingConsumptions();
 
         if(quantityWithRemainingConsumptions > stockProduct.getMaxConsumptions()){
@@ -97,9 +104,13 @@ public class StockFlowUtil {
 
     public static void calculateNewStockLevel(StockProduct stockProduct, Integer quantityToProcess) {
         if(quantityToProcess < 0){
-            deductStock(stockProduct, Math.abs(quantityToProcess));
+            deductStockConsumptions(stockProduct, Math.abs(quantityToProcess));
         }else{
-            addStock(stockProduct, quantityToProcess);
+            if(stockProduct.getMaxConsumptions() == 1){
+                addStock(stockProduct, quantityToProcess);
+            }else {
+                addStockConsumptions(stockProduct, quantityToProcess);
+            }
         }
     }
 }

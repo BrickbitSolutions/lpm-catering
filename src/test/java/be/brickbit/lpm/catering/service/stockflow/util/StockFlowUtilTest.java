@@ -260,4 +260,33 @@ public class StockFlowUtilTest {
         assertThat(product.getMaxConsumptions()).isEqualTo(5);
         assertThat(product.getStockLevel()).isEqualTo(4);
     }
+
+	@Test
+	public void testCalculateNewStockLevel__OneMaxConsumption__NoRemainingConsumptions() throws Exception {
+		StockProduct product = StockProductFixture.getStockProductCola();
+		product.setRemainingConsumptions(0);
+		product.setMaxConsumptions(1);
+		product.setStockLevel(5);
+
+		StockFlowUtil.calculateNewStockLevel(product, 2);
+
+		assertThat(product.getRemainingConsumptions()).isEqualTo(1);
+		assertThat(product.getMaxConsumptions()).isEqualTo(1);
+		assertThat(product.getStockLevel()).isEqualTo(6);
+	}
+
+	@Test
+	public void testCalculateNewStockLevel__OneMaxConsumption__OneRemainingConsumption() throws
+			Exception {
+		StockProduct product = StockProductFixture.getStockProductCola();
+		product.setRemainingConsumptions(1);
+		product.setMaxConsumptions(1);
+		product.setStockLevel(5);
+
+		StockFlowUtil.calculateNewStockLevel(product, 2);
+
+		assertThat(product.getRemainingConsumptions()).isEqualTo(1);
+		assertThat(product.getMaxConsumptions()).isEqualTo(1);
+		assertThat(product.getStockLevel()).isEqualTo(7);
+	}
 }
