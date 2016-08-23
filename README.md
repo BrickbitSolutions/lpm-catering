@@ -16,7 +16,7 @@ Compile the code with Gradle 2.14 or with the delivered Gradle wrapper. This wil
 $ Gradle build
 ```
 
-In order to start the module you will have to do some configuration according to your own environment using a spring boot application.properties file. Without this file, the module will not start.
+In order to start the module you will have to do some configuration according to your own environment using a spring boot application.properties file. Without this file, the module will not start. Here's an example we use:
 
 ```
 datasource.primary.url=jdbc:postgresql://localhost:32775/lpmc
