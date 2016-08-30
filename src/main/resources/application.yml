@@ -1,0 +1,15 @@
+spring:
+  jackson:
+    serialization:
+      indent_output: true
+      WRITE_DATES_AS_TIMESTAMPS: false
+  application:
+    name: LPM Catering
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:8080/user/me
+logging:
+  level: debug
+server:
+  port: 8081

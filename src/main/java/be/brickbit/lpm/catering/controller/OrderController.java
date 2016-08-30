@@ -72,7 +72,7 @@ public class OrderController extends AbstractController {
     public OrderDto saveDirectOrder(@RequestBody @Valid DirectOrderCommand command){
         OrderDto order = orderService.placeDirectOrder(command, orderDtoMapper, getCurrentUser());
 
-        queueService.queueAllTasks(order.getId(), queueDtoMapper).stream().forEach(this::pushToQueue);
+        queueService.queueAllTasks(order.getId(), queueDtoMapper).forEach(this::pushToQueue);
 
         return order;
     }
@@ -83,7 +83,7 @@ public class OrderController extends AbstractController {
     public OrderDto saveRemoteOrder(@RequestBody @Valid RemoteOrderCommand command){
         OrderDto order =  orderService.placeRemoteOrder(command, orderDtoMapper, getCurrentUser());
 
-        queueService.queueAllTasks(order.getId(), queueDtoMapper).stream().forEach(this::pushToQueue);
+        queueService.queueAllTasks(order.getId(), queueDtoMapper).forEach(this::pushToQueue);
 
         return order;
     }

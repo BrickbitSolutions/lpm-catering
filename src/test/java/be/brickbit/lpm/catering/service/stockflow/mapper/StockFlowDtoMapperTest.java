@@ -7,7 +7,7 @@ import be.brickbit.lpm.catering.service.stockflow.dto.StockFlowDto;
 import be.brickbit.lpm.catering.service.user.dto.UserDto;
 import be.brickbit.lpm.catering.service.user.mapper.UserDtoMapper;
 import be.brickbit.lpm.catering.util.DateUtils;
-import be.brickbit.lpm.core.service.IUserService;
+import be.brickbit.lpm.core.client.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class StockFlowDtoMapperTest {
 
     @Mock
-    private IUserService userService;
+    private UserService userService;
 
     @Mock
     private UserDtoMapper userDtoMapper;
