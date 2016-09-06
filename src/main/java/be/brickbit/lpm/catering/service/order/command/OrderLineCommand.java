@@ -3,6 +3,15 @@ package be.brickbit.lpm.catering.service.order.command;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class OrderLineCommand {
     @NotNull(message = "Quantity cannot be empty.")
     @Min(value = 1, message = "Quantity cannot be negative or 0.")
@@ -10,20 +19,4 @@ public class OrderLineCommand {
 
     @NotNull(message = "ProductId cannot be empty.")
     private Long productId;
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
 }

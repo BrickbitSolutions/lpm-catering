@@ -1,11 +1,5 @@
 package be.brickbit.lpm.catering.controller;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.validation.Valid;
-
-import be.brickbit.lpm.catering.service.stockproduct.command.EditStockProductCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,12 +8,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.validation.Valid;
 
 import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.service.stockproduct.IStockProductService;
+import be.brickbit.lpm.catering.service.stockproduct.command.EditStockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.dto.StockProductDto;
 import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductDtoMapper;
@@ -27,13 +28,20 @@ import be.brickbit.lpm.infrastructure.AbstractController;
 
 @RequestMapping(value = "stockproduct")
 @RestController
-public class StockProductController extends AbstractController{
+public class StockProductController extends AbstractController {
 
     @Autowired
     private IStockProductService stockProductService;
 
     @Autowired
     private StockProductDtoMapper stockProductDtoMapper;
+
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public StockProductDto saveNewStockProduct(@RequestBody @Valid StockProductCommand command) {
+        return stockProductService.save(command, stockProductDtoMapper);
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -54,42 +62,33 @@ public class StockProductController extends AbstractController{
         stockProductService.delete(id);
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public List<StockProductDto> getAllStockProducts(){
+    public List<StockProductDto> getAllStockProducts(
+            @RequestParam(value = "type", required = false) ProductType type,
+            @RequestParam(value = "clearance", required = false) ClearanceType clearance) {
+
+        if(type != null && clearance != null){
+            return stockProductService.findAllByTypeAndClearance(type, clearance, stockProductDtoMapper);
+        }
+
+        if(type != null){
+            return stockProductService.findAllByType(type, stockProductDtoMapper);
+        }
+
         return stockProductService.findAll(stockProductDtoMapper);
-    }
-
-    @RequestMapping(value = "/all/{type}/{clearance}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
-    @ResponseStatus(HttpStatus.OK)
-    public List<StockProductDto> getAllStockProductsByTypeAndClearance(@PathVariable("type") ProductType type, @PathVariable("clearance") ClearanceType clearance){
-        return stockProductService.findAllByTypeAndClearance(type, clearance, stockProductDtoMapper);
-    }
-
-    @RequestMapping(value = "/all/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<StockProductDto> getAllStockProductsByType(@PathVariable("type") ProductType type) {
-        return stockProductService.findAllByType(type, stockProductDtoMapper);
-    }
-
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
-    @ResponseStatus(HttpStatus.CREATED)
-    public StockProductDto saveNewStockProduct(@RequestBody @Valid StockProductCommand command){
-        return stockProductService.save(command, stockProductDtoMapper);
     }
 
     @RequestMapping(value = "/types", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
-    public List<ProductType> getAllProductTypes(){
+    public List<ProductType> getAllProductTypes() {
         return Arrays.asList(ProductType.values());
     }
 
     @RequestMapping(value = "/clearance", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
-    public List<ClearanceType> getAllClearanceTypes(){
+    public List<ClearanceType> getAllClearanceTypes() {
         return Arrays.asList(ClearanceType.values());
     }
 }

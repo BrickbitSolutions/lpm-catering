@@ -15,6 +15,7 @@ public class StockProductCommandToEntityMapper implements Mapper<StockProductCom
         stockProduct.setMaxConsumptions(source.getMaxConsumptions());
         stockProduct.setClearance(source.getClearance());
         stockProduct.setProductType(source.getProductType());
+        stockProduct.setAvgConsumption(0);
 
         if(source.getStockLevel() > 0){
             stockProduct.setRemainingConsumptions(source.getMaxConsumptions());

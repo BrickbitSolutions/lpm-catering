@@ -1,8 +1,5 @@
 package be.brickbit.lpm.catering.controller;
 
-import be.brickbit.lpm.catering.domain.OrderStatus;
-import be.brickbit.lpm.catering.service.task.TaskService;
-import be.brickbit.lpm.infrastructure.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,9 +9,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import be.brickbit.lpm.catering.domain.OrderStatus;
+import be.brickbit.lpm.catering.service.task.TaskService;
+import be.brickbit.lpm.infrastructure.AbstractController;
+
 @RestController
 @RequestMapping("task")
-public class TaskController extends AbstractController{
+public class TaskController extends AbstractController {
     @Autowired
     private TaskService taskService;
 

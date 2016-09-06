@@ -22,21 +22,17 @@ public class QueueService implements IQueueService {
     @Autowired
     private PreparationTaskRepository preparationTaskRepository;
 
-    @Autowired
-    private OrderRepository orderRepository;
-
     @Override
     @Transactional
-    public <T> List<T> queueAllTasks(Long orderId, QueueMapper<T> dtoMapper){
-        Order order = orderRepository.findOne(orderId);
+    public <T> List<T> queueOrder(Order order, QueueMapper<T> dtoMapper){
         return order.getOrderLines()
                 .stream()
                 .filter(orderLine -> orderLine.getProduct().getPreparation() != null)
-                .map(orderLine -> queueTask(orderLine, dtoMapper))
+                .map(orderLine -> queueOrderLine(orderLine, dtoMapper))
                 .collect(Collectors.toList());
     }
 
-    private <T> T queueTask(OrderLine orderLine, QueueMapper<T> dtoMapper) {
+    private <T> T queueOrderLine(OrderLine orderLine, QueueMapper<T> dtoMapper) {
         PreparationTask task = new PreparationTask();
 
         task.setOrderLine(orderLine);

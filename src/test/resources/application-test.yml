@@ -1,0 +1,36 @@
+server:
+    port: 9002
+spring:
+    datasource:
+        password: ''
+        url: jdbc:h2:mem:lpmc;DB_CLOSE_ON_EXIT=FALSE
+        username: sa
+    jpa:
+        database: H2
+        database-platform: org.hibernate.dialect.H2Dialect
+        generate-ddl: false
+        hibernate:
+            format-sql: true
+        show-sql: true
+security:
+  oauth2:
+    client:
+      clientId: LPM
+      clientSecret: random_secret_4_jay
+      accessTokenUri: http://localhost:8080/oauth/token
+      userAuthorizationUri: http://localhost:9999/oauth/authorize
+      tokenName: LPM_token
+    resource:
+      user-info-uri: http://localhost:9999/user/me
+lpm:
+  core:
+    url: http://localhost:9999
+  storage:
+    images:
+      products: /tmp/images
+logging:
+    level:
+        org:
+            springframework:
+                messaging: TRACE
+                web: DEBUG

@@ -43,6 +43,7 @@ public class CreateProductCommandToEntityMapperTest {
         assertThat(product.getReceipt().contains(receiptLine1)).isTrue();
         assertThat(product.getReceipt().contains(receiptLine2)).isTrue();
         assertThat(product.getClearance()).isEqualTo(ClearanceType.PLUS_16);
+        assertThat(product.getAvgConsumption()).isEqualTo(0);
         assertThat(product.getPreparation()).isNull();
         assertThat(product.getAvailable()).isFalse();
     }
@@ -69,11 +70,6 @@ public class CreateProductCommandToEntityMapperTest {
         assertThat(preparation.getInstructions()).isEqualTo(command.getInstructions());
         assertThat(preparation.getQueueName()).isEqualTo(command.getQueueName());
         assertThat(preparation.getTimer()).isEqualTo(command.getTimerInMinutes());
-
-    }
-
-    @Test
-    public void testMap__e() throws Exception {
 
     }
 }

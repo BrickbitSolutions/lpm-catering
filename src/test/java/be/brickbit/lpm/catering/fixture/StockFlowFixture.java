@@ -1,5 +1,6 @@
 package be.brickbit.lpm.catering.fixture;
 
+import be.brickbit.lpm.catering.domain.StockCorrectionLevel;
 import be.brickbit.lpm.catering.domain.StockFlow;
 import be.brickbit.lpm.catering.domain.StockFlowDetail;
 import be.brickbit.lpm.catering.domain.StockFlowType;
@@ -15,6 +16,7 @@ public class StockFlowFixture {
         stockFlow.setUserId(1L);
         stockFlow.setTimestamp(LocalDateTime.now());
         stockFlow.setStockFlowType(StockFlowType.PURCHASED);
+        stockFlow.setLevel(StockCorrectionLevel.CONSUMPTION);
         stockFlow.setDetails(Collections.singletonList(getStockFlowDetail()));
 
         return stockFlow;

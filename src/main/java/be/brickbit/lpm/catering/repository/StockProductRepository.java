@@ -4,10 +4,12 @@ import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.domain.StockProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
-public interface StockProductRepository extends JpaRepository<StockProduct, Long> {
+public interface StockProductRepository extends JpaRepository<StockProduct, Long>,
+        JpaSpecificationExecutor<StockProduct>{
     List<StockProduct> findByProductTypeAndClearance(ProductType someType, ClearanceType someClearance);
     List<StockProduct> findByProductType(ProductType someType);
 }

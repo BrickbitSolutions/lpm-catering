@@ -2,6 +2,9 @@ package be.brickbit.lpm.catering.service.product.dto;
 
 import java.util.List;
 
+import lombok.Getter;
+
+@Getter
 public class ProductDetailsDto {
     private String queueName;
     private String instructions;
@@ -21,21 +24,5 @@ public class ProductDetailsDto {
         instructions = "";
         queueName = "";
         timerInMinutes = 0;
-    }
-
-    public String getQueueName() {
-        return queueName;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public Integer getTimerInMinutes() {
-        return timerInMinutes;
-    }
-
-    public List<ReceiptDto> getProductsToInclude() {
-        return productsToInclude;
     }
 }

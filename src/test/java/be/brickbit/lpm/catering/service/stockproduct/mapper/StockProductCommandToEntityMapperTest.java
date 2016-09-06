@@ -13,7 +13,7 @@ public class StockProductCommandToEntityMapperTest {
 
     @Test
     public void testMapNoStock() throws Exception {
-        StockProductCommand command = StockProductCommandFixture.getSaveCommand();
+        StockProductCommand command = StockProductCommandFixture.mutable();
         command.setStockLevel(0);
 
         StockProduct stockProduct = mapper.map(command);
@@ -23,12 +23,13 @@ public class StockProductCommandToEntityMapperTest {
         assertThat(stockProduct.getProductType()).isEqualTo(command.getProductType());
         assertThat(stockProduct.getClearance()).isEqualTo(command.getClearance());
         assertThat(stockProduct.getMaxConsumptions()).isEqualTo(command.getMaxConsumptions());
+        assertThat(stockProduct.getAvgConsumption()).isEqualTo(0);
         assertThat(stockProduct.getRemainingConsumptions()).isEqualTo(0);
     }
 
     @Test
     public void testMapMultipleConsumptionsPerProduct() throws Exception {
-        StockProductCommand command = StockProductCommandFixture.getSaveCommand();
+        StockProductCommand command = StockProductCommandFixture.mutable();
         command.setMaxConsumptions(2);
         command.setStockLevel(20);
 
@@ -41,7 +42,7 @@ public class StockProductCommandToEntityMapperTest {
 
     @Test
     public void testMapBaseStock() throws Exception {
-        StockProductCommand command = StockProductCommandFixture.getSaveCommand();
+        StockProductCommand command = StockProductCommandFixture.mutable();
         command.setStockLevel(10);
 
         StockProduct stockProduct = mapper.map(command);

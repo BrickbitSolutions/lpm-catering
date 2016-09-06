@@ -7,6 +7,8 @@ import be.brickbit.lpm.catering.service.stockproduct.command.EditStockProductCom
 import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductMapper;
 import be.brickbit.lpm.infrastructure.Service;
+
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
