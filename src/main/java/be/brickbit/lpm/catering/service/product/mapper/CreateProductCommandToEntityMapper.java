@@ -37,6 +37,7 @@ public class CreateProductCommandToEntityMapper implements Mapper<CreateProductC
             product.setClearance(ClearanceType.ANY);
         }
 
+        product.setAvgConsumption(0);
         product.setPreparation(createPreparation(someCreateProductCommand));
         product.setAvailable(false);
 

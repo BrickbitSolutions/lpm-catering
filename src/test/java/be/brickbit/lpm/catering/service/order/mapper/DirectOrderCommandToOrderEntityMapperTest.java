@@ -1,10 +1,5 @@
 package be.brickbit.lpm.catering.service.order.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -19,54 +14,54 @@ import be.brickbit.lpm.catering.fixture.DirectOrderCommandFixture;
 import be.brickbit.lpm.catering.fixture.OrderLineFixture;
 import be.brickbit.lpm.catering.fixture.UserFixture;
 import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.repository.UserRepository;
+import be.brickbit.lpm.core.client.UserService;
+import be.brickbit.lpm.core.client.dto.UserDetailsDto;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DirectOrderCommandToOrderEntityMapperTest {
-	@Mock
-	private OrderLineCommandToEntityMapper orderLineCommandToEntityMapper;
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+    @Mock
+    private OrderLineCommandToEntityMapper orderLineCommandToEntityMapper;
+    @Mock
+    private UserService userService;
+    @InjectMocks
+    private DirectOrderCommandToOrderEntityMapper mapper;
 
-	@Mock
-	private UserRepository userRepository;
+    @Test
+    public void testMap() throws Exception {
+        DirectOrderCommand command = DirectOrderCommandFixture.getDirectOrderCommand();
 
-	@InjectMocks
-	private DirectOrderCommandToOrderEntityMapper mapper;
+        UserDetailsDto cateringAdmin = UserFixture.mutable();
+        OrderLine jupilerOrderLine = OrderLineFixture.getJupilerOrderLine();
+        OrderLine pizzaOrderLine = OrderLineFixture.getPizzaOrderLine();
 
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
+        when(userService.findBySeatNumber(command.getSeatNumber())).thenReturn(cateringAdmin);
+        when(orderLineCommandToEntityMapper.map(command.getOrderLines().get(0))).thenReturn(jupilerOrderLine);
+        when(orderLineCommandToEntityMapper.map(command.getOrderLines().get(1))).thenReturn(pizzaOrderLine);
 
-	@Test
-	public void testMap() throws Exception {
-		DirectOrderCommand command = DirectOrderCommandFixture.getDirectOrderCommand();
+        Order order = mapper.map(command);
 
-		User cateringAdmin = UserFixture.getCateringAdmin();
-		OrderLine jupilerOrderLine = OrderLineFixture.getJupilerOrderLine();
-		OrderLine pizzaOrderLine = OrderLineFixture.getPizzaOrderLine();
+        assertThat(order.getOrderLines()).hasSize(2);
+        assertThat(order.getOrderLines().get(0)).isSameAs(jupilerOrderLine);
+        assertThat(order.getOrderLines().get(1)).isSameAs(pizzaOrderLine);
+        assertThat(order.getUserId()).isEqualTo(cateringAdmin.getId());
+        assertThat(order.getComment()).isEqualTo(command.getComment());
+    }
 
-		when(userRepository.findBySeatNumber(command.getSeatNumber())).thenReturn(Optional.of(cateringAdmin));
-		when(orderLineCommandToEntityMapper.map(command.getOrderLines().get(0))).thenReturn(jupilerOrderLine);
-		when(orderLineCommandToEntityMapper.map(command.getOrderLines().get(1))).thenReturn(pizzaOrderLine);
+    @Test
+    public void testMap__InvalidUser() throws Exception {
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage("Invalid user");
 
-		Order order = mapper.map(command);
+        final DirectOrderCommand directOrderCommand = DirectOrderCommandFixture.getDirectOrderCommand();
 
-		assertThat(order.getOrderLines()).hasSize(2);
-		assertThat(order.getOrderLines().get(0)).isSameAs(jupilerOrderLine);
-		assertThat(order.getOrderLines().get(1)).isSameAs(pizzaOrderLine);
-		assertThat(order.getUserId()).isEqualTo(cateringAdmin.getId());
-		assertThat(order.getComment()).isEqualTo(command.getComment());
-	}
+        when(userService.findBySeatNumber(directOrderCommand.getSeatNumber())).thenReturn(null);
 
-	@Test
-	public void testMap__InvalidUser() throws Exception {
-		expectedException.expect(ServiceException.class);
-		expectedException.expectMessage("Invalid user");
-
-		final DirectOrderCommand directOrderCommand = DirectOrderCommandFixture.getDirectOrderCommand();
-
-		when(userRepository.findBySeatNumber(directOrderCommand.getSeatNumber())).thenReturn(Optional.empty());
-
-		mapper.map(directOrderCommand);
-	}
+        mapper.map(directOrderCommand);
+    }
 }

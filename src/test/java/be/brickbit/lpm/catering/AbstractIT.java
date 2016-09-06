@@ -5,6 +5,8 @@ import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import be.brickbit.lpm.catering.domain.QOrder;
+
 @Transactional
 public abstract class AbstractIT {
 	@Autowired

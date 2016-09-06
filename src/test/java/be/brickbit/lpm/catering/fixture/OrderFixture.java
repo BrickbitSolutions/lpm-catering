@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.fixture;
 
+import com.google.common.collect.Lists;
+
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.OrderStatus;
 
@@ -15,7 +17,7 @@ public class OrderFixture {
         order.setUserId(1L);
         order.setPlacedByUserId(1L);
         order.setTimestamp(LocalDateTime.now());
-        order.setOrderLines(Arrays.asList(OrderLineFixture.getJupilerOrderLine(), OrderLineFixture.getPizzaOrderLine()));
+        order.setOrderLines(Lists.newArrayList(OrderLineFixture.getJupilerOrderLine(), OrderLineFixture.getPizzaOrderLine()));
         order.setComment(randomString());
 
         return order;

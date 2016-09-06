@@ -7,9 +7,21 @@ spring:
     name: LPM Catering
 security:
   oauth2:
+    client:
+          clientId: LPM
+          clientSecret: random_secret_4_jay
+          accessTokenUri: http://localhost:8080/oauth/token
+          userAuthorizationUri: http://localhost:8080/oauth/authorize
+          tokenName: LPM_token
     resource:
       user-info-uri: http://localhost:8080/user/me
+lpm:
+  core:
+    url: http://localhost:8080
+  storage:
+    images:
+      products: /tmp/images
 logging:
-  level: debug
+  level: trace
 server:
   port: 8081

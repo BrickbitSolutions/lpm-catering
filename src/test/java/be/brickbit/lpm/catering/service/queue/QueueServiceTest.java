@@ -29,9 +29,6 @@ public class QueueServiceTest {
     private PreparationTaskRepository preparationTaskRepository;
 
     @Mock
-    private OrderRepository orderRepository;
-
-    @Mock
     private QueueDtoMapper mapper;
 
     @InjectMocks
@@ -41,11 +38,10 @@ public class QueueServiceTest {
     //Should only queue tasks if there is a preparation defined for a product.
     public void testQueueAllTasks() throws Exception {
         Order order = OrderFixture.mutable();
-        when(orderRepository.findOne(order.getId())).thenReturn(order);
         when(mapper.map(any(PreparationTask.class))).thenReturn(new QueueDto());
 
         Long preparationTasks = order.getOrderLines().stream().filter(orderLine -> orderLine.getProduct().getPreparation() != null).count();
-        List<QueueDto> result = service.queueAllTasks(order.getId(), mapper);
+        List<QueueDto> result = service.queueOrder(order, mapper);
 
         verify(preparationTaskRepository, times(preparationTasks.intValue())).save(any(PreparationTask.class));
         assertThat(result.size()).isEqualTo(preparationTasks.intValue());

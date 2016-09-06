@@ -48,7 +48,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		StockFlowDto result = stockFlowService.save(command, UserFixture.getCateringAdmin(), dtoMapper);
+		StockFlowDto result = stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
 
 		assertThat(result).isSameAs(dto);
 
@@ -70,7 +70,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		stockFlowService.save(command, UserFixture.getCateringAdmin(), dtoMapper);
+		stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
 
 		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
 	}
@@ -92,7 +92,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		stockFlowService.save(command, UserFixture.getCateringAdmin(), dtoMapper);
+		stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
 
 		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(3);
 		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(detail
@@ -114,7 +114,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		stockFlowService.save(command, UserFixture.getCateringAdmin(), dtoMapper);
+		stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
 
 		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
 	}
@@ -138,7 +138,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		stockFlowService.save(command, UserFixture.getCateringAdmin(), dtoMapper);
+		stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
 
 		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(3);
 		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(detail
@@ -164,7 +164,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		stockFlowService.save(command, UserFixture.getCateringAdmin(), dtoMapper);
+		stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
 
 		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
 		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(1);

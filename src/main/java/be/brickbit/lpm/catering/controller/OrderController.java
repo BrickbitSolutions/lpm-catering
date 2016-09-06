@@ -5,7 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import be.brickbit.lpm.catering.domain.OrderStatus;
-import be.brickbit.lpm.catering.domain.ProductType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,15 +37,6 @@ public class OrderController extends AbstractController {
     @Autowired
     private OrderDtoMapper orderDtoMapper;
 
-    @Autowired
-    private IQueueService queueService;
-
-    @Autowired
-    private QueueDtoMapper queueDtoMapper;
-
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
-
     @RequestMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
@@ -61,6 +52,7 @@ public class OrderController extends AbstractController {
     }
 
     @RequestMapping(value = "/{id}/process", method = RequestMethod.PUT)
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void processOrder(@PathVariable("id") Long id) {
         orderService.processOrder(id);
@@ -70,25 +62,13 @@ public class OrderController extends AbstractController {
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto saveDirectOrder(@RequestBody @Valid DirectOrderCommand command){
-        OrderDto order = orderService.placeDirectOrder(command, orderDtoMapper, getCurrentUser());
-
-        queueService.queueAllTasks(order.getId(), queueDtoMapper).forEach(this::pushToQueue);
-
-        return order;
+        return orderService.placeDirectOrder(command, orderDtoMapper, getCurrentUser());
     }
 
     @RequestMapping(value = "/remote", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @PreAuthorize(value = "hasAnyRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDto saveRemoteOrder(@RequestBody @Valid RemoteOrderCommand command){
-        OrderDto order =  orderService.placeRemoteOrder(command, orderDtoMapper, getCurrentUser());
-
-        queueService.queueAllTasks(order.getId(), queueDtoMapper).forEach(this::pushToQueue);
-
-        return order;
-    }
-
-    private void pushToQueue(QueueDto message){
-        messagingTemplate.convertAndSend("/topic/kitchen.queue." + message.getQueueName(), message);
+        return orderService.placeRemoteOrder(command, orderDtoMapper, getCurrentUser());
     }
 }

@@ -24,6 +24,9 @@ import be.brickbit.lpm.catering.service.order.mapper.DirectOrderCommandToOrderEn
 import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
 import be.brickbit.lpm.catering.service.order.mapper.OrderMapper;
 import be.brickbit.lpm.catering.service.order.mapper.RemoteOrderCommandToEntityMapper;
+import be.brickbit.lpm.catering.service.queue.IQueueService;
+import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
+import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
 import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 import be.brickbit.lpm.infrastructure.AbstractService;
@@ -49,6 +52,12 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     private OrderDtoMapper orderDtoMapper;
 
     @Autowired
+    private IQueueService queueService;
+
+    @Autowired
+    private QueueDtoMapper queueDtoMapper;
+
+    @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
     @Override
@@ -62,6 +71,8 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         setOrderLineStatus(order, OrderStatus.COMPLETED);
 
         orderRepository.save(order);
+        queueService.queueOrder(order, queueDtoMapper).forEach(this::pushToKitchenQueue);
+
         return dtoMapper.map(order);
     }
 
@@ -107,8 +118,9 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 
         checkValidOrder(order, user);
         setOrderLineStatus(order, OrderStatus.READY);
-
         orderRepository.save(order);
+        queueService.queueOrder(order, queueDtoMapper).forEach(this::pushToKitchenQueue);
+
         pushToTakeOutQueue(order);
 
         return dtoMapper.map(order);
@@ -126,6 +138,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     }
 
     @Override
+    @Transactional
     public void processOrder(Long id) {
         Order order = orderRepository.findOne(id);
 
@@ -140,6 +153,10 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         if (order.getOrderLines().stream().filter(orderLine -> orderLine.getStatus() == OrderStatus.READY).count() > 0) {
             messagingTemplate.convertAndSend("/topic/zanzibar.queue", orderDtoMapper.map(order));
         }
+    }
+
+    private void pushToKitchenQueue(QueueDto orderTask){
+        messagingTemplate.convertAndSend("/topic/kitchen.queue." + orderTask.getQueueName(), orderTask);
     }
 
     @Override

@@ -18,7 +18,7 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    maven{
+    maven {
         url 'https://repo.spring.io/libs-snapshot'
     }
 }
@@ -48,10 +48,12 @@ dependencies {
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     compile 'org.projectlombok:lombok'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'org.springframework.security:spring-security-test'
     testCompile 'org.assertj:assertj-core'
     testCompile 'org.easytesting:fest-reflect:1.4.1'
     testCompile 'com.jayway.jsonpath:json-path'
     testCompile 'com.jayway.jsonpath:json-path-assert'
+    testCompile "com.github.tomakehurst:wiremock:2.1.11"
 }
 
 task wrapper(type: Wrapper) {

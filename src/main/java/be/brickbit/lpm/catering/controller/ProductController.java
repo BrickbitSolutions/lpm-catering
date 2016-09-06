@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,32 +38,29 @@ public class ProductController extends AbstractController{
     @Autowired
     private ProductDetailsDtoMapper productDetailsDtoMapper;
 
-    @RequestMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto saveNewProduct(@RequestBody @Valid CreateProductCommand someCreateProductCommand){
         return productService.save(someCreateProductCommand, productDtoMapper);
     }
 
-    @RequestMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductDto> getAllProducts(){
+    public List<ProductDto> getAllProducts(
+            @RequestParam(value = "type", required = false) ProductType productType,
+            @RequestParam(value = "enabled", required = false, defaultValue = "false") Boolean enabled
+    ){
+        if(productType != null && enabled){
+            return productService.findAllEnabledByType(productType, productDtoMapper);
+        }
+
+        if(productType != null){
+            return productService.findAllByType(productType, productDtoMapper);
+        }
+
         return productService.findAll(productDtoMapper);
-    }
-
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
-    @RequestMapping(value = "/all/{type}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<ProductDto> getProductsByType(@PathVariable("type") ProductType productType) {
-        return productService.findAllByType(productType, productDtoMapper);
-    }
-
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
-    @RequestMapping(value = "/all/{type}/enabled", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public List<ProductDto> getEnabledProductsByType(@PathVariable("type") ProductType productType) {
-        return productService.findAllEnabledByType(productType, productDtoMapper);
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")

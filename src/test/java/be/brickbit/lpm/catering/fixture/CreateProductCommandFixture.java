@@ -11,7 +11,7 @@ public class CreateProductCommandFixture {
     public static CreateProductCommand mutable() {
         return new CreateProductCommand(
                 randomString(),
-                randomDecimal(),
+                randomDecimal(1.0, 99.99),
                 ProductType.FOOD,
                 Arrays.asList(ReceiptLineCommandFixtrue.mutable()),
                 randomInt(),

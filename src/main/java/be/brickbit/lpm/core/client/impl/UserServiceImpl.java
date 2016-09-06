@@ -52,13 +52,16 @@ public class UserServiceImpl implements UserService {
 
     private URI createUrl(Object... paths){
         StringBuilder builder = new StringBuilder();
+        Iterator<Object> pathIterator = Arrays.asList(paths).iterator();
 
         builder.append(coreUrl);
 
-        Arrays.stream(paths).forEach(p -> {
-            builder.append(p);
-            builder.append('/');
-        });
+        while (pathIterator.hasNext()){
+            builder.append(pathIterator.next());
+            if(pathIterator.hasNext()) {
+                builder.append("/");
+            }
+        }
 
         return URI.create(builder.toString());
     }

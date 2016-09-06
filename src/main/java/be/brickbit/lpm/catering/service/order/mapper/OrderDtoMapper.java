@@ -19,14 +19,14 @@ import be.brickbit.lpm.infrastructure.exception.ServiceException;
 public class OrderDtoMapper implements OrderMapper<OrderDto> {
 
     @Autowired
-    private UserService userRepository;
+    private UserService userService;
 
     @Autowired
     private OrderLineDtoMapper orderLineMapper;
 
     @Override
     public OrderDto map(Order order) {
-        UserDetailsDto user = userRepository.findOne(order.getUserId());
+        UserDetailsDto user = userService.findOne(order.getUserId());
 
         return new OrderDto(
                 order.getId(),
