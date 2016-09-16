@@ -6,7 +6,8 @@ This module automates the stock management and order cycles of the catering of a
 
 ###Build Status
 
-[![CircleCI](https://circleci.com/gh/BrickbitSolutions/lpm-catering/tree/develop.svg?style=shield)](https://circleci.com/gh/BrickbitSolutions/lpm-catering/tree/develop) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9fac2e3088574d16a29f7a18ba381cf1)](https://www.codacy.com/app/soulscammer/lpm-catering?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BrickbitSolutions/lpm-catering&amp;utm_campaign=Badge_Grade) 
+[![CircleCI](https://circleci.com/gh/BrickbitSolutions/lpm-catering/tree/develop.svg?style=shield)](https://circleci.com/gh/BrickbitSolutions/lpm-catering/tree/develop) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9fac2e3088574d16a29f7a18ba381cf1)](https://www.codacy.com/app/soulscammer/lpm-catering?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BrickbitSolutions/lpm-catering&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/BrickbitSolutions/lpm-catering/branch/develop/graph/badge.svg)](https://codecov.io/gh/BrickbitSolutions/lpm-catering)
+
 
 ###Installation
 
