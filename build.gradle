@@ -10,6 +10,7 @@ buildscript {
 
 apply plugin: 'spring-boot'
 apply plugin: 'java'
+apply plugin: 'jacoco'
 
 group = 'be.brickbit'
 version = '1.0-SNAPSHOT'
@@ -54,6 +55,12 @@ dependencies {
     testCompile 'com.jayway.jsonpath:json-path'
     testCompile 'com.jayway.jsonpath:json-path-assert'
     testCompile 'com.github.tomakehurst:wiremock-standalone:2.1.12'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
 }
 
 task wrapper(type: Wrapper) {

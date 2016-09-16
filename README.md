@@ -6,7 +6,7 @@ This module automates the stock management and order cycles of the catering of a
 
 ###Build Status
 
-[![CircleCI](https://circleci.com/gh/BrickbitSolutions/lpm-catering/tree/develop.svg?style=svg)](https://circleci.com/gh/BrickbitSolutions/lpm-catering/tree/develop)
+[![CircleCI](https://circleci.com/gh/BrickbitSolutions/lpm-catering/tree/develop.svg?style=shield)](https://circleci.com/gh/BrickbitSolutions/lpm-catering/tree/develop) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9fac2e3088574d16a29f7a18ba381cf1)](https://www.codacy.com/app/soulscammer/lpm-catering?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BrickbitSolutions/lpm-catering&amp;utm_campaign=Badge_Grade) 
 
 ###Installation
 
@@ -16,39 +16,21 @@ Compile the code with Gradle 2.14 or with the delivered Gradle wrapper. This wil
 $ Gradle build
 ```
 
-In order to start the module you will have to do some configuration according to your own environment using a spring boot application.properties file. Without this file, the module will not start. Here's an example we use:
-
-```
-datasource.primary.url=jdbc:postgresql://localhost:32775/lpmc
-datasource.primary.username=lpmc_user
-datasource.primary.password=lpmc_pwd
-
-datasource.auth.url=jdbc:postgresql://localhost:32776/lpm
-datasource.auth.username=lpm_user
-datasource.auth.password=lpm_pwd
-
-lpm.storage.images.products=/tmp/images
-
-spring.jpa.database=postgresql
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-spring.jpa.generate-ddl=false
-spring.jpa.properties.hibernate.format_sql=false
-spring.jpa.show-sql=true
-
-logging.level.org.springframework.web=DEBUG
-logging.level.org.springframework.messaging=TRACE
-
-spring.jackson.serialization.WRITE_DATES_AS_TIMESTAMPS=false
-spring.jackson.serialization.indent_output=true
-spring.application.name=LPM Catering Module
-
-server.port=8082
-```
-
-You may configure the module to your liking using the known [spring boot application properties](http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html) . To start the module use the following command:
+To start the module simply type the following in a terminal:
 
 ```
 $ java -jar lpm-core-1.0-SNAPSHOT.jar --spring.config.location=file:/path/to/application.properties
 ```
 
-Spring Boot will start a container and serve the API default on localhost:8080.
+
+The Catering module depends on the [Core Module](https://github.com/BrickbitSolutions/lpm-core) for handling authentication and authorization. When no configuration is passed on it will expect a core module to be running on localhost:8080. This will also start the service with Spring Boots default auto config on port 8081, using a in-memory database.
+We strongly recommend connecting it to a postgreSQL where it was designed for. Feel free to use any other SQL Database, but bare in mind the Database migrations are written for PostgreSQL specifically. The module is completely configurable to your desires using Spring Boot [Common application properties](http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html). 
+
+####LPM Properties
+
+To configure a few features of LPM, we provide some properties of our own. These you can use to configure them to your desire.
+
+```
+lpm.storage.images.products=/tmp/images     #The location where LPM will save the images for the Products. Please make sure LPM has te right access rights to this folder. This is a mandatory setting and will default to /tmp/images.
+lpm.core.url=http://localhost:8080          #The url where the Core module is running
+```
