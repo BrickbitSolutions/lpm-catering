@@ -53,9 +53,9 @@ dependencies {
     testCompile 'org.easytesting:fest-reflect:1.4.1'
     testCompile 'com.jayway.jsonpath:json-path'
     testCompile 'com.jayway.jsonpath:json-path-assert'
-    testCompile "com.github.tomakehurst:wiremock:2.1.11"
+    testCompile 'com.github.tomakehurst:wiremock-standalone:2.1.12'
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14.1'
+    gradleVersion = '3.0'
 }

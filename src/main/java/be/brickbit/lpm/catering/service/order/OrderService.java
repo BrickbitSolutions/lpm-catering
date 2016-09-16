@@ -24,12 +24,15 @@ import be.brickbit.lpm.catering.service.order.mapper.DirectOrderCommandToOrderEn
 import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
 import be.brickbit.lpm.catering.service.order.mapper.OrderMapper;
 import be.brickbit.lpm.catering.service.order.mapper.RemoteOrderCommandToEntityMapper;
+import be.brickbit.lpm.catering.service.order.util.PriceUtil;
 import be.brickbit.lpm.catering.service.queue.IQueueService;
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
 import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
+import be.brickbit.lpm.catering.service.wallet.WalletService;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 import be.brickbit.lpm.infrastructure.AbstractService;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
 @Service
 public class OrderService extends AbstractService<Order> implements IOrderService {
@@ -60,14 +63,18 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+    @Autowired
+    private WalletService walletService;
+
     @Override
     @Transactional
     public <T> T placeDirectOrder(DirectOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user) {
-        updateStockLevels(command.getOrderLines());
         Order order = directOrderCommandMapper.map(command);
         order.setPlacedByUserId(user.getId());
 
         checkValidOrder(order, user);
+        updateStockLevels(command.getOrderLines());
+
         setOrderLineStatus(order, OrderStatus.COMPLETED);
 
         orderRepository.save(order);
@@ -84,8 +91,11 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
                         .count();
 
         if (nrDisabledProducts > 0) {
-            throw new RuntimeException("Order contains disabled products!");
+            throw new ServiceException("Order contains disabled products!");
         }
+
+        //If this doesn't throw an exception, user has sufficient funds.
+        walletService.substractAmount(user.getId(), PriceUtil.calculateTotalPrice(order));
     }
 
     private void updateStockLevels(List<OrderLineCommand> orderLines) {
@@ -110,14 +120,14 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     @Override
     @Transactional
     public <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user) {
-        updateStockLevels(command.getOrderLines());
-
         Order order = remoteOrderCommandToEntityMapper.map(command);
         order.setPlacedByUserId(user.getId());
         order.setUserId(user.getId());
 
         checkValidOrder(order, user);
+        updateStockLevels(command.getOrderLines());
         setOrderLineStatus(order, OrderStatus.READY);
+
         orderRepository.save(order);
         queueService.queueOrder(order, queueDtoMapper).forEach(this::pushToKitchenQueue);
 

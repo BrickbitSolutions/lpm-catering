@@ -2,7 +2,6 @@ package be.brickbit.lpm.catering;
 
 import be.brickbit.lpm.catering.config.TestDefaultRepoConfig;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;

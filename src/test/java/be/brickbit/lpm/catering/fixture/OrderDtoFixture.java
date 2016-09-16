@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class OrderDtoFixture {
-    public static OrderDto getOrderDto(){
+    public static OrderDto mutable(){
         return new OrderDto(1L, new BigDecimal(11), LocalDateTime.now().toString(), "jay", 1, OrderStatus.QUEUED, Lists
                 .newArrayList(OrderLineDtoFixture.mutable()), "I've got your name written in a rose tattoo :)");
     }
