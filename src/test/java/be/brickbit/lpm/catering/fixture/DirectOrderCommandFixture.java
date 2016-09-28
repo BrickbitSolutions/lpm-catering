@@ -8,7 +8,7 @@ public class DirectOrderCommandFixture {
     public static DirectOrderCommand getDirectOrderCommand(){
 
         return new DirectOrderCommand(
-                1,
+                1L,
                 Arrays.asList(OrderLineCommandFixture.getOrderLineCommand(), OrderLineCommandFixture.getOrderLineCommand2()),
                 "Go out in style!"
         );

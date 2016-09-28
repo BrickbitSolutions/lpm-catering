@@ -143,7 +143,7 @@ public class OrderControllerIT extends AbstractControllerIT {
 
         final String comment = "Please do not burn :)";
         DirectOrderCommand command = new DirectOrderCommand(
-                user().getSeatNumber(),
+                user().getId(),
                 Lists.newArrayList(orderLineCommand),
                 comment
         );
@@ -180,7 +180,7 @@ public class OrderControllerIT extends AbstractControllerIT {
 
         final String comment = "Please do not burn :)";
         DirectOrderCommand command = new DirectOrderCommand(
-                user().getSeatNumber(),
+                user().getId(),
                 Lists.newArrayList(orderLineCommand),
                 comment
         );

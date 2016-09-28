@@ -16,8 +16,8 @@ import java.util.List;
 @Getter
 @Setter
 public class DirectOrderCommand {
-    @NotNull(message = "Seat number cannot be empty.")
-    private Integer seatNumber;
+    @NotNull(message = "User ID cannot be empty.")
+    private Long userId;
     @Valid
     @NotNull(message = "Orderlines may not be null")
     @Size(min = 1, message = "Order must have orderlines")

@@ -40,7 +40,7 @@ public class DirectOrderCommandToOrderEntityMapperTest {
         OrderLine jupilerOrderLine = OrderLineFixture.getJupilerOrderLine();
         OrderLine pizzaOrderLine = OrderLineFixture.getPizzaOrderLine();
 
-        when(userService.findBySeatNumber(command.getSeatNumber())).thenReturn(cateringAdmin);
+        when(userService.findOne(command.getUserId())).thenReturn(cateringAdmin);
         when(orderLineCommandToEntityMapper.map(command.getOrderLines().get(0))).thenReturn(jupilerOrderLine);
         when(orderLineCommandToEntityMapper.map(command.getOrderLines().get(1))).thenReturn(pizzaOrderLine);
 
@@ -60,7 +60,7 @@ public class DirectOrderCommandToOrderEntityMapperTest {
 
         final DirectOrderCommand directOrderCommand = DirectOrderCommandFixture.getDirectOrderCommand();
 
-        when(userService.findBySeatNumber(directOrderCommand.getSeatNumber())).thenReturn(null);
+        when(userService.findOne(directOrderCommand.getUserId())).thenReturn(null);
 
         mapper.map(directOrderCommand);
     }
