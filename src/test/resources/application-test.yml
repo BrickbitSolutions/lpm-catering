@@ -17,14 +17,14 @@ security:
     client:
       clientId: LPM
       clientSecret: random_secret_4_jay
-      accessTokenUri: http://localhost:8080/oauth/token
-      userAuthorizationUri: http://localhost:9999/oauth/authorize
+      accessTokenUri: http://localhost:9090/oauth/token
+      userAuthorizationUri: http://localhost:9090/oauth/authorize
       tokenName: LPM_token
     resource:
-      user-info-uri: http://localhost:9999/user/me
+      user-info-uri: http://localhost:9090/user/me
 lpm:
   core:
-    url: http://localhost:9999
+    url: http://localhost:9090
   storage:
     images:
       products: /tmp/images

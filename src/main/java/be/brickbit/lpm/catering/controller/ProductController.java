@@ -46,7 +46,7 @@ public class ProductController extends AbstractController{
     }
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.OK)
     public List<ProductDto> getAllProducts(
             @RequestParam(value = "type", required = false) ProductType productType,
@@ -91,7 +91,7 @@ public class ProductController extends AbstractController{
         productService.delete(id);
     }
 
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @RequestMapping(value = "/{id}/available", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateProductAvailability(@PathVariable("id") Long id) {
@@ -99,7 +99,7 @@ public class ProductController extends AbstractController{
     }
 
     @RequestMapping(value = "/{id}/receipt", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.OK)
     public ProductDetailsDto getProductDetails(@PathVariable("id") Long id){
         return productService.findOne(id, productDetailsDtoMapper);

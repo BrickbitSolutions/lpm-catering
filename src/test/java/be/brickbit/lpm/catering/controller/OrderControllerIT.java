@@ -6,6 +6,8 @@ import com.mysema.query.jpa.impl.JPAQuery;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import be.brickbit.lpm.catering.AbstractControllerIT;
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.OrderStatus;
@@ -14,11 +16,13 @@ import be.brickbit.lpm.catering.domain.QOrder;
 import be.brickbit.lpm.catering.domain.Wallet;
 import be.brickbit.lpm.catering.fixture.OrderFixture;
 import be.brickbit.lpm.catering.fixture.ProductFixture;
+import be.brickbit.lpm.catering.fixture.UserFixture;
 import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
 import be.brickbit.lpm.catering.service.order.command.OrderLineCommand;
 import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
 import be.brickbit.lpm.catering.service.order.util.PriceUtil;
 import be.brickbit.lpm.catering.util.DateUtils;
+import be.brickbit.lpm.core.client.dto.UserDetailsDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -32,6 +36,7 @@ public class OrderControllerIT extends AbstractControllerIT {
     @Test
     public void getsAllOrders() throws Exception {
         Order order = OrderFixture.mutable();
+        UserDetailsDto userDetails = UserFixture.mutable();
 
         insert(
                 order.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),
@@ -41,16 +46,54 @@ public class OrderControllerIT extends AbstractControllerIT {
                 order
         );
 
-        stubCore("/user/" + order.getUserId(), 200, user());
+        stubCore("/user/" + order.getUserId(), 200, userDetails);
 
-        performGet("/order/all")
+        performGet("/order")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(order.getId().intValue())))
                 .andExpect(jsonPath("$[0].totalPrice", is(PriceUtil.calculateTotalPrice(order).intValue())))
                 .andExpect(jsonPath("$[0].timestamp", is(order.getTimestamp().format(DateUtils.getDateFormat()))))
-                .andExpect(jsonPath("$[0].username", is(user().getUsername())))
-                .andExpect(jsonPath("$[0].seatNumber", is(user().getSeatNumber())))
+                .andExpect(jsonPath("$[0].username", is(userDetails.getUsername())))
+                .andExpect(jsonPath("$[0].seatNumber", is(userDetails.getSeatNumber())))
+                .andExpect(jsonPath("$[0].status", is(OrderStatus.CREATED.toString())))
+                .andExpect(jsonPath("$[0].orderLines", hasSize(2)))
+                .andExpect(jsonPath("$[0].orderLines[0].id", is(order.getOrderLines().get(0).getId().intValue())))
+                .andExpect(jsonPath("$[0].orderLines[0].quantity", is(order.getOrderLines().get(0).getQuantity())))
+                .andExpect(jsonPath("$[0].orderLines[0].product", is(order.getOrderLines().get(0).getProduct().getName())))
+                .andExpect(jsonPath("$[0].orderLines[0].status", is(order.getOrderLines().get(0).getStatus().toString())))
+                .andExpect(jsonPath("$[0].orderLines[1].id", is(order.getOrderLines().get(1).getId().intValue())))
+                .andExpect(jsonPath("$[0].orderLines[1].quantity", is(order.getOrderLines().get(1).getQuantity())))
+                .andExpect(jsonPath("$[0].orderLines[1].product", is(order.getOrderLines().get(1).getProduct().getName())))
+                .andExpect(jsonPath("$[0].orderLines[1].status", is(order.getOrderLines().get(1).getStatus().toString())))
+                .andExpect(jsonPath("$[0].orderLines", hasSize(2)))
+                .andExpect(jsonPath("$[0].comment", is(order.getComment())));
+    }
+
+    @Test
+    public void getsOrderHistory() throws Exception {
+        Order order = OrderFixture.mutable();
+        UserDetailsDto userDetails = UserFixture.mutable();
+        order.setUserId(user().getId());
+
+        insert(
+                order.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),
+                order.getOrderLines().get(1).getProduct().getReceipt().get(0).getStockProduct(),
+                order.getOrderLines().get(0).getProduct(),
+                order.getOrderLines().get(1).getProduct(),
+                order
+        );
+
+        stubCore("/user/" + user().getId(), 200, userDetails);
+
+        performGet("/order/history")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(order.getId().intValue())))
+                .andExpect(jsonPath("$[0].totalPrice", is(PriceUtil.calculateTotalPrice(order).intValue())))
+                .andExpect(jsonPath("$[0].timestamp", is(order.getTimestamp().format(DateUtils.getDateFormat()))))
+                .andExpect(jsonPath("$[0].username", is(userDetails.getUsername())))
+                .andExpect(jsonPath("$[0].seatNumber", is(userDetails.getSeatNumber())))
                 .andExpect(jsonPath("$[0].status", is(OrderStatus.CREATED.toString())))
                 .andExpect(jsonPath("$[0].orderLines", hasSize(2)))
                 .andExpect(jsonPath("$[0].orderLines[0].id", is(order.getOrderLines().get(0).getId().intValue())))
@@ -87,7 +130,7 @@ public class OrderControllerIT extends AbstractControllerIT {
 
         stubCore("/user/" + order.getUserId(), 200, user());
 
-        performGet("/order/all/ready")
+        performGet("/order?status=READY")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(order.getId().intValue())))
@@ -126,8 +169,9 @@ public class OrderControllerIT extends AbstractControllerIT {
         Wallet wallet = new Wallet();
         wallet.setUserId(user().getId());
         wallet.setAmount(product.getPrice());
+        UserDetailsDto userDetails = UserFixture.mutable();
 
-        stubCore("/user/seat/" + user().getSeatNumber(), 200, user());
+        stubCore("/user/seat/" + userDetails.getSeatNumber(), 200, userDetails);
         stubCore("/user/" + user().getId(), 200, user());
 
         insert(
@@ -163,8 +207,9 @@ public class OrderControllerIT extends AbstractControllerIT {
         Wallet wallet = new Wallet();
         wallet.setUserId(user().getId());
         wallet.setAmount(product.getPrice());
+        UserDetailsDto userDetails = UserFixture.mutable();
 
-        stubCore("/user/seat/" + user().getSeatNumber(), 200, user());
+        stubCore("/user/seat/" + userDetails.getSeatNumber(), 200, userDetails);
         stubCore("/user/" + user().getId(), 200, user());
 
         insert(
@@ -192,6 +237,39 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(jsonPath("$.username", is(user().getUsername())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)))
                 .andExpect(jsonPath("$.comment", is(comment)));
+    }
+
+    @Test
+    public void throwsInsufficientFundsExceptionOnEmptyWallet() throws Exception {
+        UserDetailsDto user = UserFixture.mutable();
+        Product product = ProductFixture.getPizza();
+        Wallet wallet = new Wallet();
+        wallet.setUserId(user().getId());
+        wallet.setAmount(BigDecimal.TEN);
+
+        stubCore("/user/" + user.getId(), 200, user);
+
+        insert(
+                product.getReceipt().get(0).getStockProduct(),
+                product,
+                wallet
+        );
+
+        OrderLineCommand orderLineCommand = new OrderLineCommand(
+                1,
+                product.getId()
+        );
+
+        final String comment = "Please do not burn :)";
+        DirectOrderCommand command = new DirectOrderCommand(
+                user.getId(),
+                Lists.newArrayList(orderLineCommand),
+                comment
+        );
+
+        performPost("/order/direct", command)
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.cause", is("Insufficient funds.")));
     }
 
     @Test

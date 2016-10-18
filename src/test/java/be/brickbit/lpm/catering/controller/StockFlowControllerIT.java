@@ -15,7 +15,6 @@ import be.brickbit.lpm.catering.fixture.UserFixture;
 import be.brickbit.lpm.catering.service.stockflow.command.StockFlowCommand;
 import be.brickbit.lpm.catering.util.DateUtils;
 import be.brickbit.lpm.core.client.dto.UserDetailsDto;
-import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
@@ -24,7 +23,7 @@ import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class StockFlowControllerIT extends AbstractControllerIT{
+public class StockFlowControllerIT extends AbstractControllerIT {
     @Test
     public void getsStockFlows() throws Exception {
         StockProduct pizza = StockProductFixture.getStockProductPizza();

@@ -35,6 +35,18 @@ public class WalletControllerIT extends AbstractControllerIT {
     }
 
     @Test
+    public void getsWalletForUserId() throws Exception {
+        Wallet wallet = WalletFixture.mutable();
+        wallet.setUserId(user().getId());
+
+        insert(wallet);
+
+        performGet(String.format("/user/wallet?userId=%d", user().getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.amount", equalTo(wallet.getAmount().doubleValue())));
+    }
+
+    @Test
     public void addsAmountToWallet() throws Exception {
         BigDecimal startCapital = randomDecimal(10.0, 100.0);
         Wallet wallet = WalletFixture.mutable();
@@ -44,6 +56,7 @@ public class WalletControllerIT extends AbstractControllerIT {
         insert(wallet);
 
         EditWalletAmountCommand command = EditWalletAmountCommandFixture.mutable();
+        command.setUserId(user().getId());
         command.setAmount(randomDecimal(1.0, 10.0));
 
         performPost("/user/wallet/add", command)
@@ -68,6 +81,7 @@ public class WalletControllerIT extends AbstractControllerIT {
         insert(wallet);
 
         EditWalletAmountCommand command = EditWalletAmountCommandFixture.mutable();
+        command.setUserId(user().getId());
         command.setAmount(randomDecimal(1.0, 10.0));
 
         performPost("/user/wallet/substract", command)

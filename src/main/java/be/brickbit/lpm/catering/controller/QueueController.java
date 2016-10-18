@@ -38,6 +38,7 @@ public class QueueController {
     }
 
     @RequestMapping(value = "/name", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.OK)
     public List<String> findAllQueueNames() {
         return productService.findAllQueueNames();

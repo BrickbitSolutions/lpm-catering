@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 
 import org.junit.Test;
 
+import java.time.format.DateTimeFormatter;
+
 import be.brickbit.lpm.catering.AbstractControllerIT;
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.PreparationTask;
@@ -38,7 +40,7 @@ public class QueueControllerIT extends AbstractControllerIT {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].taskId", is(preparationTask.getId().intValue())))
                 .andExpect(jsonPath("$[0].description", notNullValue()))
-                .andExpect(jsonPath("$[0].startTime", is(preparationTask.getStartTime().toString())))
+                .andExpect(jsonPath("$[0].startTime", is(preparationTask.getStartTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))))
                 .andExpect(jsonPath("$[0].duration", is(preparationTask.getOrderLine().getProduct().getPreparation().getTimer())))
                 .andExpect(jsonPath("$[0].timeRemaining", notNullValue()))
                 .andExpect(jsonPath("$[0].instructions", is(preparationTask.getOrderLine().getProduct().getPreparation().getInstructions())))

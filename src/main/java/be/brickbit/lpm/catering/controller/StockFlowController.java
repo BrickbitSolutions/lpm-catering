@@ -46,6 +46,7 @@ public class StockFlowController extends AbstractController {
 	}
 
     @RequestMapping(value = "/type", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<StockFlowType> getAllTypes() {
         return Arrays.asList(StockFlowType.values());

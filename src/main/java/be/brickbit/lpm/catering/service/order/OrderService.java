@@ -72,7 +72,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         Order order = directOrderCommandMapper.map(command);
         order.setPlacedByUserId(user.getId());
 
-        checkValidOrder(order, user);
+        checkValidOrder(order);
         updateStockLevels(command.getOrderLines());
 
         setOrderLineStatus(order, OrderStatus.COMPLETED);
@@ -83,7 +83,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         return dtoMapper.map(order);
     }
 
-    private void checkValidOrder(Order order, UserPrincipalDto user) {
+    private void checkValidOrder(Order order) {
         Long nrDisabledProducts =
                 order.getOrderLines().stream()
                         .map(OrderLine::getProduct)
@@ -95,7 +95,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         }
 
         //If this doesn't throw an exception, user has sufficient funds.
-        walletService.substractAmount(user.getId(), PriceUtil.calculateTotalPrice(order));
+        walletService.substractAmount(order.getUserId(), PriceUtil.calculateTotalPrice(order));
     }
 
     private void updateStockLevels(List<OrderLineCommand> orderLines) {
@@ -124,7 +124,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         order.setPlacedByUserId(user.getId());
         order.setUserId(user.getId());
 
-        checkValidOrder(order, user);
+        checkValidOrder(order);
         updateStockLevels(command.getOrderLines());
         setOrderLineStatus(order, OrderStatus.READY);
 
@@ -145,6 +145,11 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     @Override
     public <T> List<T> findOrderByStatus(OrderStatus orderStatus, OrderMapper<T> dtoMapper) {
         return orderRepository.findDistinctByOrderLinesStatus(orderStatus).stream().map(dtoMapper::map).collect(Collectors.toList());
+    }
+
+    @Override
+    public <T> List<T> findByUserId(Long userId, OrderMapper<T> dtoMapper) {
+        return orderRepository.findByUserId(userId).stream().map(dtoMapper::map).collect(Collectors.toList());
     }
 
     @Override

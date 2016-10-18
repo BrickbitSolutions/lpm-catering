@@ -19,5 +19,7 @@ public interface IOrderService extends Service<Order> {
 
     <T> List<T> findOrderByStatus(OrderStatus orderStatus, OrderMapper<T> dtoMapper);
 
+    <T> List<T> findByUserId(Long userId, OrderMapper<T> dtoMapper);
+
     void processOrder(Long id);
 }

@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ActiveProfiles("test")
 public abstract class AbstractControllerIT extends AbstractIT {
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(9999);
+    public WireMockRule wireMockRule = new WireMockRule(9090);
     private MockMvc mvc;
     @Autowired
     private ObjectMapper objectMapper;

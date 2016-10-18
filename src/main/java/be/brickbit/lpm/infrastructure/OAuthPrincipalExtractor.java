@@ -16,13 +16,7 @@ public class OAuthPrincipalExtractor implements PrincipalExtractor {
         return new UserPrincipalDto(
                 extractLong(map, "id"),
                 extractString(map, "username"),
-                extractLong(map, "age"),
-                extractInteger(map, "seatNumber"),
-                extractBigDecimal(map, "wallet"),
                 extractString(map, "mood"),
-                extractString(map, "firstName"),
-                extractString(map, "lastName"),
-                extractString(map, "email"),
                 extractList(map, "authorities")
         );
     }

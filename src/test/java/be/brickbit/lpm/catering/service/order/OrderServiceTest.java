@@ -33,6 +33,7 @@ import be.brickbit.lpm.catering.service.order.dto.OrderDto;
 import be.brickbit.lpm.catering.service.order.mapper.DirectOrderCommandToOrderEntityMapper;
 import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
 import be.brickbit.lpm.catering.service.order.mapper.RemoteOrderCommandToEntityMapper;
+import be.brickbit.lpm.catering.service.order.util.PriceUtil;
 import be.brickbit.lpm.catering.service.queue.IQueueService;
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
@@ -44,6 +45,7 @@ import static be.brickbit.lpm.catering.domain.OrderStatus.IN_PROGRESS;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -214,6 +216,19 @@ public class OrderServiceTest {
         when(dtoMapper.map(any(Order.class))).thenReturn(OrderDtoFixture.mutable());
 
         List<OrderDto> result = orderService.findOrderByStatus(status, dtoMapper);
+
+        assertThat(result).hasSameSizeAs(orders);
+    }
+
+    @Test
+    public void findsOrdersByUserId() throws Exception {
+        List<Order> orders = Lists.newArrayList(OrderFixture.mutable());
+        Long userId = 1L;
+
+        when(orderRepository.findByUserId(userId)).thenReturn(orders);
+        when(dtoMapper.map(any(Order.class))).thenReturn(OrderDtoFixture.mutable());
+
+        List<OrderDto> result = orderService.findByUserId(userId, dtoMapper);
 
         assertThat(result).hasSameSizeAs(orders);
     }

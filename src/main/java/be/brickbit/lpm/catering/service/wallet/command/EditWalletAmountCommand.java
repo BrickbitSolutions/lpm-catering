@@ -13,5 +13,7 @@ import lombok.Setter;
 @Setter
 public class EditWalletAmountCommand {
     @NotNull
+    private Long userId;
+    @NotNull
     private BigDecimal amount;
 }

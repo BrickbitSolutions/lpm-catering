@@ -20,8 +20,8 @@ lpm:
     url: http://localhost:8080
   storage:
     images:
-      products: /tmp/images
+      products: /tmp/images/products
 logging:
-  level: trace
+  level: debug
 server:
   port: 8081

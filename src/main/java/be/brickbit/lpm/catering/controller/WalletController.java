@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,21 +33,25 @@ public class WalletController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize(value = "hasRole('USER')")
-    public WalletDto getWallet() {
-        return walletService.findByUserId(getCurrentUser().getId(), walletDtoMapper);
+    public WalletDto getWallet(@RequestParam(value = "userId", required = false) Long userId) {
+        if(userId == null){
+            userId = getCurrentUser().getId();
+        }
+
+        return walletService.findByUserId(userId, walletDtoMapper);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     public void addAmountToWallet(@RequestBody @Valid EditWalletAmountCommand walletCommand) {
-        walletService.addAmount(getCurrentUser().getId(), walletCommand.getAmount());
+        walletService.addAmount(walletCommand.getUserId(), walletCommand.getAmount());
     }
 
     @RequestMapping(value = "/substract", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize(value = "hasRole('USER')")
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     public void substractAmountFromWallet(@RequestBody @Valid EditWalletAmountCommand walletCommand) {
-        walletService.substractAmount(getCurrentUser().getId(), walletCommand.getAmount());
+        walletService.substractAmount(walletCommand.getUserId(), walletCommand.getAmount());
     }
 }

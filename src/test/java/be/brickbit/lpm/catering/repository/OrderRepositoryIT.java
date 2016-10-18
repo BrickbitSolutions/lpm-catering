@@ -64,4 +64,29 @@ public class OrderRepositoryIT extends AbstractRepoIT{
 
         assertThat(result).isEqualTo(1);
     }
+
+    @Test
+    public void findsOrderByUserId() throws Exception {
+        Order order = OrderFixture.mutable();
+        order.setUserId(1L);
+        Order order2 = OrderFixture.mutable();
+        order2.setUserId(2L);
+
+        insert(
+                order.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),
+                order.getOrderLines().get(0).getProduct(),
+                order.getOrderLines().get(1).getProduct().getReceipt().get(0).getStockProduct(),
+                order.getOrderLines().get(1).getProduct(),
+                order,
+                order2.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),
+                order2.getOrderLines().get(0).getProduct(),
+                order2.getOrderLines().get(1).getProduct().getReceipt().get(0).getStockProduct(),
+                order2.getOrderLines().get(1).getProduct(),
+                order2
+        );
+
+        List<Order> result = orderRepository.findByUserId(1L);
+
+        assertThat(result).containsExactly(order);
+    }
 }
