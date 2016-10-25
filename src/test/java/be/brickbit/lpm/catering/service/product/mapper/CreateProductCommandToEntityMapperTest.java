@@ -1,18 +1,29 @@
 package be.brickbit.lpm.catering.service.product.mapper;
 
+import com.google.common.collect.Lists;
+
 import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.domain.ProductPreparation;
 import be.brickbit.lpm.catering.domain.ProductReceiptLine;
+import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.fixture.ProductCommandFixture;
 import be.brickbit.lpm.catering.fixture.ProductReceiptLineFixture;
+import be.brickbit.lpm.catering.fixture.StockProductFixture;
+import be.brickbit.lpm.catering.repository.StockProductRepository;
 import be.brickbit.lpm.catering.service.product.command.CreateProductCommand;
+
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import javax.persistence.EntityNotFoundException;
+
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -22,8 +33,14 @@ public class CreateProductCommandToEntityMapperTest {
     @Mock
     private ReceiptCommandToEntityMapper receiptCommandToEntityMapper;
 
+    @Mock
+    private StockProductRepository stockProductRepository;
+
     @InjectMocks
     private CreateProductCommandToEntityMapper productCommandToEntityMapper;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testMap__NoQueue() throws Exception {
@@ -71,5 +88,38 @@ public class CreateProductCommandToEntityMapperTest {
         assertThat(preparation.getQueueName()).isEqualTo(command.getQueueName());
         assertThat(preparation.getTimer()).isEqualTo(command.getTimerInMinutes());
 
+    }
+
+    @Test
+    public void mapsSupplements() throws Exception {
+        CreateProductCommand command = ProductCommandFixture.getProductCommandFood();
+        Long supplProdId = randomLong();
+        command.setSupplements(Lists.newArrayList(supplProdId));
+
+        ProductReceiptLine receiptLine1 = ProductReceiptLineFixture.getPizza();
+        StockProduct stockProduct = StockProductFixture.getCheese();
+
+        when(receiptCommandToEntityMapper.map(command.getReceipt().get(0))).thenReturn(receiptLine1);
+        when(stockProductRepository.findOne(supplProdId)).thenReturn(stockProduct);
+
+        Product product = productCommandToEntityMapper.map(command);
+
+        assertThat(product.getSupplements()).containsExactly(stockProduct);
+    }
+
+    @Test
+    public void throwsStockProductNotFoundWithInvalidSupplement() throws Exception {
+        CreateProductCommand command = ProductCommandFixture.getProductCommandFood();
+        Long supplProdId = randomLong();
+        command.setSupplements(Lists.newArrayList(supplProdId));
+
+        ProductReceiptLine receiptLine1 = ProductReceiptLineFixture.getPizza();
+
+        when(receiptCommandToEntityMapper.map(command.getReceipt().get(0))).thenReturn(receiptLine1);
+
+        expectedException.expect(EntityNotFoundException.class);
+        expectedException.expectMessage(String.format("Stock product #%d was not found", supplProdId));
+
+        productCommandToEntityMapper.map(command);
     }
 }

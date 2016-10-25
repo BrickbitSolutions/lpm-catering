@@ -1,14 +1,14 @@
 package be.brickbit.lpm.catering.fixture;
 
-import be.brickbit.lpm.catering.domain.ProductType;
-import be.brickbit.lpm.catering.service.product.command.CreateProductCommand;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 
+import be.brickbit.lpm.catering.domain.ProductType;
+import be.brickbit.lpm.catering.service.product.command.CreateProductCommand;
+
 public class ProductCommandFixture {
-    public static CreateProductCommand getProductCommand(){
+    public static CreateProductCommand getProductCommand() {
         CreateProductCommand command = new CreateProductCommand();
 
         command.setProductType(ProductType.DRINKS);
@@ -22,7 +22,7 @@ public class ProductCommandFixture {
         return command;
     }
 
-    public static CreateProductCommand getProductCommandFood(){
+    public static CreateProductCommand getProductCommandFood() {
         CreateProductCommand command = new CreateProductCommand();
 
         command.setProductType(ProductType.FOOD);

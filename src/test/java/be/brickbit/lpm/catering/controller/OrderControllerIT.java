@@ -182,7 +182,8 @@ public class OrderControllerIT extends AbstractControllerIT {
 
         OrderLineCommand orderLineCommand = new OrderLineCommand(
                 1,
-                product.getId()
+                product.getId(),
+                Lists.newArrayList()
         );
 
         final String comment = "Please do not burn :)";
@@ -214,13 +215,15 @@ public class OrderControllerIT extends AbstractControllerIT {
 
         insert(
                 product.getReceipt().get(0).getStockProduct(),
+                product.getSupplements().get(0),
                 product,
                 wallet
         );
 
         OrderLineCommand orderLineCommand = new OrderLineCommand(
                 1,
-                product.getId()
+                product.getId(),
+                Lists.newArrayList(product.getSupplements().get(0).getId())
         );
 
         final String comment = "Please do not burn :)";
@@ -257,7 +260,8 @@ public class OrderControllerIT extends AbstractControllerIT {
 
         OrderLineCommand orderLineCommand = new OrderLineCommand(
                 1,
-                product.getId()
+                product.getId(),
+                Lists.newArrayList()
         );
 
         final String comment = "Please do not burn :)";
@@ -283,13 +287,15 @@ public class OrderControllerIT extends AbstractControllerIT {
 
         insert(
                 product.getReceipt().get(0).getStockProduct(),
+                product.getSupplements().get(0),
                 product,
                 wallet
         );
 
         OrderLineCommand orderLineCommand = new OrderLineCommand(
                 1,
-                product.getId()
+                product.getId(),
+                Lists.newArrayList(product.getSupplements().get(0).getId())
         );
 
         final String comment = "Please do not burn :)";
@@ -324,7 +330,8 @@ public class OrderControllerIT extends AbstractControllerIT {
 
         OrderLineCommand orderLineCommand = new OrderLineCommand(
                 1,
-                product.getId()
+                product.getId(),
+                Lists.newArrayList()
         );
 
         final String comment = "Please do not burn :)";

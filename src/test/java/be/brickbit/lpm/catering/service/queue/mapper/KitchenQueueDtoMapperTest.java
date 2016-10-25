@@ -45,6 +45,7 @@ public class KitchenQueueDtoMapperTest {
         assertThat(result.getQueueName()).isEqualTo(task.getOrderLine().getProduct().getPreparation().getQueueName());
         assertThat(result.getTimeRemaining()).isEqualTo(0L);
         assertThat(result.getComment()).isEqualTo(order.getComment());
+        assertThat(result.getSupplements()).containsExactly(task.getOrderLine().getProduct().getSupplements().get(0).getName());
     }
 
     @Test

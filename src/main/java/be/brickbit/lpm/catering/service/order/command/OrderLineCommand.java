@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.service.order.command;
 
+import java.util.List;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -19,4 +21,6 @@ public class OrderLineCommand {
 
     @NotNull(message = "ProductId cannot be empty.")
     private Long productId;
+
+    private List<Long> supplements;
 }

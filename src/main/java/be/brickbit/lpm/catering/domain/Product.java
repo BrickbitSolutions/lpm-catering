@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -46,6 +48,14 @@ public @Data class Product {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "PRODUCT_ID", nullable = false, unique = true)
     private List<ProductReceiptLine> receipt;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "PRODUCT_SUPPLEMENT", joinColumns = {
+            @JoinColumn(name = "PRODUCT_ID", nullable = false)
+    }, inverseJoinColumns = {
+            @JoinColumn(name = "STOCK_PRODUCT_ID", nullable = false)
+    })
+    private List<StockProduct> supplements;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PREPARATION_ID", unique = true)

@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.fixture;
 
+import com.google.common.collect.Lists;
+
 import static be.brickbit.lpm.catering.util.RandomValueUtil.*;
 
 import java.util.Arrays;
@@ -14,6 +16,7 @@ public class CreateProductCommandFixture {
                 randomDecimal(1.0, 99.99),
                 ProductType.FOOD,
                 Arrays.asList(ReceiptLineCommandFixtrue.mutable()),
+                Lists.newArrayList(),
                 randomInt(),
                 randomString(),
                 randomString(50)

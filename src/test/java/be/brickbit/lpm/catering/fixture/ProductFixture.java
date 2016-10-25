@@ -31,6 +31,7 @@ public class ProductFixture {
         product.setProductType(ProductType.FOOD);
         product.setName("NomNomPizza");
         product.setReceipt(Lists.newArrayList(ProductReceiptLineFixture.getPizza()));
+        product.setSupplements(Lists.newArrayList(StockProductFixture.getCheese()));
         product.setAvailable(true);
 
         ProductPreparation preparation = new ProductPreparation();

@@ -30,6 +30,7 @@ public class CreateProductCommand {
     @Size(min = 1, message = "Product needs stock products.")
     @Valid
     private List<ReceiptLineCommand> receipt;
+    private List<Long> supplements;
     @Min(value = 0, message = "Time cannot be negative.")
     private Integer timerInMinutes;
     private String queueName;

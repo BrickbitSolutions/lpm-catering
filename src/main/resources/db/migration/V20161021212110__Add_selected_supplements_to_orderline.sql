@@ -1,0 +1,7 @@
+CREATE TABLE product_order_line_supplement(
+  order_line_id BIGINT NOT NULL,
+  stock_product_id BIGINT NOT NULL,
+  CONSTRAINT PK_ORDER_LINE_SUPPL PRIMARY KEY (order_line_id, stock_product_id),
+  CONSTRAINT FK_ORDER_LINE_STOCK_PRODUCT FOREIGN KEY (STOCK_PRODUCT_ID) REFERENCES STOCKPRODUCT (ID),
+  CONSTRAINT FK_ORDER_LINE_SUPPL FOREIGN KEY (order_line_id) REFERENCES product_order_line (ID)
+)

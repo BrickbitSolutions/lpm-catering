@@ -5,7 +5,7 @@ import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.domain.StockProduct;
 
 public class StockProductFixture {
-    public static StockProduct getStockProductJupiler(){
+    public static StockProduct getStockProductJupiler() {
         StockProduct stockProduct = new StockProduct();
 
         stockProduct.setStockLevel(20);
@@ -18,7 +18,7 @@ public class StockProductFixture {
         return stockProduct;
     }
 
-    public static StockProduct getStockProductCola(){
+    public static StockProduct getStockProductCola() {
         StockProduct stockProduct = new StockProduct();
 
         stockProduct.setStockLevel(3);
@@ -31,7 +31,7 @@ public class StockProductFixture {
         return stockProduct;
     }
 
-    public static StockProduct getStockProductPizza(){
+    public static StockProduct getStockProductPizza() {
         StockProduct stockProduct = new StockProduct();
 
         stockProduct.setStockLevel(3);
@@ -44,7 +44,7 @@ public class StockProductFixture {
         return stockProduct;
     }
 
-    public static StockProduct getStockProductLasagna(){
+    public static StockProduct getStockProductLasagna() {
         StockProduct stockProduct = new StockProduct();
 
         stockProduct.setStockLevel(3);
@@ -52,6 +52,19 @@ public class StockProductFixture {
         stockProduct.setClearance(ClearanceType.ANY);
         stockProduct.setName("Lasagna");
         stockProduct.setMaxConsumptions(1);
+        stockProduct.setRemainingConsumptions(1);
+
+        return stockProduct;
+    }
+
+    public static StockProduct getCheese() {
+        StockProduct stockProduct = new StockProduct();
+
+        stockProduct.setStockLevel(3);
+        stockProduct.setProductType(ProductType.OTHER);
+        stockProduct.setClearance(ClearanceType.ANY);
+        stockProduct.setName("Cheese");
+        stockProduct.setMaxConsumptions(50);
         stockProduct.setRemainingConsumptions(1);
 
         return stockProduct;

@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.fixture;
 
+import com.google.common.collect.Lists;
+
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomInt;
@@ -17,7 +19,8 @@ public class QueueDtoFixture {
                 randomLong(),
                 randomString(),
                 randomString(),
-                randomString()
+                randomString(),
+                Lists.newArrayList(randomString())
         );
     }
 }

@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.service.queue.mapper;
 
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.PreparationTask;
+import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 import be.brickbit.lpm.catering.util.DateUtils;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class QueueDtoMapper implements QueueMapper<QueueDto> {
@@ -26,7 +28,8 @@ public class QueueDtoMapper implements QueueMapper<QueueDto> {
                 getTimeRemaining(preparationTask),
                 preparationTask.getOrderLine().getProduct().getPreparation().getInstructions(),
                 preparationTask.getOrderLine().getProduct().getPreparation().getQueueName(),
-                findCommentFromOrder(preparationTask.getOrderLine().getId())
+                findCommentFromOrder(preparationTask.getOrderLine().getId()),
+                preparationTask.getOrderLine().getProduct().getSupplements().stream().map(StockProduct::getName).collect(Collectors.toList())
         );
     }
 
