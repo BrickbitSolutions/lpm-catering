@@ -11,8 +11,8 @@ import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.domain.PreparationTask;
 import be.brickbit.lpm.catering.repository.PreparationTaskRepository;
 import be.brickbit.lpm.catering.service.order.IOrderService;
-import be.brickbit.lpm.catering.service.order.dto.OrderDto;
-import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
+import be.brickbit.lpm.catering.service.order.dto.OrderDetailDto;
+import be.brickbit.lpm.catering.service.order.mapper.OrderDetailDtoMapper;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
@@ -22,7 +22,7 @@ public class TaskServiceImpl implements TaskService {
     private PreparationTaskRepository preparationTaskRepository;
 
     @Autowired
-    private OrderDtoMapper orderDtoMapper;
+    private OrderDetailDtoMapper orderDtoMapper;
 
     @Autowired
     private IOrderService orderService;
@@ -54,7 +54,7 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    private void pushToQueue(OrderDto message) {
+    private void pushToQueue(OrderDetailDto message) {
         messagingTemplate.convertAndSend("/topic/zanzibar.queue", message);
     }
 }

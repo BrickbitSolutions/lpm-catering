@@ -72,7 +72,7 @@ public class CreateProductCommandToEntityMapper implements Mapper<CreateProductC
 
         productPreparation.setInstructions(someCreateProductCommand.getInstructions());
         productPreparation.setQueueName(someCreateProductCommand.getQueueName());
-        productPreparation.setTimer(someCreateProductCommand.getTimerInMinutes());
+        productPreparation.setTimer(someCreateProductCommand.getTimerInMinutes() * 60);
 
         return productPreparation;
     }

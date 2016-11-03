@@ -26,9 +26,17 @@ public class ProductDetailsDtoMapper implements ProductMapper<ProductDetailsDto>
             return new ProductDetailsDto(
                     someProduct.getPreparation().getQueueName(),
                     someProduct.getPreparation().getInstructions(),
-                    someProduct.getPreparation().getTimer(),
+                    calculateTimerInMinutes(someProduct.getPreparation().getTimer()),
                     receiptDtos
             );
+        }
+    }
+
+    private Integer calculateTimerInMinutes(Integer timer) {
+        if(timer != null){
+            return timer / 60;
+        }else{
+            return null;
         }
     }
 }

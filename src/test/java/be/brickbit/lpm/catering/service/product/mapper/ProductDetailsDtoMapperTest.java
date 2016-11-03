@@ -48,7 +48,7 @@ public class ProductDetailsDtoMapperTest {
         ProductDetailsDto detailsDto = mapper.map(product);
 
         assertThat(detailsDto.getQueueName()).isEqualTo(product.getPreparation().getQueueName());
-        assertThat(detailsDto.getTimerInMinutes()).isEqualTo(product.getPreparation().getTimer());
+        assertThat(detailsDto.getTimerInMinutes()).isEqualTo(product.getPreparation().getTimer() / 60);
         assertThat(detailsDto.getInstructions()).isEqualTo(product.getPreparation().getInstructions());
         assertThat(detailsDto.getProductsToInclude().size()).isEqualTo(1);
         assertThat(detailsDto.getProductsToInclude().get(0)).isSameAs(receiptLine1Dto);

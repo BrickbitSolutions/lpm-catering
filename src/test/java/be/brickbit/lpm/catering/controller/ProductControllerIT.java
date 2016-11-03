@@ -124,8 +124,7 @@ public class ProductControllerIT extends AbstractControllerIT {
 
         performPut("/product/" + pizza.getId(), command)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is(command.getName())))
-                .andExpect(jsonPath("$.clearanceType", is(command.getClearance().toString())));
+                .andExpect(jsonPath("$.name", is(command.getName())));
     }
 
     @Test
@@ -148,7 +147,7 @@ public class ProductControllerIT extends AbstractControllerIT {
                 .uniqueResult(QProductPreparation.productPreparation);
 
         assertThat(preparation.getInstructions()).isEqualTo(command.getInstructions());
-        assertThat(preparation.getTimer()).isEqualTo(command.getTimerInMinutes());
+        assertThat(preparation.getTimer()).isEqualTo(command.getTimerInMinutes() * 60);
         assertThat(preparation.getQueueName()).isEqualTo(command.getQueueName());
     }
 
@@ -230,7 +229,7 @@ public class ProductControllerIT extends AbstractControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.queueName", is(pizza.getPreparation().getQueueName())))
                 .andExpect(jsonPath("$.instructions", is(pizza.getPreparation().getInstructions())))
-                .andExpect(jsonPath("$.timerInMinutes", is(pizza.getPreparation().getTimer())))
+                .andExpect(jsonPath("$.timerInMinutes", is(pizza.getPreparation().getTimer() / 60)))
                 .andExpect(jsonPath("$.productsToInclude", hasSize(pizza.getReceipt().size())))
                 .andExpect(jsonPath("$.productsToInclude[0].stockProductId", is(pizza.getReceipt().get(0).getStockProduct().getId().intValue())))
                 .andExpect(jsonPath("$.productsToInclude[0].quantity", is(pizza.getReceipt().get(0).getQuantity())));

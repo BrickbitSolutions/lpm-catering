@@ -24,21 +24,10 @@ public class ProductMergerTest {
     public void mergesProduct__UpdatesName() throws Exception {
         Product product = ProductFixture.getJupiler();
 
-        EditProductCommand command = new EditProductCommand(randomString(), product.getClearance());
+        EditProductCommand command = new EditProductCommand(randomString());
 
         merger.merge(command, product);
 
         assertThat(product.getName()).isEqualTo(command.getName());
-    }
-
-    @Test
-    public void mergesProduct__UpdatesClearance() throws Exception {
-        Product product = ProductFixture.getJupiler();
-
-        EditProductCommand command = new EditProductCommand(product.getName(), ClearanceType.from(randomInt(0, 3)));
-
-        merger.merge(command, product);
-
-        assertThat(product.getClearance()).isEqualTo(command.getClearance());
     }
 }

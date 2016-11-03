@@ -16,6 +16,4 @@ import javax.validation.constraints.NotNull;
 public class EditProductCommand {
     @NotBlank(message = "Name is required.")
     private String name;
-    @NotNull(message = "Clearance is required.")
-    private ClearanceType clearance;
 }

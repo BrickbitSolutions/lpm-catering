@@ -20,8 +20,8 @@ import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.service.order.IOrderService;
 import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
 import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
-import be.brickbit.lpm.catering.service.order.dto.OrderDto;
-import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
+import be.brickbit.lpm.catering.service.order.dto.OrderDetailDto;
+import be.brickbit.lpm.catering.service.order.mapper.OrderDetailDtoMapper;
 import be.brickbit.lpm.infrastructure.AbstractController;
 
 @RequestMapping("/order")
@@ -31,23 +31,29 @@ public class OrderController extends AbstractController {
     private IOrderService orderService;
 
     @Autowired
-    private OrderDtoMapper orderDtoMapper;
+    private OrderDetailDtoMapper orderDetailDtoMapper;
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDto> getAllOrders(@RequestParam(value = "status", required = false) OrderStatus orderStatus) {
+    public List<OrderDetailDto> getAllOrders(@RequestParam(value = "status", required = false) OrderStatus orderStatus) {
         if(orderStatus == null){
-            return orderService.findAll(orderDtoMapper);
+            return orderService.findAll(orderDetailDtoMapper);
         }else{
-            return orderService.findOrderByStatus(orderStatus, orderDtoMapper);
+            return orderService.findOrderByStatus(orderStatus, orderDetailDtoMapper);
         }
     }
 
     @RequestMapping(value = "/history", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDto> getOrderHistory() {
-        return orderService.findByUserId(getCurrentUser().getId(), orderDtoMapper);
+    public List<OrderDetailDto> getOrderHistory() {
+        return orderService.findByUserId(getCurrentUser().getId(), orderDetailDtoMapper);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public OrderDetailDto getOrderDetails(@PathVariable("id") Long id) {
+        return orderService.findOne(id, orderDetailDtoMapper);
     }
 
     @RequestMapping(value = "/{id}/process", method = RequestMethod.PUT)
@@ -60,14 +66,14 @@ public class OrderController extends AbstractController {
     @RequestMapping(value = "/direct", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto saveDirectOrder(@RequestBody @Valid DirectOrderCommand command) {
-        return orderService.placeDirectOrder(command, orderDtoMapper, getCurrentUser());
+    public OrderDetailDto saveDirectOrder(@RequestBody @Valid DirectOrderCommand command) {
+        return orderService.placeDirectOrder(command, orderDetailDtoMapper, getCurrentUser());
     }
 
     @RequestMapping(value = "/remote", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @PreAuthorize(value = "hasAnyRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto saveRemoteOrder(@RequestBody @Valid RemoteOrderCommand command) {
-        return orderService.placeRemoteOrder(command, orderDtoMapper, getCurrentUser());
+    public OrderDetailDto saveRemoteOrder(@RequestBody @Valid RemoteOrderCommand command) {
+        return orderService.placeRemoteOrder(command, orderDetailDtoMapper, getCurrentUser());
     }
 }

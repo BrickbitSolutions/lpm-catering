@@ -12,9 +12,5 @@ public class ProductMerger implements Merger<EditProductCommand, Product> {
         if(!product.getName().equals(editProductCommand.getName())){
             product.setName(editProductCommand.getName());
         }
-
-        if(!product.getClearance().equals(editProductCommand.getClearance())){
-            product.setClearance(editProductCommand.getClearance());
-        }
     }
 }

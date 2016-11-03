@@ -51,7 +51,7 @@ public class ProductPreparationMergerTest {
 
         merger.merge(command, product);
 
-        assertThat(product.getPreparation().getTimer()).isEqualTo(command.getTimerInMinutes());
+        assertThat(product.getPreparation().getTimer()).isEqualTo(command.getTimerInMinutes() * 60);
     }
 
     @Test

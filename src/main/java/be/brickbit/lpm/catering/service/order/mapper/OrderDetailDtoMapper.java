@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.OrderStatus;
-import be.brickbit.lpm.catering.service.order.dto.OrderDto;
+import be.brickbit.lpm.catering.service.order.dto.OrderDetailDto;
 import be.brickbit.lpm.catering.service.order.util.PriceUtil;
 import be.brickbit.lpm.catering.util.DateUtils;
 import be.brickbit.lpm.core.client.UserService;
@@ -16,7 +16,7 @@ import be.brickbit.lpm.core.client.dto.UserDetailsDto;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
 @Component
-public class OrderDtoMapper implements OrderMapper<OrderDto> {
+public class OrderDetailDtoMapper implements OrderMapper<OrderDetailDto> {
 
     @Autowired
     private UserService userService;
@@ -25,10 +25,10 @@ public class OrderDtoMapper implements OrderMapper<OrderDto> {
     private OrderLineDtoMapper orderLineMapper;
 
     @Override
-    public OrderDto map(Order order) {
+    public OrderDetailDto map(Order order) {
         UserDetailsDto user = userService.findOne(order.getUserId());
 
-        return new OrderDto(
+        return new OrderDetailDto(
                 order.getId(),
                 PriceUtil.calculateTotalPrice(order),
                 order.getTimestamp().format(DateUtils.getDateFormat()),

@@ -14,6 +14,9 @@ public class ProductPreparationMerger implements Merger<EditProductPreparationCo
     public void merge(EditProductPreparationCommand editProductPreparationCommand, Product product) {
         ProductPreparation preparation = product.getPreparation();
 
+        Integer timerInSeconds = editProductPreparationCommand.getTimerInMinutes() != null ?
+                editProductPreparationCommand.getTimerInMinutes() * 60 : null;
+
         if(preparation == null){
             preparation = new ProductPreparation();
             product.setPreparation(preparation);
@@ -23,8 +26,8 @@ public class ProductPreparationMerger implements Merger<EditProductPreparationCo
             preparation.setQueueName(editProductPreparationCommand.getQueueName());
         }
 
-        if (!Objects.equals(preparation.getTimer(), editProductPreparationCommand.getTimerInMinutes())) {
-            preparation.setTimer(editProductPreparationCommand.getTimerInMinutes());
+        if (!Objects.equals(preparation.getTimer(), timerInSeconds)) {
+            preparation.setTimer(timerInSeconds);
         }
 
         if (!Objects.equals(preparation.getInstructions(), editProductPreparationCommand.getInstructions())) {

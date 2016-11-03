@@ -71,6 +71,42 @@ public class OrderControllerIT extends AbstractControllerIT {
     }
 
     @Test
+    public void getsOrderById() throws Exception {
+        Order order = OrderFixture.mutable();
+        UserDetailsDto userDetails = UserFixture.mutable();
+
+        insert(
+                order.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),
+                order.getOrderLines().get(1).getProduct().getReceipt().get(0).getStockProduct(),
+                order.getOrderLines().get(0).getProduct(),
+                order.getOrderLines().get(1).getProduct(),
+                order
+        );
+
+        stubCore("/user/" + order.getUserId(), 200, userDetails);
+
+        performGet("/order/" + order.getId())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(order.getId().intValue())))
+                .andExpect(jsonPath("$.totalPrice", is(PriceUtil.calculateTotalPrice(order).intValue())))
+                .andExpect(jsonPath("$.timestamp", is(order.getTimestamp().format(DateUtils.getDateFormat()))))
+                .andExpect(jsonPath("$.username", is(userDetails.getUsername())))
+                .andExpect(jsonPath("$.seatNumber", is(userDetails.getSeatNumber())))
+                .andExpect(jsonPath("$.status", is(OrderStatus.CREATED.toString())))
+                .andExpect(jsonPath("$.orderLines", hasSize(2)))
+                .andExpect(jsonPath("$.orderLines[0].id", is(order.getOrderLines().get(0).getId().intValue())))
+                .andExpect(jsonPath("$.orderLines[0].quantity", is(order.getOrderLines().get(0).getQuantity())))
+                .andExpect(jsonPath("$.orderLines[0].product", is(order.getOrderLines().get(0).getProduct().getName())))
+                .andExpect(jsonPath("$.orderLines[0].status", is(order.getOrderLines().get(0).getStatus().toString())))
+                .andExpect(jsonPath("$.orderLines[1].id", is(order.getOrderLines().get(1).getId().intValue())))
+                .andExpect(jsonPath("$.orderLines[1].quantity", is(order.getOrderLines().get(1).getQuantity())))
+                .andExpect(jsonPath("$.orderLines[1].product", is(order.getOrderLines().get(1).getProduct().getName())))
+                .andExpect(jsonPath("$.orderLines[1].status", is(order.getOrderLines().get(1).getStatus().toString())))
+                .andExpect(jsonPath("$.orderLines", hasSize(2)))
+                .andExpect(jsonPath("$.comment", is(order.getComment())));
+    }
+
+    @Test
     public void getsOrderHistory() throws Exception {
         Order order = OrderFixture.mutable();
         UserDetailsDto userDetails = UserFixture.mutable();

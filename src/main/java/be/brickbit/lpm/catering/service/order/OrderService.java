@@ -21,7 +21,7 @@ import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
 import be.brickbit.lpm.catering.service.order.command.OrderLineCommand;
 import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
 import be.brickbit.lpm.catering.service.order.mapper.DirectOrderCommandToOrderEntityMapper;
-import be.brickbit.lpm.catering.service.order.mapper.OrderDtoMapper;
+import be.brickbit.lpm.catering.service.order.mapper.OrderDetailDtoMapper;
 import be.brickbit.lpm.catering.service.order.mapper.OrderMapper;
 import be.brickbit.lpm.catering.service.order.mapper.RemoteOrderCommandToEntityMapper;
 import be.brickbit.lpm.catering.service.order.util.PriceUtil;
@@ -52,7 +52,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     private RemoteOrderCommandToEntityMapper remoteOrderCommandToEntityMapper;
 
     @Autowired
-    private OrderDtoMapper orderDtoMapper;
+    private OrderDetailDtoMapper orderDtoMapper;
 
     @Autowired
     private IQueueService queueService;

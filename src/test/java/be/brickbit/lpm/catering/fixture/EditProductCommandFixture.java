@@ -10,8 +10,7 @@ public class EditProductCommandFixture {
 
     public static EditProductCommand mutable() {
         return new EditProductCommand(
-                randomString(),
-                ClearanceType.from(randomInt(0, 3))
+                randomString()
         );
     }
 }

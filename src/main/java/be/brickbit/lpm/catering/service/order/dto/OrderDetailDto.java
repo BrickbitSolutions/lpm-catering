@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class OrderDto {
+public class OrderDetailDto {
 	private Long id;
 	private BigDecimal totalPrice;
 	private String timestamp;

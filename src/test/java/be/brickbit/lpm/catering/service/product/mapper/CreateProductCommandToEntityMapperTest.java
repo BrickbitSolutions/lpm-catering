@@ -86,7 +86,7 @@ public class CreateProductCommandToEntityMapperTest {
 
         assertThat(preparation.getInstructions()).isEqualTo(command.getInstructions());
         assertThat(preparation.getQueueName()).isEqualTo(command.getQueueName());
-        assertThat(preparation.getTimer()).isEqualTo(command.getTimerInMinutes());
+        assertThat(preparation.getTimer()).isEqualTo(command.getTimerInMinutes() * 60);
 
     }
 
