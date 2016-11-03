@@ -1,14 +1,13 @@
 package be.brickbit.lpm.catering.service.product.mapper;
 
-import be.brickbit.lpm.catering.domain.ClearanceType;
-import be.brickbit.lpm.catering.domain.Product;
-import be.brickbit.lpm.catering.fixture.ProductFixture;
-import be.brickbit.lpm.catering.service.product.command.EditProductCommand;
 import org.junit.Before;
 import org.junit.Test;
 
-import static be.brickbit.lpm.catering.util.RandomValueUtil.randomInt;
-import static be.brickbit.lpm.catering.util.RandomValueUtil.randomString;
+import be.brickbit.lpm.catering.domain.Product;
+import be.brickbit.lpm.catering.fixture.EditProductCommandFixture;
+import be.brickbit.lpm.catering.fixture.ProductFixture;
+import be.brickbit.lpm.catering.service.product.command.EditProductCommand;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProductMergerTest {
@@ -21,10 +20,20 @@ public class ProductMergerTest {
     }
 
     @Test
+    public void updatesPrice() throws Exception {
+        Product product = ProductFixture.getJupiler();
+        EditProductCommand command = EditProductCommandFixture.mutable();
+
+        merger.merge(command, product);
+
+        assertThat(product.getPrice()).isEqualTo(command.getPrice());
+    }
+
+    @Test
     public void mergesProduct__UpdatesName() throws Exception {
         Product product = ProductFixture.getJupiler();
 
-        EditProductCommand command = new EditProductCommand(randomString());
+        EditProductCommand command = EditProductCommandFixture.mutable();
 
         merger.merge(command, product);
 

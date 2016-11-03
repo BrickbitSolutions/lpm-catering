@@ -1,13 +1,15 @@
 package be.brickbit.lpm.catering.service.product.command;
 
-import be.brickbit.lpm.catering.domain.ClearanceType;
+import org.hibernate.validator.constraints.NotBlank;
+
+import java.math.BigDecimal;
+
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,4 +18,6 @@ import javax.validation.constraints.NotNull;
 public class EditProductCommand {
     @NotBlank(message = "Name is required.")
     private String name;
+    @NotNull(message = "Price is required.")
+    private BigDecimal price;
 }

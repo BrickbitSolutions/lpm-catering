@@ -125,6 +125,9 @@ public class ProductControllerIT extends AbstractControllerIT {
         performPut("/product/" + pizza.getId(), command)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is(command.getName())));
+
+                //.andExpect(jsonPath("$.price", is(command.getPrice())));
+                // See Create Product BigDecimal issue in this test...
     }
 
     @Test
