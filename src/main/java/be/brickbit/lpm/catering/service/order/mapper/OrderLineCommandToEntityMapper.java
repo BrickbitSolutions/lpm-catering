@@ -36,6 +36,7 @@ public class OrderLineCommandToEntityMapper implements Mapper<OrderLineCommand, 
             OrderLine orderLine = new OrderLine();
 
             orderLine.setProduct(product.get());
+            orderLine.setPricePerUnit(product.get().getPrice());
             orderLine.setQuantity(orderLineCommand.getQuantity());
             if (CollectionUtils.isNotEmpty(orderLineCommand.getSupplements())) {
                 orderLine.setSupplements(

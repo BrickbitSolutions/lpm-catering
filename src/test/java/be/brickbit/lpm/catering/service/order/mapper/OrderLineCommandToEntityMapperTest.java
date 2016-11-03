@@ -53,6 +53,7 @@ public class OrderLineCommandToEntityMapperTest {
 		OrderLine orderLine = mapper.map(command);
 
 		assertThat(orderLine.getProduct()).isSameAs(product);
+		assertThat(orderLine.getPricePerUnit()).isSameAs(product.getPrice());
 		assertThat(orderLine.getQuantity()).isEqualTo(command.getQuantity());
 		assertThat(orderLine.getStatus()).isEqualTo(OrderStatus.CREATED);
 	}

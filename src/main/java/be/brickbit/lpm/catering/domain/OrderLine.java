@@ -1,5 +1,6 @@
 package be.brickbit.lpm.catering.domain;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -29,6 +30,9 @@ class OrderLine {
 
     @Column(name = "QUANTITY")
     private Integer quantity;
+
+    @Column(name = "PRICE_PER_UNIT")
+    private BigDecimal pricePerUnit;
 
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")

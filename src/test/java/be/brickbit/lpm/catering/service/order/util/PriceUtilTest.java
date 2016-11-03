@@ -19,7 +19,7 @@ public class PriceUtilTest {
 		BigDecimal expectedTotal = BigDecimal.ZERO;
 
 		for (OrderLine orderLine : order.getOrderLines()) {
-			expectedTotal = expectedTotal.add(orderLine.getProduct().getPrice().multiply(BigDecimal.valueOf(orderLine.getQuantity())));
+			expectedTotal = expectedTotal.add(orderLine.getPricePerUnit().multiply(BigDecimal.valueOf(orderLine.getQuantity())));
 		}
 
 		assertThat(total).isEqualTo(expectedTotal);
