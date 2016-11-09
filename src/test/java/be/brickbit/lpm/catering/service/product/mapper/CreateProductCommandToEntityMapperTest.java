@@ -63,6 +63,7 @@ public class CreateProductCommandToEntityMapperTest {
         assertThat(product.getAvgConsumption()).isEqualTo(0);
         assertThat(product.getPreparation()).isNull();
         assertThat(product.getAvailable()).isFalse();
+        assertThat(product.getReservationOnly()).isEqualTo(command.getReservationOnly());
     }
 
     @Test
@@ -81,6 +82,7 @@ public class CreateProductCommandToEntityMapperTest {
         assertThat(product.getReceipt().contains(receiptLine1)).isTrue();
         assertThat(product.getClearance()).isEqualTo(ClearanceType.ANY);
         assertThat(product.getPreparation()).isNotNull();
+        assertThat(product.getReservationOnly()).isEqualTo(command.getReservationOnly());
 
         ProductPreparation preparation = product.getPreparation();
 

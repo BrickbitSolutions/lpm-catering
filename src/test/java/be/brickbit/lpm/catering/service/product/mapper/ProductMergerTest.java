@@ -39,4 +39,16 @@ public class ProductMergerTest {
 
         assertThat(product.getName()).isEqualTo(command.getName());
     }
+
+    @Test
+    public void updatesReservationOnly() throws Exception {
+        Product product = ProductFixture.getJupiler();
+
+        EditProductCommand command = EditProductCommandFixture.mutable();
+        command.setReservationOnly(!product.getReservationOnly());
+
+        merger.merge(command, product);
+
+        assertThat(product.getReservationOnly()).isEqualTo(command.getReservationOnly());
+    }
 }

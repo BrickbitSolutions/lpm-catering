@@ -35,4 +35,5 @@ public class CreateProductCommand {
     private Integer timerInMinutes;
     private String queueName;
     private String instructions;
+    private Boolean reservationOnly;
 }

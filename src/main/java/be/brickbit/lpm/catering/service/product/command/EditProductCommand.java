@@ -20,4 +20,6 @@ public class EditProductCommand {
     private String name;
     @NotNull(message = "Price is required.")
     private BigDecimal price;
+    @NotNull(message = "Reservation Only is required.")
+    private Boolean reservationOnly;
 }

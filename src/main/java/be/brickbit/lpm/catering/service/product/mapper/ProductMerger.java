@@ -16,5 +16,9 @@ public class ProductMerger implements Merger<EditProductCommand, Product> {
         if(!product.getPrice().equals(editProductCommand.getPrice())){
             product.setPrice(editProductCommand.getPrice());
         }
+
+        if(!product.getReservationOnly().equals(editProductCommand.getReservationOnly())){
+            product.setReservationOnly(editProductCommand.getReservationOnly());
+        }
     }
 }

@@ -37,6 +37,9 @@ public @Data class Product {
     @Column(name = "AVAILABLE")
     private Boolean available;
 
+    @Column(name = "RESERVATION_ONLY")
+    private Boolean reservationOnly;
+
     @Column(name = "PRODUCT_TYPE")
     @Enumerated(EnumType.STRING)
     private ProductType productType;

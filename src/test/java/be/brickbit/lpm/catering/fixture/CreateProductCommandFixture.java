@@ -19,7 +19,8 @@ public class CreateProductCommandFixture {
                 Lists.newArrayList(),
                 randomInt(),
                 randomString(),
-                randomString(50)
+                randomString(50),
+                false
         );
     }
 }

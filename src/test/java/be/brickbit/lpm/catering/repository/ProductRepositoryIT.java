@@ -21,17 +21,21 @@ public class ProductRepositoryIT extends AbstractRepoIT {
 	@Test
 	public void testFindEnabledByProductType() throws Exception {
         Product newProduct = ProductFixture.getPizza();
+        Product newProductReservation = ProductFixture.getPizza();
+        newProductReservation.setReservationOnly(true);
         Product disabledProduct = ProductFixture.getPizza();
         disabledProduct.setAvailable(false);
 
         insert(
                 newProduct.getReceipt().get(0).getStockProduct(),
                 newProduct,
+                newProductReservation.getReceipt().get(0).getStockProduct(),
+                newProductReservation,
                 disabledProduct.getReceipt().get(0).getStockProduct(),
                 disabledProduct
         );
 
-		List<Product> result = productRepository.findByProductTypeAndAvailableTrue(ProductType.FOOD);
+		List<Product> result = productRepository.findByProductTypeAndAvailableTrueAndReservationOnlyFalse(ProductType.FOOD);
 
 		assertThat(result).containsOnly(newProduct);
 	}

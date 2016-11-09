@@ -23,7 +23,8 @@ public class ProductDtoMapper implements ProductMapper<ProductDto> {
 				someProduct.getClearance(),
 				someProduct.getAvgConsumption(),
 				getStockLevel(someProduct.getReceipt()),
-                someProduct.getAvailable());
+                someProduct.getAvailable(),
+				someProduct.getReservationOnly());
 	}
 
 	private Integer getStockLevel(List<ProductReceiptLine> receipt) {

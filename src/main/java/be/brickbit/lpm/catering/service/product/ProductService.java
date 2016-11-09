@@ -70,7 +70,7 @@ public class ProductService extends AbstractService<Product> implements IProduct
 
 	@Override
 	public <T> List<T> findAllEnabledByType(ProductType productType, ProductMapper<T> dtoMapper) {
-		return productRepository.findByProductTypeAndAvailableTrue(productType).stream().map(dtoMapper::map).collect(Collectors.toList());
+		return productRepository.findByProductTypeAndAvailableTrueAndReservationOnlyFalse(productType).stream().map(dtoMapper::map).collect(Collectors.toList());
 	}
 
 	@Override

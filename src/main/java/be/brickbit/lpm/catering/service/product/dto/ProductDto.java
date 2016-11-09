@@ -20,4 +20,5 @@ public class ProductDto {
     private Integer avgConsumption;
     private Integer stockLevel;
     private Boolean available;
+    private Boolean reservationOnly;
 }

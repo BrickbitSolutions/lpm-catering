@@ -35,5 +35,6 @@ public class ProductDtoMapperTest {
         );
         assertThat(productDto.getAvgConsumption()).isEqualTo(product.getAvgConsumption());
         assertThat(productDto.getAvailable()).isEqualTo(product.getAvailable());
+        assertThat(productDto.getReservationOnly()).isEqualTo(product.getReservationOnly());
     }
 }

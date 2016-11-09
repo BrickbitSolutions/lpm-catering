@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long>{
-    List<Product> findByProductTypeAndAvailableTrue(ProductType someType);
+    List<Product> findByProductTypeAndAvailableTrueAndReservationOnlyFalse(ProductType someType);
     List<Product> findByProductType(ProductType someType);
     Integer countByReceiptStockProductId(Long stockProductId);
 

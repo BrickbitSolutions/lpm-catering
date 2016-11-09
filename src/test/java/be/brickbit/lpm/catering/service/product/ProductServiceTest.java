@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import be.brickbit.lpm.catering.domain.ProductPreparation;
 import be.brickbit.lpm.catering.domain.ProductType;
 import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.service.product.command.EditProductCommand;
@@ -125,7 +124,7 @@ public class ProductServiceTest {
         List<Product> products = Arrays.asList(ProductFixture.getPizza(), ProductFixture.getPizza());
         ProductType productType = ProductType.FOOD;
 
-        when(productRepository.findByProductTypeAndAvailableTrue(productType)).thenReturn(products);
+        when(productRepository.findByProductTypeAndAvailableTrueAndReservationOnlyFalse(productType)).thenReturn(products);
         when(dtoMapper.map(any(Product.class))).thenReturn(new ProductDto());
 
         List<ProductDto> result = productService.findAllEnabledByType(productType, dtoMapper);
