@@ -24,4 +24,9 @@ public class LocalDateFutureValidatorTest {
         assertThat(validator.isValid(LocalDate.now().plusDays(1), null)).isTrue();
     }
 
+    @Test
+    public void acceptsNullValues() throws Exception {
+        assertThat(validator.isValid(null, null)).isTrue();
+    }
+
 }

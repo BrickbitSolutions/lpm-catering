@@ -13,6 +13,6 @@ public class LocalDateFutureValidator implements ConstraintValidator<LocalDateFu
 
     @Override
     public boolean isValid(LocalDate value, ConstraintValidatorContext context) {
-        return value.isAfter(LocalDate.now());
+        return value == null || value.isAfter(LocalDate.now());
     }
 }
