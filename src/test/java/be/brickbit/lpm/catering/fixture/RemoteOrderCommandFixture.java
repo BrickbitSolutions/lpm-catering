@@ -8,7 +8,8 @@ public class RemoteOrderCommandFixture {
     public static RemoteOrderCommand getRemoteOrderCommand() {
         return new RemoteOrderCommand(
                 Arrays.asList(OrderLineCommandFixture.getOrderLineCommand(), OrderLineCommandFixture.getOrderLineCommand2()),
-                "Do not burn this shit you twat >:("
+                "Do not burn this shit you twat >:(",
+                null
         );
     }
 }

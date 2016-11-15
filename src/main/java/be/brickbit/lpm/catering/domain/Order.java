@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,4 +39,7 @@ public @Data class Order {
 
     @Column(name = "COMMENT")
     private String comment;
+
+    @Column(name = "HOLD_UNTIL")
+    private LocalDate holdUntil;
 }

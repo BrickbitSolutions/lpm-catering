@@ -34,7 +34,7 @@ public class StockProductControllerIT extends AbstractControllerIT {
                 .andExpect(jsonPath("$.maxConsumptions", is(command.getMaxConsumptions())))
                 .andExpect(jsonPath("$.avgConsumption", is(0)))
                 .andExpect(jsonPath("$.stockLevel", is(command.getStockLevel())))
-                .andExpect(jsonPath("$.clearance", is(command.getClearance().toString())))
+                .andExpect(jsonPath("$.clearanceType", is(command.getClearance().toString())))
                 .andExpect(jsonPath("$.productType", is(command.getProductType().toString())));
     }
 
@@ -51,7 +51,7 @@ public class StockProductControllerIT extends AbstractControllerIT {
                 .andExpect(jsonPath("$.maxConsumptions", is(stockProduct.getMaxConsumptions())))
                 .andExpect(jsonPath("$.avgConsumption", is(stockProduct.getAvgConsumption())))
                 .andExpect(jsonPath("$.stockLevel", is(stockProduct.getStockLevel())))
-                .andExpect(jsonPath("$.clearance", is(stockProduct.getClearance().toString())))
+                .andExpect(jsonPath("$.clearanceType", is(stockProduct.getClearance().toString())))
                 .andExpect(jsonPath("$.productType", is(stockProduct.getProductType().toString())));
     }
 

@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,6 @@ import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.repository.ProductRepository;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
 import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
-import be.brickbit.lpm.catering.service.order.command.OrderLineCommand;
 import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
 import be.brickbit.lpm.catering.service.order.mapper.DirectOrderCommandToOrderEntityMapper;
 import be.brickbit.lpm.catering.service.order.mapper.OrderDetailDtoMapper;
@@ -41,9 +41,6 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 
     @Autowired
     private StockProductRepository stockProductRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
 
     @Autowired
     private DirectOrderCommandToOrderEntityMapper directOrderCommandMapper;
@@ -73,14 +70,47 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         order.setPlacedByUserId(user.getId());
 
         checkValidOrder(order);
-        updateStockLevels(command.getOrderLines());
 
-        setOrderLineStatus(order, OrderStatus.COMPLETED);
+        if(command.getHoldUntil() == null) {
+            handleOrder(order, OrderStatus.COMPLETED);
+        }else{
+            createReservation(order, command.getHoldUntil());
+        }
+
+        return dtoMapper.map(order);
+    }
+
+    @Override
+    @Transactional
+    public <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user) {
+        Order order = remoteOrderCommandToEntityMapper.map(command);
+        order.setPlacedByUserId(user.getId());
+        order.setUserId(user.getId());
+
+        checkValidOrder(order);
+
+        if(command.getHoldUntil() == null){
+            handleOrder(order, OrderStatus.READY);
+        }else{
+            createReservation(order, command.getHoldUntil());
+        }
+
+        pushToTakeOutQueue(order);
+
+        return dtoMapper.map(order);
+    }
+
+    private void createReservation(Order order, LocalDate holdUntil) {
+        order.setHoldUntil(holdUntil);
+        orderRepository.save(order);
+    }
+
+    private void handleOrder(Order order, OrderStatus statusAfterHandling){
+        updateStockLevels(order.getOrderLines());
+        setOrderLineStatus(order, statusAfterHandling);
 
         orderRepository.save(order);
         queueService.queueOrder(order, queueDtoMapper).forEach(this::pushToKitchenQueue);
-
-        return dtoMapper.map(order);
     }
 
     private void checkValidOrder(Order order) {
@@ -94,14 +124,24 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
             throw new ServiceException("Order contains disabled products!");
         }
 
+        Long nrReservationOnlyProducts = order.getOrderLines().stream()
+                .map(OrderLine::getProduct)
+                .filter(Product::getReservationOnly)
+                .count();
+
+        if(nrReservationOnlyProducts > 0 && order.getHoldUntil() == null){
+            throw new ServiceException("Order containing reservation only products " +
+                    "must have a hold until date!");
+        }
+
         //If this doesn't throw an exception, user has sufficient funds.
         walletService.substractAmount(order.getUserId(), PriceUtil.calculateTotalPrice(order));
     }
 
-    private void updateStockLevels(List<OrderLineCommand> orderLines) {
-        for (OrderLineCommand orderLine : orderLines) {
+    private void updateStockLevels(List<OrderLine> orderLines) {
+        for (OrderLine orderLine : orderLines) {
             Integer orderAmount = orderLine.getQuantity();
-            Product product = productRepository.findOne(orderLine.getProductId());
+            Product product = orderLine.getProduct();
             for (ProductReceiptLine receiptLine : product.getReceipt()) {
                 StockProduct stockProductToUpdate = receiptLine.getStockProduct();
                 Integer totalQuantity = receiptLine.getQuantity() * orderAmount;
@@ -115,25 +155,6 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         order.getOrderLines().stream()
                 .filter(line -> line.getProduct().getPreparation() == null)
                 .forEach(line -> line.setStatus(orderStatus));
-    }
-
-    @Override
-    @Transactional
-    public <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user) {
-        Order order = remoteOrderCommandToEntityMapper.map(command);
-        order.setPlacedByUserId(user.getId());
-        order.setUserId(user.getId());
-
-        checkValidOrder(order);
-        updateStockLevels(command.getOrderLines());
-        setOrderLineStatus(order, OrderStatus.READY);
-
-        orderRepository.save(order);
-        queueService.queueOrder(order, queueDtoMapper).forEach(this::pushToKitchenQueue);
-
-        pushToTakeOutQueue(order);
-
-        return dtoMapper.map(order);
     }
 
     @Override

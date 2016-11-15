@@ -7,6 +7,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import be.brickbit.lpm.catering.AbstractControllerIT;
 import be.brickbit.lpm.catering.domain.Order;
@@ -24,6 +25,9 @@ import be.brickbit.lpm.catering.service.order.util.PriceUtil;
 import be.brickbit.lpm.catering.util.DateUtils;
 import be.brickbit.lpm.core.client.dto.UserDetailsDto;
 
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLocalDate;
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -200,6 +204,44 @@ public class OrderControllerIT extends AbstractControllerIT {
     }
 
     @Test
+    public void createsDirectReservation() throws Exception {
+        Product product = ProductFixture.getJupiler();
+        Wallet wallet = new Wallet();
+        wallet.setUserId(user().getId());
+        wallet.setAmount(product.getPrice());
+        UserDetailsDto userDetails = UserFixture.mutable();
+
+        stubCore("/user/seat/" + userDetails.getSeatNumber(), 200, userDetails);
+        stubCore("/user/" + user().getId(), 200, user());
+
+        insert(
+                product.getReceipt().get(0).getStockProduct(),
+                product,
+                wallet
+        );
+
+        OrderLineCommand orderLineCommand = new OrderLineCommand(
+                1,
+                product.getId(),
+                Lists.newArrayList()
+        );
+
+        DirectOrderCommand command = new DirectOrderCommand(
+                user().getId(),
+                Lists.newArrayList(orderLineCommand),
+                randomString(),
+                randomLocalDate()
+        );
+
+        performPost("/order/direct", command)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", notNullValue()))
+                .andExpect(jsonPath("$.status", is("CREATED")))
+                .andExpect(jsonPath("$.username", is(user().getUsername())))
+                .andExpect(jsonPath("$.orderLines", hasSize(1)));
+    }
+
+    @Test
     public void createsDirectDrinksOrder() throws Exception {
         Product product = ProductFixture.getJupiler();
         Wallet wallet = new Wallet();
@@ -226,7 +268,8 @@ public class OrderControllerIT extends AbstractControllerIT {
         DirectOrderCommand command = new DirectOrderCommand(
                 user().getId(),
                 Lists.newArrayList(orderLineCommand),
-                comment
+                comment,
+                null
         );
 
         performPost("/order/direct", command)
@@ -266,7 +309,8 @@ public class OrderControllerIT extends AbstractControllerIT {
         DirectOrderCommand command = new DirectOrderCommand(
                 user().getId(),
                 Lists.newArrayList(orderLineCommand),
-                comment
+                comment,
+                null
         );
 
         performPost("/order/direct", command)
@@ -304,12 +348,51 @@ public class OrderControllerIT extends AbstractControllerIT {
         DirectOrderCommand command = new DirectOrderCommand(
                 user.getId(),
                 Lists.newArrayList(orderLineCommand),
-                comment
+                comment,
+                null
         );
 
         performPost("/order/direct", command)
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.cause", is("Insufficient funds.")));
+    }
+
+
+
+    @Test
+    public void createsRemoteReservation() throws Exception {
+        Product product = ProductFixture.getPizza();
+        Wallet wallet = new Wallet();
+        wallet.setUserId(user().getId());
+        wallet.setAmount(product.getPrice());
+
+        stubCore("/user/1", 200, user());
+
+        insert(
+                product.getReceipt().get(0).getStockProduct(),
+                product.getSupplements().get(0),
+                product,
+                wallet
+        );
+
+        OrderLineCommand orderLineCommand = new OrderLineCommand(
+                1,
+                product.getId(),
+                Lists.newArrayList(product.getSupplements().get(0).getId())
+        );
+
+        RemoteOrderCommand command = new RemoteOrderCommand(
+                Lists.newArrayList(orderLineCommand),
+                randomString(),
+                randomLocalDate()
+        );
+
+        performPost("/order/remote", command)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", notNullValue()))
+                .andExpect(jsonPath("$.status", is("CREATED")))
+                .andExpect(jsonPath("$.username", is(user().getUsername())))
+                .andExpect(jsonPath("$.orderLines", hasSize(1)));
     }
 
     @Test
@@ -337,7 +420,8 @@ public class OrderControllerIT extends AbstractControllerIT {
         final String comment = "Please do not burn :)";
         RemoteOrderCommand command = new RemoteOrderCommand(
                 Lists.newArrayList(orderLineCommand),
-                comment
+                comment,
+                null
         );
 
         performPost("/order/remote", command)
@@ -373,7 +457,8 @@ public class OrderControllerIT extends AbstractControllerIT {
         final String comment = "Please do not burn :)";
         RemoteOrderCommand command = new RemoteOrderCommand(
                 Lists.newArrayList(orderLineCommand),
-                comment
+                comment,
+                null
         );
 
         performPost("/order/remote", command)
@@ -383,5 +468,44 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(jsonPath("$.username", is(user().getUsername())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)))
                 .andExpect(jsonPath("$.comment", is(comment)));
+    }
+
+    @Test
+    public void refusesRemoteOrderHoldUntilNotInFuture() throws Exception {
+        OrderLineCommand orderLineCommand = new OrderLineCommand(
+                1,
+                randomLong(),
+                Lists.newArrayList()
+        );
+
+        RemoteOrderCommand command = new RemoteOrderCommand(
+                Lists.newArrayList(orderLineCommand),
+                randomString(),
+                LocalDate.now()
+        );
+
+        performPost("/order/remote", command)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.validationMessages.holdUntil", is("Hold Until date must be in the future")));
+    }
+
+    @Test
+    public void refusesDirectOrderHoldUntilNotInFuture() throws Exception {
+        OrderLineCommand orderLineCommand = new OrderLineCommand(
+                1,
+                randomLong(),
+                Lists.newArrayList()
+        );
+
+        DirectOrderCommand command = new DirectOrderCommand(
+                randomLong(),
+                Lists.newArrayList(orderLineCommand),
+                randomString(),
+                LocalDate.now()
+        );
+
+        performPost("/order/direct", command)
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.validationMessages.holdUntil", is("Hold Until date must be in the future")));
     }
 }

@@ -10,7 +10,8 @@ public class DirectOrderCommandFixture {
         return new DirectOrderCommand(
                 1L,
                 Arrays.asList(OrderLineCommandFixture.getOrderLineCommand(), OrderLineCommandFixture.getOrderLineCommand2()),
-                "Go out in style!"
+                "Go out in style!",
+                null
         );
     }
 }

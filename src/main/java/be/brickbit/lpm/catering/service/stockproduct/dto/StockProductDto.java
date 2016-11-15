@@ -17,6 +17,6 @@ public class StockProductDto {
     private Integer maxConsumptions;
     private Integer avgConsumption;
     private Integer stockLevel;
-    private ClearanceType clearance;
+    private ClearanceType clearanceType;
     private ProductType productType;
 }

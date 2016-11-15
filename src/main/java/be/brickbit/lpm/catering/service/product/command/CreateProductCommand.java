@@ -35,5 +35,6 @@ public class CreateProductCommand {
     private Integer timerInMinutes;
     private String queueName;
     private String instructions;
+    @NotNull(message = "Product needs to be marked as reservation only or not.")
     private Boolean reservationOnly;
 }

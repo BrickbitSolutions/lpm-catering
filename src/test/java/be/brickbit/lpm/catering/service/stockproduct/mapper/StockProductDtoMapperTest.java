@@ -24,7 +24,7 @@ public class StockProductDtoMapperTest {
 
         assertThat(dto.getId()).isEqualTo(stockProduct.getId());
         assertThat(dto.getName()).isEqualTo(stockProduct.getName());
-        assertThat(dto.getClearance()).isEqualTo(stockProduct.getClearance());
+        assertThat(dto.getClearanceType()).isEqualTo(stockProduct.getClearance());
         assertThat(dto.getConsumptionsLeft()).isEqualTo(stockProduct.getRemainingConsumptions());
         assertThat(dto.getMaxConsumptions()).isEqualTo(stockProduct.getMaxConsumptions());
         assertThat(dto.getAvgConsumption()).isEqualTo(stockProduct.getAvgConsumption());
