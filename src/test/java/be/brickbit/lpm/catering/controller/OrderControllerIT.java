@@ -204,6 +204,33 @@ public class OrderControllerIT extends AbstractControllerIT {
     }
 
     @Test
+    public void handlesReservation() throws Exception {
+        Order order = OrderFixture.mutable();
+        order.setHoldUntil(LocalDate.now());
+        order.getOrderLines().get(0).setStatus(OrderStatus.CREATED);
+        order.getOrderLines().get(1).setStatus(OrderStatus.CREATED);
+
+        insert(
+                order.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),
+                order.getOrderLines().get(1).getProduct().getReceipt().get(0).getStockProduct(),
+                order.getOrderLines().get(0).getProduct(),
+                order.getOrderLines().get(1).getProduct(),
+                order
+        );
+
+        performPut("/order/" + order.getId() + "/process/reservation", null)
+                .andExpect(status().isNoContent());
+
+        Order resultedOrder = new JPAQuery(getEntityManager())
+                .from(QOrder.order)
+                .where(QOrder.order.id.eq(order.getId()))
+                .uniqueResult(QOrder.order);
+
+        assertThat(resultedOrder.getOrderLines().get(0).getStatus()).isEqualTo(OrderStatus.READY);
+        assertThat(resultedOrder.getOrderLines().get(1).getStatus()).isEqualTo(OrderStatus.QUEUED);
+    }
+
+    @Test
     public void createsDirectReservation() throws Exception {
         Product product = ProductFixture.getJupiler();
         Wallet wallet = new Wallet();

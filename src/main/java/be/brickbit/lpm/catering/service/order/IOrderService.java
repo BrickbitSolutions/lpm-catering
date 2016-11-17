@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.service.order;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 import be.brickbit.lpm.catering.domain.Order;
@@ -14,6 +16,9 @@ public interface IOrderService extends Service<Order> {
     <T> T placeDirectOrder(DirectOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user);
 
     <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user);
+
+    @Transactional
+    void handleReservation(Long id);
 
     <T> T findOrderByOrderLineId(Long orderLineId, OrderMapper<T> dtoMapper);
 

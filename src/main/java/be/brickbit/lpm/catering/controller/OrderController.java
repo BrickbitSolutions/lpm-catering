@@ -63,6 +63,13 @@ public class OrderController extends AbstractController {
         orderService.processOrder(id);
     }
 
+    @RequestMapping(value = "/{id}/process/reservation", method = RequestMethod.PUT)
+    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void processReservation(@PathVariable("id") Long id) {
+        orderService.handleReservation(id);
+    }
+
     @RequestMapping(value = "/direct", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.CREATED)

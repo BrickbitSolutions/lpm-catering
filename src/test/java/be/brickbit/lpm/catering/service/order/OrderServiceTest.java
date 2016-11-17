@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import be.brickbit.lpm.catering.domain.Order;
@@ -45,7 +46,10 @@ import be.brickbit.lpm.catering.service.wallet.WalletService;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
 import static be.brickbit.lpm.catering.domain.OrderStatus.COMPLETED;
+import static be.brickbit.lpm.catering.domain.OrderStatus.CREATED;
 import static be.brickbit.lpm.catering.domain.OrderStatus.IN_PROGRESS;
+import static be.brickbit.lpm.catering.domain.OrderStatus.QUEUED;
+import static be.brickbit.lpm.catering.domain.OrderStatus.READY;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLocalDate;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -292,6 +296,83 @@ public class OrderServiceTest {
         List<OrderDetailDto> result = orderService.findByUserId(userId, dtoMapper);
 
         assertThat(result).hasSameSizeAs(orders);
+    }
+
+    @Test
+    public void handleReservation() throws Exception {
+        Order order = OrderFixture.mutable();
+        order.setHoldUntil(LocalDate.now());
+
+        OrderLine orderLineFood = OrderLineFixture.getPizzaOrderLine();
+        orderLineFood.setStatus(OrderStatus.CREATED);
+        OrderLine orderLineDrinks = OrderLineFixture.getJupilerOrderLine();
+        orderLineDrinks.setStatus(CREATED);
+
+        order.setOrderLines(Lists.newArrayList(orderLineFood, orderLineDrinks));
+        QueueDto queueDto = QueueDtoFixture.mutable();
+
+        Long orderId = randomLong();
+
+        when(orderRepository.findOne(orderId)).thenReturn(order);
+        when(queueService.queueOrder(order, queueDtoMapper)).thenReturn(Lists.newArrayList(queueDto));
+
+        orderService.handleReservation(orderId);
+
+        verify(queueService, times(1)).queueOrder(order, queueDtoMapper);
+        verify(orderRepository, times(1)).save(order);
+
+        assertThat(order.getOrderLines().get(1).getStatus()).isEqualTo(READY);
+    }
+
+    @Test
+    public void throwsServiceExceptionWhenOrderIsNotReservation() throws Exception {
+        Order order = OrderFixture.mutable();
+        order.setHoldUntil(null);
+        OrderLine orderLineFood = OrderLineFixture.getPizzaOrderLine();
+        orderLineFood.setStatus(OrderStatus.CREATED);
+        order.setOrderLines(Lists.newArrayList(orderLineFood));
+
+        Long orderId = randomLong();
+
+        when(orderRepository.findOne(orderId)).thenReturn(order);
+
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage("Order is not a reservation.");
+
+        orderService.handleReservation(orderId);
+    }
+
+    @Test
+    public void throwsServiceExceptionWhenOrderIsAlreadyBeingHandled() throws Exception {
+        Order order = OrderFixture.mutable();
+        order.setHoldUntil(LocalDate.now());
+        OrderLine orderLineFood = OrderLineFixture.getPizzaOrderLine();
+        orderLineFood.setStatus(OrderStatus.QUEUED);
+        order.setOrderLines(Lists.newArrayList(orderLineFood));
+
+        Long orderId = randomLong();
+
+        when(orderRepository.findOne(orderId)).thenReturn(order);
+
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage("Reservation is already being handled.");
+
+        orderService.handleReservation(orderId);
+    }
+
+    @Test
+    public void throwsServiceExceptionWhenHolUntilIsNotExpiredYet() throws Exception {
+        Order order = OrderFixture.mutable();
+        order.setHoldUntil(LocalDate.now().plusDays(1));
+
+        Long orderId = randomLong();
+
+        when(orderRepository.findOne(orderId)).thenReturn(order);
+
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage("Reservation cannot be handled yet.");
+
+        orderService.handleReservation(orderId);
     }
 
     @Test

@@ -16,7 +16,6 @@ import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.domain.ProductReceiptLine;
 import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.repository.OrderRepository;
-import be.brickbit.lpm.catering.repository.ProductRepository;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
 import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
 import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
@@ -30,6 +29,7 @@ import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
 import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
 import be.brickbit.lpm.catering.service.wallet.WalletService;
+import be.brickbit.lpm.catering.util.OrderUtils;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 import be.brickbit.lpm.infrastructure.AbstractService;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
@@ -71,9 +71,9 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 
         checkValidOrder(order);
 
-        if(command.getHoldUntil() == null) {
+        if (command.getHoldUntil() == null) {
             handleOrder(order, OrderStatus.COMPLETED);
-        }else{
+        } else {
             createReservation(order, command.getHoldUntil());
         }
 
@@ -89,9 +89,9 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 
         checkValidOrder(order);
 
-        if(command.getHoldUntil() == null){
+        if (command.getHoldUntil() == null) {
             handleOrder(order, OrderStatus.READY);
-        }else{
+        } else {
             createReservation(order, command.getHoldUntil());
         }
 
@@ -100,12 +100,32 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         return dtoMapper.map(order);
     }
 
+    @Override
+    @Transactional
+    public void handleReservation(Long id) {
+        Order order = orderRepository.findOne(id);
+
+        if(order.getHoldUntil() == null){
+            throw new ServiceException("Order is not a reservation.");
+        }
+
+        if(LocalDate.now().isBefore(order.getHoldUntil())){
+            throw new ServiceException("Reservation cannot be handled yet.");
+        }
+
+        if(OrderUtils.determineOrderStatus(order) == OrderStatus.CREATED){
+            handleOrder(order, OrderStatus.READY);
+        }else{
+            throw new ServiceException("Reservation is already being handled.");
+        }
+    }
+
     private void createReservation(Order order, LocalDate holdUntil) {
         order.setHoldUntil(holdUntil);
         orderRepository.save(order);
     }
 
-    private void handleOrder(Order order, OrderStatus statusAfterHandling){
+    private void handleOrder(Order order, OrderStatus statusAfterHandling) {
         updateStockLevels(order.getOrderLines());
         setOrderLineStatus(order, statusAfterHandling);
 
@@ -129,7 +149,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
                 .filter(Product::getReservationOnly)
                 .count();
 
-        if(nrReservationOnlyProducts > 0 && order.getHoldUntil() == null){
+        if (nrReservationOnlyProducts > 0 && order.getHoldUntil() == null) {
             throw new ServiceException("Order containing reservation only products " +
                     "must have a hold until date!");
         }
@@ -191,7 +211,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         }
     }
 
-    private void pushToKitchenQueue(QueueDto orderTask){
+    private void pushToKitchenQueue(QueueDto orderTask) {
         messagingTemplate.convertAndSend("/topic/kitchen.queue." + orderTask.getQueueName(), orderTask);
     }
 
