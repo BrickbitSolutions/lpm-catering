@@ -24,12 +24,14 @@ import be.brickbit.lpm.catering.service.order.mapper.OrderDetailDtoMapper;
 import be.brickbit.lpm.catering.service.order.mapper.OrderMapper;
 import be.brickbit.lpm.catering.service.order.mapper.RemoteOrderCommandToEntityMapper;
 import be.brickbit.lpm.catering.service.order.util.PriceUtil;
-import be.brickbit.lpm.catering.service.queue.IQueueService;
+import be.brickbit.lpm.catering.service.queue.QueueService;
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
 import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
 import be.brickbit.lpm.catering.service.wallet.WalletService;
 import be.brickbit.lpm.catering.util.OrderUtils;
+import be.brickbit.lpm.core.client.UserService;
+import be.brickbit.lpm.core.client.dto.UserDetailsDto;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 import be.brickbit.lpm.infrastructure.AbstractService;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
@@ -52,7 +54,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     private OrderDetailDtoMapper orderDtoMapper;
 
     @Autowired
-    private IQueueService queueService;
+    private QueueService queueService;
 
     @Autowired
     private QueueDtoMapper queueDtoMapper;
@@ -62,6 +64,9 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 
     @Autowired
     private WalletService walletService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     @Transactional
@@ -134,25 +139,24 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     }
 
     private void checkValidOrder(Order order) {
-        Long nrDisabledProducts =
-                order.getOrderLines().stream()
-                        .map(OrderLine::getProduct)
-                        .filter(p -> !p.getAvailable())
-                        .count();
+        UserDetailsDto user = userService.findOne(order.getUserId());
 
-        if (nrDisabledProducts > 0) {
-            throw new ServiceException("Order contains disabled products!");
-        }
+        order.getOrderLines().stream().map(OrderLine::getProduct)
+                .forEach(product -> {
+                    if(!product.getAvailable()){
+                        throw new ServiceException("Order contains disabled products!");
+                    }
 
-        Long nrReservationOnlyProducts = order.getOrderLines().stream()
-                .map(OrderLine::getProduct)
-                .filter(Product::getReservationOnly)
-                .count();
+                    if(product.getClearance().getClearanceLevel() > user.getAge()){
+                        throw new ServiceException("Order contains products who are lawfully " +
+                                "forbidden for the current user.");
+                    }
 
-        if (nrReservationOnlyProducts > 0 && order.getHoldUntil() == null) {
-            throw new ServiceException("Order containing reservation only products " +
-                    "must have a hold until date!");
-        }
+                    if(product.getReservationOnly() && order.getHoldUntil() == null){
+                        throw new ServiceException("Order containing reservation only products " +
+                                "must have a hold until date!");
+                    }
+                });
 
         //If this doesn't throw an exception, user has sufficient funds.
         walletService.substractAmount(order.getUserId(), PriceUtil.calculateTotalPrice(order));

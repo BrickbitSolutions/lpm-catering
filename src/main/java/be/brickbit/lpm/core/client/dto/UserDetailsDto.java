@@ -6,7 +6,7 @@ import lombok.Value;
 public class UserDetailsDto {
     private Long id;
     private String username;
-    private Long age;
+    private Integer age;
     private Integer seatNumber;
     private String mood;
 }

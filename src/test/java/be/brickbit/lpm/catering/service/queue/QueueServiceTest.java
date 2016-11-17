@@ -4,7 +4,6 @@ import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.PreparationTask;
 import be.brickbit.lpm.catering.fixture.OrderFixture;
 import be.brickbit.lpm.catering.fixture.PreparationTaskFixture;
-import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.repository.PreparationTaskRepository;
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
 import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
@@ -32,7 +31,7 @@ public class QueueServiceTest {
     private QueueDtoMapper mapper;
 
     @InjectMocks
-    private QueueService service;
+    private QueueServiceImpl service;
 
     @Test
     //Should only queue tasks if there is a preparation defined for a product.

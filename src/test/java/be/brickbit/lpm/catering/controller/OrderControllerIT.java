@@ -114,7 +114,7 @@ public class OrderControllerIT extends AbstractControllerIT {
     public void getsOrderHistory() throws Exception {
         Order order = OrderFixture.mutable();
         UserDetailsDto userDetails = UserFixture.mutable();
-        order.setUserId(user().getId());
+        order.setUserId(userDetails().getId());
 
         insert(
                 order.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),
@@ -124,7 +124,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 order
         );
 
-        stubCore("/user/" + user().getId(), 200, userDetails);
+        stubCore("/user/" + userDetails().getId(), 200, userDetails);
 
         performGet("/order/history")
                 .andExpect(status().isOk())
@@ -168,7 +168,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 notReadyOrder
         );
 
-        stubCore("/user/" + order.getUserId(), 200, user());
+        stubCore("/user/" + order.getUserId(), 200, userDetails());
 
         performGet("/order?status=READY")
                 .andExpect(status().isOk())
@@ -234,12 +234,12 @@ public class OrderControllerIT extends AbstractControllerIT {
     public void createsDirectReservation() throws Exception {
         Product product = ProductFixture.getJupiler();
         Wallet wallet = new Wallet();
-        wallet.setUserId(user().getId());
+        wallet.setUserId(userDetails().getId());
         wallet.setAmount(product.getPrice());
         UserDetailsDto userDetails = UserFixture.mutable();
 
         stubCore("/user/seat/" + userDetails.getSeatNumber(), 200, userDetails);
-        stubCore("/user/" + user().getId(), 200, user());
+        stubCore("/user/" + userDetails().getId(), 200, userDetails());
 
         insert(
                 product.getReceipt().get(0).getStockProduct(),
@@ -254,7 +254,7 @@ public class OrderControllerIT extends AbstractControllerIT {
         );
 
         DirectOrderCommand command = new DirectOrderCommand(
-                user().getId(),
+                userDetails().getId(),
                 Lists.newArrayList(orderLineCommand),
                 randomString(),
                 randomLocalDate()
@@ -264,7 +264,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("CREATED")))
-                .andExpect(jsonPath("$.username", is(user().getUsername())))
+                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)));
     }
 
@@ -272,12 +272,12 @@ public class OrderControllerIT extends AbstractControllerIT {
     public void createsDirectDrinksOrder() throws Exception {
         Product product = ProductFixture.getJupiler();
         Wallet wallet = new Wallet();
-        wallet.setUserId(user().getId());
+        wallet.setUserId(userDetails().getId());
         wallet.setAmount(product.getPrice());
         UserDetailsDto userDetails = UserFixture.mutable();
 
         stubCore("/user/seat/" + userDetails.getSeatNumber(), 200, userDetails);
-        stubCore("/user/" + user().getId(), 200, user());
+        stubCore("/user/" + userDetails().getId(), 200, userDetails());
 
         insert(
                 product.getReceipt().get(0).getStockProduct(),
@@ -293,7 +293,7 @@ public class OrderControllerIT extends AbstractControllerIT {
 
         final String comment = "Please do not burn :)";
         DirectOrderCommand command = new DirectOrderCommand(
-                user().getId(),
+                userDetails().getId(),
                 Lists.newArrayList(orderLineCommand),
                 comment,
                 null
@@ -303,7 +303,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("COMPLETED")))
-                .andExpect(jsonPath("$.username", is(user().getUsername())))
+                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)))
                 .andExpect(jsonPath("$.comment", is(comment)));
     }
@@ -312,12 +312,12 @@ public class OrderControllerIT extends AbstractControllerIT {
     public void createsDirectFoodOrder() throws Exception {
         Product product = ProductFixture.getPizza();
         Wallet wallet = new Wallet();
-        wallet.setUserId(user().getId());
+        wallet.setUserId(userDetails().getId());
         wallet.setAmount(product.getPrice());
         UserDetailsDto userDetails = UserFixture.mutable();
 
         stubCore("/user/seat/" + userDetails.getSeatNumber(), 200, userDetails);
-        stubCore("/user/" + user().getId(), 200, user());
+        stubCore("/user/" + userDetails().getId(), 200, userDetails());
 
         insert(
                 product.getReceipt().get(0).getStockProduct(),
@@ -334,7 +334,7 @@ public class OrderControllerIT extends AbstractControllerIT {
 
         final String comment = "Please do not burn :)";
         DirectOrderCommand command = new DirectOrderCommand(
-                user().getId(),
+                userDetails().getId(),
                 Lists.newArrayList(orderLineCommand),
                 comment,
                 null
@@ -344,7 +344,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("QUEUED")))
-                .andExpect(jsonPath("$.username", is(user().getUsername())))
+                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)))
                 .andExpect(jsonPath("$.comment", is(comment)));
     }
@@ -354,7 +354,7 @@ public class OrderControllerIT extends AbstractControllerIT {
         UserDetailsDto user = UserFixture.mutable();
         Product product = ProductFixture.getPizza();
         Wallet wallet = new Wallet();
-        wallet.setUserId(user().getId());
+        wallet.setUserId(userDetails().getId());
         wallet.setAmount(BigDecimal.TEN);
 
         stubCore("/user/" + user.getId(), 200, user);
@@ -390,10 +390,10 @@ public class OrderControllerIT extends AbstractControllerIT {
     public void createsRemoteReservation() throws Exception {
         Product product = ProductFixture.getPizza();
         Wallet wallet = new Wallet();
-        wallet.setUserId(user().getId());
+        wallet.setUserId(userDetails().getId());
         wallet.setAmount(product.getPrice());
 
-        stubCore("/user/1", 200, user());
+        stubCore("/user/1", 200, userDetails());
 
         insert(
                 product.getReceipt().get(0).getStockProduct(),
@@ -418,7 +418,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("CREATED")))
-                .andExpect(jsonPath("$.username", is(user().getUsername())))
+                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)));
     }
 
@@ -426,10 +426,10 @@ public class OrderControllerIT extends AbstractControllerIT {
     public void createsRemoteFoodOrder() throws Exception {
         Product product = ProductFixture.getPizza();
         Wallet wallet = new Wallet();
-        wallet.setUserId(user().getId());
+        wallet.setUserId(userDetails().getId());
         wallet.setAmount(product.getPrice());
 
-        stubCore("/user/1", 200, user());
+        stubCore("/user/1", 200, userDetails());
 
         insert(
                 product.getReceipt().get(0).getStockProduct(),
@@ -455,7 +455,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("QUEUED")))
-                .andExpect(jsonPath("$.username", is(user().getUsername())))
+                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)))
                 .andExpect(jsonPath("$.comment", is(comment)));
     }
@@ -464,10 +464,10 @@ public class OrderControllerIT extends AbstractControllerIT {
     public void createsRemoteDrinksOrder() throws Exception {
         Product product = ProductFixture.getJupiler();
         Wallet wallet = new Wallet();
-        wallet.setUserId(user().getId());
+        wallet.setUserId(userDetails().getId());
         wallet.setAmount(product.getPrice());
 
-        stubCore("/user/1", 200, user());
+        stubCore("/user/1", 200, userDetails());
 
         insert(
                 product.getReceipt().get(0).getStockProduct(),
@@ -492,7 +492,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("READY")))
-                .andExpect(jsonPath("$.username", is(user().getUsername())))
+                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)))
                 .andExpect(jsonPath("$.comment", is(comment)));
     }

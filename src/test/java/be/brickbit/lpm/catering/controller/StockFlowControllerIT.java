@@ -62,7 +62,7 @@ public class StockFlowControllerIT extends AbstractControllerIT {
                 pizza
         );
 
-        stubCore("/user/1", 200, user());
+        stubCore("/user/1", 200, userDetails());
 
         StockFlowCommand command = StockFlowCommandFixture.mutable();
         command.setProductId(pizza.getId());
@@ -70,7 +70,7 @@ public class StockFlowControllerIT extends AbstractControllerIT {
         performPost("/stock/flow", command)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.username", is(user().getUsername())))
+                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
                 .andExpect(jsonPath("$.type", is(command.getStockFlowType().toString())))
                 .andExpect(jsonPath("$.level", is(command.getLevel().toString())))
                 .andExpect(jsonPath("$.timestamp", notNullValue()))

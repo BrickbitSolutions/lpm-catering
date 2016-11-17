@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum ClearanceType {
-    PLUS_18(2),
-    PLUS_16(1),
-    PLUS_21(3),
+    PLUS_18(18),
+    PLUS_16(16),
+    PLUS_21(21),
     ANY(0);
 
     private Integer clearanceLevel;

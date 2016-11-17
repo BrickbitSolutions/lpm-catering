@@ -17,10 +17,14 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Arrays;
+
 import be.brickbit.lpm.Application;
 import be.brickbit.lpm.catering.fixture.UserFixture;
+import be.brickbit.lpm.core.client.dto.UserDetailsDto;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomString;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -47,10 +51,24 @@ public abstract class AbstractControllerIT extends AbstractIT {
     private WebApplicationContext webApplicationContext;
 
     private UserPrincipalDto principalDto;
+    private UserDetailsDto userDetailsDto;
 
     @Before
     public void setUp() throws Exception {
-        principalDto = UserFixture.getDefaultUser();
+        principalDto = new UserPrincipalDto(
+                1L,
+                "admin",
+                randomString(),
+                Arrays.asList("ROLE_ADMIN", "ROLE_USER")
+        );
+
+        userDetailsDto = new UserDetailsDto(
+                1L,
+                "admin",
+                25,
+                1,
+                randomString()
+        );
 
         stubFor(WireMock.get(urlEqualTo("/user/me"))
                 .withHeader("Authorization", equalTo("Bearer LPM-test-token"))
@@ -66,16 +84,27 @@ public abstract class AbstractControllerIT extends AbstractIT {
     }
 
     /**
-     * Configures the test to run with the given user details. Otherwise UserFixture
-     * .getDefaultUser() is used.
-     * @param user user principal.
+     * Configures the test to run with the given userDetails userPrincipal. Otherwise a default userDetails is used.
+     * @param user userDetails userPrincipal.
      */
     protected void setOauthUser(UserPrincipalDto user){
         this.principalDto = user;
     }
 
-    protected UserPrincipalDto user(){
+    /**
+     * Configures the test with the given userDetails details. Otherwise a default userDetails is used.
+     * @param user userDetails userPrincipal.
+     */
+    protected void setOauthUserDetails(UserDetailsDto user){
+        this.userDetailsDto = user;
+    }
+
+    protected UserPrincipalDto userPrincipal(){
         return this.principalDto;
+    }
+
+    protected UserDetailsDto userDetails(){
+        return this.userDetailsDto;
     }
 
     protected String convertToJson(Object object) throws JsonProcessingException {

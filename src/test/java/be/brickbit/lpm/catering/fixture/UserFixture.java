@@ -11,10 +11,14 @@ import static be.brickbit.lpm.catering.util.RandomValueUtil.randomString;
 
 public class UserFixture {
     public static UserDetailsDto mutable() {
+        return mutable(randomInt());
+    }
+
+    public static UserDetailsDto mutable(int age) {
         return new UserDetailsDto(
                 randomLong(),
                 randomString(),
-                randomLong(),
+                age,
                 randomInt(),
                 randomString()
         );
@@ -24,15 +28,6 @@ public class UserFixture {
         return new UserPrincipalDto(
                 randomLong(),
                 randomString(),
-                randomString(),
-                Arrays.asList("ROLE_ADMIN", "ROLE_USER")
-        );
-    }
-
-    public static UserPrincipalDto getDefaultUser() {
-        return new UserPrincipalDto(
-                1L,
-                "admin",
                 randomString(),
                 Arrays.asList("ROLE_ADMIN", "ROLE_USER")
         );
