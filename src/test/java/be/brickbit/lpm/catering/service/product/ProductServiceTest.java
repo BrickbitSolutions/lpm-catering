@@ -140,7 +140,7 @@ public class ProductServiceTest {
         when(productRepository.findByProductTypeAndAvailableTrueAndReservationOnlyTrue(productType)).thenReturn(products);
         when(dtoMapper.map(any(Product.class))).thenReturn(new ProductDto());
 
-        List<ProductDto> result = productService.findAllByType(productType, true, false, dtoMapper);
+        List<ProductDto> result = productService.findAllByType(productType, true, true, dtoMapper);
 
         assertThat(result).hasSize(products.size());
     }
