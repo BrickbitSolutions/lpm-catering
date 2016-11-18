@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Value;
 
-@AllArgsConstructor
-@Getter
+@Value
 public class WalletDto {
-    BigDecimal amount;
+    private BigDecimal amount;
 }

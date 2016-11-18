@@ -7,5 +7,5 @@ import lombok.Value;
 
 @Value
 public class UserClearanceDto {
-    List<ClearanceType> clearance;
+    private List<ClearanceType> clearance;
 }
