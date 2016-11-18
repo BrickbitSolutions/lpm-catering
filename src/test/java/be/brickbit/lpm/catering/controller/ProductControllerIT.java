@@ -112,6 +112,26 @@ public class ProductControllerIT extends AbstractControllerIT {
     }
 
     @Test
+    public void getsAllEnabledReservationOnlyProductsByType() throws Exception {
+        Product pizza = ProductFixture.getPizza();
+        Product reservationPizza = ProductFixture.getPizza();
+        reservationPizza.setReservationOnly(true);
+
+        insert(
+                pizza.getReceipt().get(0).getStockProduct(),
+                pizza,
+                reservationPizza.getReceipt().get(0).getStockProduct(),
+                reservationPizza
+        );
+
+        performGet("/product?enabled=true&reservationOnly=true&type=" + pizza.getProductType()
+                .toString())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(reservationPizza.getId().intValue())));
+    }
+
+    @Test
     public void updatesProduct() throws Exception {
         Product pizza = ProductFixture.getPizza();
 

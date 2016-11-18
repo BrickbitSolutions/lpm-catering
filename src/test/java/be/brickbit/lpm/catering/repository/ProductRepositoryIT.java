@@ -19,7 +19,7 @@ public class ProductRepositoryIT extends AbstractRepoIT {
 	private ProductRepository productRepository;
 
 	@Test
-	public void testFindEnabledByProductType() throws Exception {
+	public void testFindEnabledByProductTypeWithoutReservationOnly() throws Exception {
         Product newProduct = ProductFixture.getPizza();
         Product newProductReservation = ProductFixture.getPizza();
         newProductReservation.setReservationOnly(true);
@@ -35,10 +35,33 @@ public class ProductRepositoryIT extends AbstractRepoIT {
                 disabledProduct
         );
 
-		List<Product> result = productRepository.findByProductTypeAndAvailableTrueAndReservationOnlyFalse(ProductType.FOOD);
+		List<Product> result = productRepository
+                .findByProductTypeAndAvailableTrueAndReservationOnlyTrue(ProductType.FOOD);
 
-		assertThat(result).containsOnly(newProduct);
+		assertThat(result).containsOnly(newProductReservation);
 	}
+
+    @Test
+    public void findsEnabledByProductType() throws Exception {
+        Product newProduct = ProductFixture.getPizza();
+        Product newProductReservation = ProductFixture.getPizza();
+        newProductReservation.setReservationOnly(true);
+        Product disabledProduct = ProductFixture.getPizza();
+        disabledProduct.setAvailable(false);
+
+        insert(
+                newProduct.getReceipt().get(0).getStockProduct(),
+                newProduct,
+                newProductReservation.getReceipt().get(0).getStockProduct(),
+                newProductReservation,
+                disabledProduct.getReceipt().get(0).getStockProduct(),
+                disabledProduct
+        );
+
+        List<Product> result = productRepository.findByProductTypeAndAvailableTrue(ProductType.FOOD);
+
+        assertThat(result).contains(newProduct, newProductReservation);
+    }
 
     @Test
     public void testFindByProductType() throws Exception {

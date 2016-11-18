@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface IProductService extends Service<Product> {
 	<T> T save(CreateProductCommand command, ProductMapper<T> dtoMapper);
-	<T> List<T> findAllByType(ProductType productType, ProductMapper<T> dtoMapper);
-    <T> List<T> findAllEnabledByType(ProductType productType, ProductMapper<T> dtoMapper);
+    <T> List<T> findAllByType(ProductType productType, Boolean enabledOnly, Boolean reservationOnly, ProductMapper<T> dtoMapper);
     <T> T updateProduct(Long productId, EditProductCommand command, ProductMapper<T> dtoMapper);
     <T> T updateProductPreparation(Long productId, EditProductPreparationCommand command, ProductMapper<T> dtoMapper);
     List<String> findAllQueueNames();

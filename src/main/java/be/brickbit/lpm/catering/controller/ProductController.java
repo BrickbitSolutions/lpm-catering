@@ -50,17 +50,14 @@ public class ProductController extends AbstractController{
     @ResponseStatus(HttpStatus.OK)
     public List<ProductDto> getAllProducts(
             @RequestParam(value = "type", required = false) ProductType productType,
-            @RequestParam(value = "enabled", required = false, defaultValue = "false") Boolean enabled
+            @RequestParam(value = "enabled", required = false, defaultValue = "false") Boolean enabled,
+            @RequestParam(value = "reservationOnly", required = false, defaultValue = "false") Boolean reservationOly
     ){
-        if(productType != null && enabled){
-            return productService.findAllEnabledByType(productType, productDtoMapper);
+        if(productType == null){
+            return productService.findAll(productDtoMapper);
+        }else{
+            return productService.findAllByType(productType, enabled, reservationOly, productDtoMapper);
         }
-
-        if(productType != null){
-            return productService.findAllByType(productType, productDtoMapper);
-        }
-
-        return productService.findAll(productDtoMapper);
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")

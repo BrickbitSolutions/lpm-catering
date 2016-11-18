@@ -1,5 +1,6 @@
 package be.brickbit.lpm.catering.service.product;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -64,13 +65,25 @@ public class ProductService extends AbstractService<Product> implements IProduct
 	}
 
 	@Override
-	public <T> List<T> findAllByType(ProductType productType, ProductMapper<T> dtoMapper) {
-		return productRepository.findByProductType(productType).stream().map(dtoMapper::map).collect(Collectors.toList());
-	}
+	@Transactional(readOnly = true)
+	public <T> List<T> findAllByType(ProductType productType, Boolean enabledOnly, Boolean
+			reservationOnly,
+							   ProductMapper<T> dtoMapper){
+		List<Product> result = new ArrayList<>();
 
-	@Override
-	public <T> List<T> findAllEnabledByType(ProductType productType, ProductMapper<T> dtoMapper) {
-		return productRepository.findByProductTypeAndAvailableTrueAndReservationOnlyFalse(productType).stream().map(dtoMapper::map).collect(Collectors.toList());
+		if(!enabledOnly && !reservationOnly){
+			result = productRepository.findByProductType(productType);
+		}
+
+		if(enabledOnly && !reservationOnly){
+			result = productRepository.findByProductTypeAndAvailableTrue(productType);
+		}
+
+		if(enabledOnly && reservationOnly){
+			result = productRepository.findByProductTypeAndAvailableTrueAndReservationOnlyTrue(productType);
+		}
+
+		return result.stream().map(dtoMapper::map).collect(Collectors.toList());
 	}
 
 	@Override

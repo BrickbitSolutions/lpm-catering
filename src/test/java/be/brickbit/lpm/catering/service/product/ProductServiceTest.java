@@ -114,7 +114,7 @@ public class ProductServiceTest {
         when(productRepository.findByProductType(productType)).thenReturn(products);
         when(dtoMapper.map(any(Product.class))).thenReturn(new ProductDto());
 
-        List<ProductDto> result = productService.findAllByType(productType, dtoMapper);
+        List<ProductDto> result = productService.findAllByType(productType, false, false, dtoMapper);
 
         assertThat(result).hasSize(products.size());
     }
@@ -124,10 +124,23 @@ public class ProductServiceTest {
         List<Product> products = Arrays.asList(ProductFixture.getPizza(), ProductFixture.getPizza());
         ProductType productType = ProductType.FOOD;
 
-        when(productRepository.findByProductTypeAndAvailableTrueAndReservationOnlyFalse(productType)).thenReturn(products);
+        when(productRepository.findByProductTypeAndAvailableTrue(productType)).thenReturn(products);
         when(dtoMapper.map(any(Product.class))).thenReturn(new ProductDto());
 
-        List<ProductDto> result = productService.findAllEnabledByType(productType, dtoMapper);
+        List<ProductDto> result = productService.findAllByType(productType, true, false, dtoMapper);
+
+        assertThat(result).hasSize(products.size());
+    }
+
+    @Test
+    public void findsAllEnabledReservationOnlyByType() throws Exception {
+        List<Product> products = Arrays.asList(ProductFixture.getPizza(), ProductFixture.getPizza());
+        ProductType productType = ProductType.FOOD;
+
+        when(productRepository.findByProductTypeAndAvailableTrueAndReservationOnlyTrue(productType)).thenReturn(products);
+        when(dtoMapper.map(any(Product.class))).thenReturn(new ProductDto());
+
+        List<ProductDto> result = productService.findAllByType(productType, true, false, dtoMapper);
 
         assertThat(result).hasSize(products.size());
     }
