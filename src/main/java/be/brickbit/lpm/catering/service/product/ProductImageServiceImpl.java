@@ -1,6 +1,5 @@
 package be.brickbit.lpm.catering.service.product;
 
-import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

@@ -46,6 +46,8 @@ public class TaskServiceImpl implements TaskService {
                 case READY:
                     pushToQueue(orderService.findOrderByOrderLineId(task.get().getOrderLine().getId(), orderDtoMapper));
                     break;
+                default:
+                    break;
             }
 
             preparationTaskRepository.save(task.get());

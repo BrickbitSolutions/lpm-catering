@@ -1,6 +1,6 @@
 package be.brickbit.lpm.infrastructure.mapper;
 
-public interface CommandFeeder<Source, Target> {
+public interface CommandFeeder<S, T> {
 
-    void feed(Source source, Target target);
+    void feed(S source, T target);
 }

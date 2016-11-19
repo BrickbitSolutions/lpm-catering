@@ -11,7 +11,6 @@ import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.PreparationTask;
 import be.brickbit.lpm.catering.fixture.OrderFixture;
 import be.brickbit.lpm.catering.fixture.PreparationTaskFixture;
-import be.brickbit.lpm.catering.util.DateUtils;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;

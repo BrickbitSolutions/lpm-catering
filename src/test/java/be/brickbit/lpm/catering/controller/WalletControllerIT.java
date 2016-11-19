@@ -2,7 +2,6 @@ package be.brickbit.lpm.catering.controller;
 
 import com.mysema.query.jpa.impl.JPAQuery;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;

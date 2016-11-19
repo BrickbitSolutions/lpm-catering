@@ -33,7 +33,7 @@ public class DirectOrderCommandToOrderEntityMapperTest {
     private DirectOrderCommandToOrderEntityMapper mapper;
 
     @Test
-    public void testMap() throws Exception {
+    public void mapsDirectOrderCommand() throws Exception {
         DirectOrderCommand command = DirectOrderCommandFixture.getDirectOrderCommand();
 
         UserDetailsDto cateringAdmin = UserFixture.mutable();
@@ -54,7 +54,7 @@ public class DirectOrderCommandToOrderEntityMapperTest {
     }
 
     @Test
-    public void testMap__InvalidUser() throws Exception {
+    public void throwsServiceExceptionOnInvalidUser() throws Exception {
         expectedException.expect(ServiceException.class);
         expectedException.expectMessage("Invalid user");
 

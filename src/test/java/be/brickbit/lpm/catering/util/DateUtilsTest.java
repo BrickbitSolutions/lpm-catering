@@ -13,7 +13,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void getDateFormat__checkPattern() throws Exception {
+    public void returnsDateInCorrectPattern() throws Exception {
         LocalDateTime time = LocalDateTime.of(1991, 5, 4, 23, 50, 40, 333);
         assertThat(DateUtils.getDateFormat().format(time)).isEqualTo("04-05-1991 23:50:40");
     }

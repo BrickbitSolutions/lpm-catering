@@ -20,7 +20,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Arrays;
 
 import be.brickbit.lpm.Application;
-import be.brickbit.lpm.catering.fixture.UserFixture;
 import be.brickbit.lpm.core.client.dto.UserDetailsDto;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 

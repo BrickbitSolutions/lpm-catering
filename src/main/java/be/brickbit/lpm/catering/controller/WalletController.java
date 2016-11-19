@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,10 +34,10 @@ public class WalletController extends AbstractController {
     @PreAuthorize(value = "hasRole('USER')")
     public WalletDto getWallet(@RequestParam(value = "userId", required = false) Long userId) {
         if(userId == null){
-            userId = getCurrentUser().getId();
+            return walletService.findByUserId(getCurrentUser().getId(), walletDtoMapper);
+        }else{
+            return walletService.findByUserId(userId, walletDtoMapper);
         }
-
-        return walletService.findByUserId(userId, walletDtoMapper);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -124,7 +124,7 @@ public class StockProductServiceTest {
 	}
 
 	@Test
-	public void deletesStockProduct__StockProductNotExisting() throws Exception {
+	public void throwsExceptionWhenDeletingNonExistentProduct() throws Exception {
 		expectedException.expect(ServiceException.class);
 		expectedException.expectMessage("Stock product not found");
 
@@ -134,7 +134,7 @@ public class StockProductServiceTest {
 	}
 
 	@Test
-	public void deletesStockProduct__StockProductInUse() throws Exception {
+	public void throwsExceptionsWhenDeletingInUseProduct() throws Exception {
 		expectedException.expect(ServiceException.class);
 		expectedException.expectMessage("Can not delete, stock product entered lifecycle.");
 
@@ -149,7 +149,7 @@ public class StockProductServiceTest {
 	}
 
 	@Test
-	public void deletesStockProduct__StockProductInStockEntries() throws Exception {
+	public void throwsExceptionsWhenDeletingProductsWithStockFlowEntries() throws Exception {
 		expectedException.expect(ServiceException.class);
 		expectedException.expectMessage("Can not delete, stock product entered lifecycle.");
 

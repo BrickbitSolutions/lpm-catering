@@ -49,7 +49,7 @@ public class KitchenQueueDtoMapperTest {
     }
 
     @Test
-    public void testMap__WithTimer() throws Exception {
+    public void mapsTimer() throws Exception {
         PreparationTask task = PreparationTaskFixture.mutable();
         task.setStartTime(LocalDateTime.now().minusMinutes(15));
         task.getOrderLine().getProduct().getPreparation().setTimer(1000);
@@ -63,7 +63,7 @@ public class KitchenQueueDtoMapperTest {
     }
 
     @Test
-    public void testMap__NoStartTime() throws Exception {
+    public void mapsTaskWithoutTimer() throws Exception {
         PreparationTask task = PreparationTaskFixture.mutable();
         task.setStartTime(null);
         Order order = OrderFixture.mutable();
@@ -76,7 +76,7 @@ public class KitchenQueueDtoMapperTest {
     }
 
     @Test
-    public void maps_invalidOrder() throws Exception {
+    public void mapsInvalidOrder() throws Exception {
         PreparationTask task = PreparationTaskFixture.mutable();
 
         when(orderRepository.findByOrderLinesId(any(Long.class))).thenReturn(null);

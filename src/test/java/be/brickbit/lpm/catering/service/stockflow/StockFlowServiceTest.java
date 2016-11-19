@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.service.stockflow;
 
+import com.google.common.collect.Lists;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -8,7 +10,6 @@ import be.brickbit.lpm.catering.domain.StockFlowDetail;
 import be.brickbit.lpm.catering.domain.StockFlowType;
 import be.brickbit.lpm.catering.fixture.*;
 import be.brickbit.lpm.catering.domain.StockCorrectionLevel;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,8 +22,6 @@ import be.brickbit.lpm.catering.service.stockflow.command.StockFlowCommand;
 import be.brickbit.lpm.catering.service.stockflow.dto.StockFlowDto;
 import be.brickbit.lpm.catering.service.stockflow.mapper.StockFlowDtoMapper;
 import be.brickbit.lpm.catering.service.stockflow.mapper.StockFlowCommandToEntityMapper;
-
-import java.util.Arrays;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StockFlowServiceTest {
@@ -56,7 +55,7 @@ public class StockFlowServiceTest {
 	}
 
 	@Test
-	public void testSave__UpdateCorrectStock__StockLevel() throws Exception {
+	public void correctsStockOnStockLevel() throws Exception {
 		StockFlowCommand command = StockFlowCommandFixture.mutable();
 		command.setLevel(StockCorrectionLevel.STOCK);
 		StockFlow entity = StockFlowFixture.getStockFlow();
@@ -64,7 +63,7 @@ public class StockFlowServiceTest {
 		StockFlowDetail detail = StockFlowFixture.getStockFlowDetail();
 		detail.setQuantity(2);
 		detail.getStockProduct().setStockLevel(2);
-		entity.setDetails(Arrays.asList(detail));
+		entity.setDetails(Lists.newArrayList(detail));
 		StockFlowDto dto = StockFlowDtoFixture.getStockFlowDto();
 
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
@@ -76,7 +75,7 @@ public class StockFlowServiceTest {
 	}
 
 	@Test
-	public void testSave__UpdateCorrectStock__NoRemainingConsumptions__StockLevel() throws
+	public void correctsStockOnStockLevelWithoutRemainingConsumptions() throws
 			Exception {
 		StockFlowCommand command = StockFlowCommandFixture.mutable();
 		command.setQuantity(2);
@@ -86,7 +85,7 @@ public class StockFlowServiceTest {
 		detail.setQuantity(2);
 		detail.getStockProduct().setRemainingConsumptions(0);
 		detail.getStockProduct().setStockLevel(2);
-		entity.setDetails(Arrays.asList(detail));
+		entity.setDetails(Lists.newArrayList(detail));
 		StockFlowDto dto = StockFlowDtoFixture.getStockFlowDto();
 
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
@@ -100,7 +99,7 @@ public class StockFlowServiceTest {
 	}
 
 	@Test
-	public void testSave__UpdateCorrectStock__RemainingConsumptions__StockLevel() throws Exception {
+	public void correctsStockOnStockLevelWithRemainingConsumptions() throws Exception {
 		StockFlowCommand command = StockFlowCommandFixture.mutable();
 		StockFlow entity = StockFlowFixture.getStockFlow();
 		entity.setStockFlowType(StockFlowType.PURCHASED);
@@ -108,7 +107,7 @@ public class StockFlowServiceTest {
 		detail.setQuantity(2);
 		detail.getStockProduct().setRemainingConsumptions(1);
 		detail.getStockProduct().setStockLevel(2);
-		entity.setDetails(Arrays.asList(detail));
+		entity.setDetails(Lists.newArrayList(detail));
 		StockFlowDto dto = StockFlowDtoFixture.getStockFlowDto();
 
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
@@ -120,7 +119,7 @@ public class StockFlowServiceTest {
 	}
 
 	@Test
-	public void testSave__UpdateCorrectStock__NoRemainingConsumptions__ConsumptionLevel() throws
+	public void correctsStockOnConsumptionWithoutRemainingConsumptions() throws
 			Exception {
 		StockFlowCommand command = StockFlowCommandFixture.mutable();
 		command.setLevel(StockCorrectionLevel.CONSUMPTION);
@@ -132,7 +131,7 @@ public class StockFlowServiceTest {
 		detail.getStockProduct().setMaxConsumptions(1);
 		detail.getStockProduct().setRemainingConsumptions(0);
 		detail.getStockProduct().setStockLevel(2);
-		entity.setDetails(Arrays.asList(detail));
+		entity.setDetails(Lists.newArrayList(detail));
 		StockFlowDto dto = StockFlowDtoFixture.getStockFlowDto();
 
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
@@ -146,7 +145,7 @@ public class StockFlowServiceTest {
 	}
 
 	@Test
-	public void testSave__UpdateCorrectStock__RemainingConsumptions__ConsumptionLevel() throws
+	public void correctsStockOnConsumptionWithRemainingConsumptions() throws
 			Exception {
 		StockFlowCommand command = StockFlowCommandFixture.mutable();
 		command.setQuantity(2);
@@ -158,7 +157,7 @@ public class StockFlowServiceTest {
 		detail.setQuantity(2);
 		detail.getStockProduct().setRemainingConsumptions(1);
 		detail.getStockProduct().setStockLevel(2);
-		entity.setDetails(Arrays.asList(detail));
+		entity.setDetails(Lists.newArrayList(detail));
 		StockFlowDto dto = StockFlowDtoFixture.getStockFlowDto();
 
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);

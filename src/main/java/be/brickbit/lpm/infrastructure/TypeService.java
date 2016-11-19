@@ -8,17 +8,17 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public interface TypeService<Entity, Type extends Serializable> {
+public interface TypeService<E, T extends Serializable> {
 
-    <T> T findAllExtracted(Extractor<Entity, T> extractor);
+    <C> C findAllExtracted(Extractor<E, C> extractor);
 
-    <T> List<T> findAll(Mapper<Entity, T> mapper);
+    <D> List<D> findAll(Mapper<E, D> mapper);
 
-    <T> List<T> findAll(Mapper<Entity, T> dtoMapper, Sort sort);
+    <D> List<D> findAll(Mapper<E, D> dtoMapper, Sort sort);
 
-    <T> T findOne(Type id, Mapper<Entity, T> dtoMapper);
+    <D> D findOne(T id, Mapper<E, D> dtoMapper);
 
-    <T> List<T> findAll(List<Type> ids, Mapper<Entity, T> dtoMapper);
+    <D> List<D> findAll(List<T> ids, Mapper<E, D> dtoMapper);
 
-    <T> void feedCommand(Type id, T command, BiConsumer<? super Entity, T> commandFeeder);
+    <C> void feedCommand(T id, C command, BiConsumer<? super E, C> commandFeeder);
 }

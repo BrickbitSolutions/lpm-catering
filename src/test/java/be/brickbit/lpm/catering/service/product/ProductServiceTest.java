@@ -146,7 +146,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void deletesProduct__ProductIsUsed() throws Exception {
+    public void throwsExceptionOnProductDeletionWhenProductIsUsed() throws Exception {
         expectedException.expect(ServiceException.class);
         expectedException.expectMessage("Cannot delete, product has entered order lifecycle.");
 
@@ -162,7 +162,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void deletesProduct__ProductEnabled() throws Exception {
+    public void throwsExceptionOnProductDeletionWhenProductIsEnabled() throws Exception {
         expectedException.expect(ServiceException.class);
         expectedException.expectMessage("Cannot delete, product still enabled.");
 
@@ -177,7 +177,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void deletesProduct__ProductNotExisting() throws Exception {
+    public void throwsExceptionOnProductDeletionWhenProductDoesNotExist() throws Exception {
         expectedException.expect(ServiceException.class);
         expectedException.expectMessage("Product not found");
 

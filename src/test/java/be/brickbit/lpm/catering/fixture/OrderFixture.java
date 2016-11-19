@@ -3,10 +3,8 @@ package be.brickbit.lpm.catering.fixture;
 import com.google.common.collect.Lists;
 
 import be.brickbit.lpm.catering.domain.Order;
-import be.brickbit.lpm.catering.domain.OrderStatus;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomString;
 

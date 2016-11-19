@@ -14,7 +14,6 @@ import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductMerger;
 import be.brickbit.lpm.infrastructure.AbstractService;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

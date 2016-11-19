@@ -50,6 +50,7 @@ import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import static be.brickbit.lpm.catering.domain.OrderStatus.COMPLETED;
 import static be.brickbit.lpm.catering.domain.OrderStatus.CREATED;
 import static be.brickbit.lpm.catering.domain.OrderStatus.IN_PROGRESS;
+import static be.brickbit.lpm.catering.domain.OrderStatus.QUEUED;
 import static be.brickbit.lpm.catering.domain.OrderStatus.READY;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLocalDate;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
@@ -299,7 +300,7 @@ public class OrderServiceTest {
     @Test
     public void findsOrdersByOrderStatus() throws Exception {
         List<Order> orders = Lists.newArrayList(OrderFixture.mutable());
-        OrderStatus status = OrderStatus.READY;
+        OrderStatus status = READY;
 
         when(orderRepository.findDistinctByOrderLinesStatus(status)).thenReturn(orders);
         when(dtoMapper.map(any(Order.class))).thenReturn(OrderDtoFixture.mutable());
@@ -328,7 +329,7 @@ public class OrderServiceTest {
         order.setHoldUntil(LocalDate.now());
 
         OrderLine orderLineFood = OrderLineFixture.getPizzaOrderLine();
-        orderLineFood.setStatus(OrderStatus.CREATED);
+        orderLineFood.setStatus(CREATED);
         OrderLine orderLineDrinks = OrderLineFixture.getJupilerOrderLine();
         orderLineDrinks.setStatus(CREATED);
 
@@ -353,7 +354,7 @@ public class OrderServiceTest {
         Order order = OrderFixture.mutable();
         order.setHoldUntil(null);
         OrderLine orderLineFood = OrderLineFixture.getPizzaOrderLine();
-        orderLineFood.setStatus(OrderStatus.CREATED);
+        orderLineFood.setStatus(CREATED);
         order.setOrderLines(Lists.newArrayList(orderLineFood));
 
         Long orderId = randomLong();
@@ -371,7 +372,7 @@ public class OrderServiceTest {
         Order order = OrderFixture.mutable();
         order.setHoldUntil(LocalDate.now());
         OrderLine orderLineFood = OrderLineFixture.getPizzaOrderLine();
-        orderLineFood.setStatus(OrderStatus.QUEUED);
+        orderLineFood.setStatus(QUEUED);
         order.setOrderLines(Lists.newArrayList(orderLineFood));
 
         Long orderId = randomLong();
@@ -403,7 +404,7 @@ public class OrderServiceTest {
     public void processesOrderToCompleted() throws Exception {
         Order order = OrderFixture.mutable();
         OrderLine orderLine = OrderLineFixture.getPizzaOrderLine();
-        orderLine.setStatus(OrderStatus.READY);
+        orderLine.setStatus(READY);
         order.setOrderLines(Lists.newArrayList(orderLine));
 
         Long orderId = randomLong();
@@ -419,7 +420,7 @@ public class OrderServiceTest {
     public void processesOrderAndLeavesNonReadyOrdersAsIs() throws Exception {
         Order order = OrderFixture.mutable();
         OrderLine orderLine = OrderLineFixture.getPizzaOrderLine();
-        orderLine.setStatus(OrderStatus.IN_PROGRESS);
+        orderLine.setStatus(IN_PROGRESS);
         order.setOrderLines(Lists.newArrayList(orderLine));
 
         Long orderId = randomLong();

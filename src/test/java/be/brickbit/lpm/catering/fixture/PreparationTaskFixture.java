@@ -5,7 +5,6 @@ import be.brickbit.lpm.catering.domain.PreparationTask;
 
 import java.time.LocalDateTime;
 
-import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLocalDate;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
 
 public class PreparationTaskFixture {

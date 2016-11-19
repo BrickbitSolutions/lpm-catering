@@ -19,7 +19,7 @@ public class ProductPreparationMergerTest {
     }
 
     @Test
-    public void mergesProductPreparation__mapsQueueName() throws Exception {
+    public void mapsQueueName() throws Exception {
         EditProductPreparationCommand command = new EditProductPreparationCommand();
         command.setQueueName(randomString());
 
@@ -31,7 +31,7 @@ public class ProductPreparationMergerTest {
     }
 
     @Test
-    public void mergesProductPreparation__mapsInstructions() throws Exception {
+    public void mapsInstructions() throws Exception {
         EditProductPreparationCommand command = new EditProductPreparationCommand();
         command.setInstructions(randomString());
 
@@ -43,7 +43,7 @@ public class ProductPreparationMergerTest {
     }
 
     @Test
-    public void mergesProductPreparation__mapsTimer() throws Exception {
+    public void mapsTimer() throws Exception {
         EditProductPreparationCommand command = new EditProductPreparationCommand();
         command.setTimerInMinutes(randomInt());
 
@@ -55,7 +55,7 @@ public class ProductPreparationMergerTest {
     }
 
     @Test
-    public void mergesProductPreparation__createsNewPreparation() throws Exception {
+    public void createsNewPreparation() throws Exception {
         EditProductPreparationCommand command = new EditProductPreparationCommand();
 
         Product product = ProductFixture.getPizza();

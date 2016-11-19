@@ -4,8 +4,7 @@ package be.brickbit.lpm.infrastructure.mapper;
 import java.util.List;
 
 @FunctionalInterface
-public interface Extractor<Source, Target> {
+public interface Extractor<S, T> {
 
-    Target extract(List<Source> sources);
-
+    T extract(List<S> sources);
 }

@@ -9,7 +9,6 @@ import be.brickbit.lpm.catering.service.product.command.EditProductCommand;
 import be.brickbit.lpm.catering.service.product.command.EditProductPreparationCommand;
 import be.brickbit.lpm.catering.service.product.mapper.ProductMapper;
 import be.brickbit.lpm.infrastructure.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface IProductService extends Service<Product> {
 	<T> T save(CreateProductCommand command, ProductMapper<T> dtoMapper);

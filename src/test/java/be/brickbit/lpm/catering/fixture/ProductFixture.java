@@ -7,7 +7,6 @@ import be.brickbit.lpm.catering.domain.ProductType;
 import org.assertj.core.util.Lists;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 
 public class ProductFixture {
     public static Product getJupiler(){

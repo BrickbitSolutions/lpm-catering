@@ -2,7 +2,6 @@ package be.brickbit.lpm.catering.service.order.mapper;
 
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.OrderLine;
-import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.fixture.OrderLineFixture;
 import be.brickbit.lpm.catering.fixture.RemoteOrderCommandFixture;
 import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;

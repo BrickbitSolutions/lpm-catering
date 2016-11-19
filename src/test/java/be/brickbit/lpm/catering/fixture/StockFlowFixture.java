@@ -5,7 +5,6 @@ import be.brickbit.lpm.catering.domain.StockFlow;
 import be.brickbit.lpm.catering.domain.StockFlowDetail;
 import be.brickbit.lpm.catering.domain.StockFlowType;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 

@@ -1,11 +1,8 @@
 package be.brickbit.lpm.catering.fixture;
 
-import com.google.common.collect.Lists;
-
 import be.brickbit.lpm.catering.domain.OrderLine;
 import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.domain.Product;
-import be.brickbit.lpm.catering.domain.StockProduct;
 
 public class OrderLineFixture {
     public static OrderLine getJupilerOrderLine(){

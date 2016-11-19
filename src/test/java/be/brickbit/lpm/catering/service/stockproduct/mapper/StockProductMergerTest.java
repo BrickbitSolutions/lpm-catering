@@ -20,7 +20,7 @@ public class StockProductMergerTest {
 	}
 
 	@Test
-	public void merge__MergesName() throws Exception {
+	public void mergesName() throws Exception {
 		StockProduct stockProduct = StockProductFixture.getStockProductCola();
 		EditStockProductCommand command = new EditStockProductCommand();
 		command.setName("New Name");
@@ -33,7 +33,7 @@ public class StockProductMergerTest {
 	}
 
     @Test
-    public void merge__MergesProductType() throws Exception {
+    public void mergesProductType() throws Exception {
         StockProduct stockProduct = StockProductFixture.getStockProductCola();
         EditStockProductCommand command = new EditStockProductCommand();
         command.setName(stockProduct.getName());
@@ -46,7 +46,7 @@ public class StockProductMergerTest {
     }
 
     @Test
-    public void merge__MergesClearance() throws Exception {
+    public void mergesClearance() throws Exception {
         StockProduct stockProduct = StockProductFixture.getStockProductCola();
         EditStockProductCommand command = new EditStockProductCommand();
         command.setName(stockProduct.getName());

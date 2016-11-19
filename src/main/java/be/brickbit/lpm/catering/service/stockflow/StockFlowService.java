@@ -14,6 +14,7 @@ import be.brickbit.lpm.catering.service.stockflow.mapper.StockFlowMapper;
 import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 import be.brickbit.lpm.infrastructure.AbstractService;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
 @Service
 public class StockFlowService extends AbstractService<StockFlow> implements IStockFlowService {
@@ -45,6 +46,9 @@ public class StockFlowService extends AbstractService<StockFlow> implements ISto
                 case CONSUMPTION:
                     StockFlowUtil.processConsumptionStockFlow(detail, stockFlow.getStockFlowType());
                     break;
+                default:
+                    throw new ServiceException(String.format("No Stock Flow Process determined " +
+                            "for flow type %s", level.toString()));
             }
         }
     }

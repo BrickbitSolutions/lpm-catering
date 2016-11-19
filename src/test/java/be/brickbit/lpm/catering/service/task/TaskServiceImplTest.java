@@ -49,7 +49,7 @@ public class TaskServiceImplTest {
     }
 
     @Test
-    public void updateTaskWithStatus__invalidTask() throws Exception {
+    public void throwsExceptionOnInvalidTaskId() throws Exception {
         expectedException.expect(ServiceException.class);
         expectedException.expectMessage("Invalid Task ID");
 
