@@ -54,4 +54,14 @@ public class ClearanceControllerTest extends AbstractControllerIT {
                 .andExpect(jsonPath("$.clearance", containsInAnyOrder("ANY")));
     }
 
+    @Test
+    public void returnsClearanceLevelsUnder16WithParam() throws Exception {
+        stubCore("/user/" + userPrincipal().getId(), 200, UserFixture.mutable(15));
+
+        performGet("/user/clearance?userId=" + userPrincipal().getId())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.clearance", hasSize(1)))
+                .andExpect(jsonPath("$.clearance", containsInAnyOrder("ANY")));
+    }
+
 }

@@ -46,7 +46,7 @@ public class ProductController extends AbstractController{
     }
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
+    @PreAuthorize(value = "hasRole('USER')")
     @ResponseStatus(HttpStatus.OK)
     public List<ProductDto> getAllProducts(
             @RequestParam(value = "type", required = false) ProductType productType,

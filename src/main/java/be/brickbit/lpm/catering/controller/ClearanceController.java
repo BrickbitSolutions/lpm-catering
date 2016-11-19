@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,8 +30,9 @@ public class ClearanceController extends AbstractController {
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public UserClearanceDto getUserClearances() {
-        UserDetailsDto userDetails = userService.findOne(getCurrentUser().getId());
+    public UserClearanceDto getUserClearances(@RequestParam(value = "userId", required = false) Long userId) {
+        Long userIdToQuery = userId == null ? getCurrentUser().getId() : userId;
+        UserDetailsDto userDetails = userService.findOne(userIdToQuery);
 
         return new UserClearanceDto(
                 Arrays.stream(ClearanceType.values())
