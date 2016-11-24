@@ -209,6 +209,14 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
         orderRepository.save(order);
     }
 
+    @Override
+    public void notifyReady(Long id) {
+        Order order = orderRepository.findOne(id);
+
+        userService.notify(order.getUserId(), "Your order (#%s) is (partially) ready and waiting" +
+                " for you at the catering!");
+    }
+
     private void pushToTakeOutQueue(Order order) {
         if (order.getOrderLines().stream().filter(orderLine -> orderLine.getStatus() == OrderStatus.READY).count() > 0) {
             messagingTemplate.convertAndSend("/topic/zanzibar.queue", orderDtoMapper.map(order));

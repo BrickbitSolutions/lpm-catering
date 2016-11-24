@@ -27,4 +27,6 @@ public interface IOrderService extends Service<Order> {
     <T> List<T> findByUserId(Long userId, OrderMapper<T> dtoMapper);
 
     void processOrder(Long id);
+
+    void notifyReady(Long id);
 }

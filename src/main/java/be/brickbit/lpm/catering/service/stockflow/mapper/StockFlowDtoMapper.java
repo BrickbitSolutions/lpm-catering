@@ -24,7 +24,7 @@ public class StockFlowDtoMapper implements StockFlowMapper<StockFlowDto> {
                 userService.findOne(someStockFlow.getUserId()).getUsername(),
                 someStockFlow.getStockFlowType(),
                 someStockFlow.getLevel(),
-                someStockFlow.getTimestamp().format(DateUtils.getDateFormat()),
+                someStockFlow.getTimestamp().format(DateUtils.getDateTimeFormat()),
                 someStockFlow.getDetails().stream().map(this::mapDetail).collect(Collectors.toList())
         );
     }

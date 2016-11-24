@@ -16,7 +16,7 @@ public class StockFlowDtoFixture {
 				"jay",
 				StockFlowType.PURCHASED,
 				StockCorrectionLevel.STOCK,
-				LocalDateTime.now().format(DateUtils.getDateFormat()),
+				LocalDateTime.now().format(DateUtils.getDateTimeFormat()),
 				Collections.singletonList(new StockFlowDetailDto("Jupiler 33cl", 10)));
 	}
 }

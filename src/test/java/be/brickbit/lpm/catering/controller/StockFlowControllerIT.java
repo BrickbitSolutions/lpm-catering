@@ -48,7 +48,7 @@ public class StockFlowControllerIT extends AbstractControllerIT {
                 .andExpect(jsonPath("$[0].username", is(user.getUsername())))
                 .andExpect(jsonPath("$[0].type", is(stockFlow.getStockFlowType().toString())))
                 .andExpect(jsonPath("$[0].level", is(stockFlow.getLevel().toString())))
-                .andExpect(jsonPath("$[0].timestamp", is(stockFlow.getTimestamp().format(DateUtils.getDateFormat()))))
+                .andExpect(jsonPath("$[0].timestamp", is(stockFlow.getTimestamp().format(DateUtils.getDateTimeFormat()))))
                 .andExpect(jsonPath("$[0].stockFlowDetails", hasSize(1)))
                 .andExpect(jsonPath("$[0].stockFlowDetails[0].productName", is(pizza.getName())))
                 .andExpect(jsonPath("$[0].stockFlowDetails[0].quantity", is(stockFlowDetail.getQuantity())));

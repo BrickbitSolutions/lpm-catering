@@ -20,4 +20,5 @@ public class OrderDetailDto {
 	private OrderStatus status;
 	private List<OrderLineDto> orderLines;
 	private String comment;
+	private ReservationDetailDto reservationDetails;
 }

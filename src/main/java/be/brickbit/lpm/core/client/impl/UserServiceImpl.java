@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.Iterator;
 
 import be.brickbit.lpm.core.client.UserService;
 import be.brickbit.lpm.core.client.dto.UserDetailsDto;
+import be.brickbit.lpm.core.client.impl.command.NotifyCommand;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
 @Service
@@ -50,15 +52,28 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private URI createUrl(Object... paths){
+    @Override
+    public void notify(Long userId, String message) {
+        try {
+            ResponseEntity<Void> result = restTemplate.postForEntity(
+                    createUrl("/notify"),
+                    new NotifyCommand(userId, message),
+                    Void.class);
+        }catch (HttpClientErrorException ex){
+            throw new ServiceException("SMS Service is not available or user " +
+                    "doesn't have a mobile phone number");
+        }
+    }
+
+    private URI createUrl(Object... paths) {
         StringBuilder builder = new StringBuilder();
         Iterator<Object> pathIterator = Arrays.asList(paths).iterator();
 
         builder.append(coreUrl);
 
-        while (pathIterator.hasNext()){
+        while (pathIterator.hasNext()) {
             builder.append(pathIterator.next());
-            if(pathIterator.hasNext()) {
+            if (pathIterator.hasNext()) {
                 builder.append("/");
             }
         }

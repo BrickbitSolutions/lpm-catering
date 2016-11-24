@@ -36,7 +36,7 @@ public class StockFlowDtoMapperTest {
         StockFlowDto dto = mapper.map(stockFlow);
 
         assertThat(dto.getId()).isEqualTo(stockFlow.getId());
-        assertThat(dto.getTimestamp()).isEqualTo(stockFlow.getTimestamp().format(DateUtils.getDateFormat()));
+        assertThat(dto.getTimestamp()).isEqualTo(stockFlow.getTimestamp().format(DateUtils.getDateTimeFormat()));
         assertThat(dto.getUsername()).isEqualTo(someUser.getUsername());
         assertThat(dto.getType()).isEqualTo(stockFlow.getStockFlowType());
         assertThat(dto.getLevel()).isEqualTo(stockFlow.getLevel());

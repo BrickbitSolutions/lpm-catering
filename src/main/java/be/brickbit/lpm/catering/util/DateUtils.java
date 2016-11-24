@@ -5,8 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class DateUtils {
-    public static DateTimeFormatter getDateFormat(){
+    public static DateTimeFormatter getDateTimeFormat(){
         return DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    }
+
+    public static DateTimeFormatter getDateFormat(){
+        return DateTimeFormatter.ofPattern("dd-MM-yyyy");
     }
 
     public static Long calculateDifference(LocalDateTime startDate, LocalDateTime endDate){
