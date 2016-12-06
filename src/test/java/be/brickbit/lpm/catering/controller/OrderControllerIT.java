@@ -40,7 +40,6 @@ public class OrderControllerIT extends AbstractControllerIT {
     @Test
     public void getsAllOrders() throws Exception {
         Order order = OrderFixture.mutable();
-        UserDetailsDto userDetails = UserFixture.mutable();
 
         insert(
                 order.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),
@@ -50,16 +49,13 @@ public class OrderControllerIT extends AbstractControllerIT {
                 order
         );
 
-        stubCore("/user/" + order.getUserId(), 200, userDetails);
-
         performGet("/order")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(order.getId().intValue())))
                 .andExpect(jsonPath("$[0].totalPrice", is(PriceUtil.calculateTotalPrice(order).intValue())))
                 .andExpect(jsonPath("$[0].timestamp", is(order.getTimestamp().format(DateUtils.getDateTimeFormat()))))
-                .andExpect(jsonPath("$[0].username", is(userDetails.getUsername())))
-                .andExpect(jsonPath("$[0].seatNumber", is(userDetails.getSeatNumber())))
+                .andExpect(jsonPath("$[0].userId", is(order.getUserId().intValue())))
                 .andExpect(jsonPath("$[0].status", is(OrderStatus.CREATED.toString())))
                 .andExpect(jsonPath("$[0].orderLines", hasSize(2)))
                 .andExpect(jsonPath("$[0].orderLines[0].id", is(order.getOrderLines().get(0).getId().intValue())))
@@ -77,7 +73,6 @@ public class OrderControllerIT extends AbstractControllerIT {
     @Test
     public void getsOrderById() throws Exception {
         Order order = OrderFixture.mutable();
-        UserDetailsDto userDetails = UserFixture.mutable();
 
         insert(
                 order.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),
@@ -87,15 +82,12 @@ public class OrderControllerIT extends AbstractControllerIT {
                 order
         );
 
-        stubCore("/user/" + order.getUserId(), 200, userDetails);
-
         performGet("/order/" + order.getId())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(order.getId().intValue())))
                 .andExpect(jsonPath("$.totalPrice", is(PriceUtil.calculateTotalPrice(order).intValue())))
                 .andExpect(jsonPath("$.timestamp", is(order.getTimestamp().format(DateUtils.getDateTimeFormat()))))
-                .andExpect(jsonPath("$.username", is(userDetails.getUsername())))
-                .andExpect(jsonPath("$.seatNumber", is(userDetails.getSeatNumber())))
+                .andExpect(jsonPath("$.userId", is(order.getUserId().intValue())))
                 .andExpect(jsonPath("$.status", is(OrderStatus.CREATED.toString())))
                 .andExpect(jsonPath("$.orderLines", hasSize(2)))
                 .andExpect(jsonPath("$.orderLines[0].id", is(order.getOrderLines().get(0).getId().intValue())))
@@ -113,8 +105,6 @@ public class OrderControllerIT extends AbstractControllerIT {
     @Test
     public void getsOrderHistory() throws Exception {
         Order order = OrderFixture.mutable();
-        UserDetailsDto userDetails = UserFixture.mutable();
-        order.setUserId(userDetails().getId());
 
         insert(
                 order.getOrderLines().get(0).getProduct().getReceipt().get(0).getStockProduct(),
@@ -124,16 +114,13 @@ public class OrderControllerIT extends AbstractControllerIT {
                 order
         );
 
-        stubCore("/user/" + userDetails().getId(), 200, userDetails);
-
         performGet("/order/history")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(order.getId().intValue())))
                 .andExpect(jsonPath("$[0].totalPrice", is(PriceUtil.calculateTotalPrice(order).intValue())))
                 .andExpect(jsonPath("$[0].timestamp", is(order.getTimestamp().format(DateUtils.getDateTimeFormat()))))
-                .andExpect(jsonPath("$[0].username", is(userDetails.getUsername())))
-                .andExpect(jsonPath("$[0].seatNumber", is(userDetails.getSeatNumber())))
+                .andExpect(jsonPath("$[0].userId", is(order.getUserId().intValue())))
                 .andExpect(jsonPath("$[0].status", is(OrderStatus.CREATED.toString())))
                 .andExpect(jsonPath("$[0].orderLines", hasSize(2)))
                 .andExpect(jsonPath("$[0].orderLines[0].id", is(order.getOrderLines().get(0).getId().intValue())))
@@ -167,8 +154,6 @@ public class OrderControllerIT extends AbstractControllerIT {
                 notReadyOrder.getOrderLines().get(1).getProduct(),
                 notReadyOrder
         );
-
-        stubCore("/user/" + order.getUserId(), 200, userDetails());
 
         performGet("/order?status=READY")
                 .andExpect(status().isOk())
@@ -264,7 +249,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("CREATED")))
-                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
+                .andExpect(jsonPath("$.userId", is(userDetails().getId().intValue())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)));
     }
 
@@ -303,7 +288,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("COMPLETED")))
-                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
+                .andExpect(jsonPath("$.userId", is(userDetails().getId().intValue())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)))
                 .andExpect(jsonPath("$.comment", is(comment)));
     }
@@ -344,7 +329,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("QUEUED")))
-                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
+                .andExpect(jsonPath("$.userId", is(userDetails().getId().intValue())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)))
                 .andExpect(jsonPath("$.comment", is(comment)));
     }
@@ -418,7 +403,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("CREATED")))
-                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
+                .andExpect(jsonPath("$.userId", is(userDetails().getId().intValue())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)));
     }
 
@@ -455,7 +440,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("QUEUED")))
-                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
+                .andExpect(jsonPath("$.userId", is(userDetails().getId().intValue())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)))
                 .andExpect(jsonPath("$.comment", is(comment)));
     }
@@ -492,7 +477,7 @@ public class OrderControllerIT extends AbstractControllerIT {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.status", is("READY")))
-                .andExpect(jsonPath("$.username", is(userDetails().getUsername())))
+                .andExpect(jsonPath("$.userId", is(userDetails().getId().intValue())))
                 .andExpect(jsonPath("$.orderLines", hasSize(1)))
                 .andExpect(jsonPath("$.comment", is(comment)));
     }

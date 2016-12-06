@@ -31,10 +31,10 @@ public class OrderDetailDtoMapperTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-    @Mock
-    private UserService userService;
+
     @Mock
     private OrderLineDtoMapper orderLineDtoMapper;
+
     @InjectMocks
     private OrderDetailDtoMapper mapper;
 
@@ -42,8 +42,6 @@ public class OrderDetailDtoMapperTest {
     public void testMap() throws Exception {
         Order order = OrderFixture.mutable();
 
-        UserDetailsDto cateringAdmin = UserFixture.mutable();
-        when(userService.findOne(order.getUserId())).thenReturn(cateringAdmin);
         when(orderLineDtoMapper.map(any(OrderLine.class))).thenReturn(OrderLineDtoFixture.mutable());
 
         OrderDetailDto result = mapper.map(order);
@@ -52,8 +50,7 @@ public class OrderDetailDtoMapperTest {
         assertThat(result.getId()).isEqualTo(order.getId());
         assertThat(result.getStatus()).isEqualTo(OrderStatus.CREATED);
         assertThat(result.getTimestamp()).isEqualTo(order.getTimestamp().format(DateUtils.getDateTimeFormat()));
-        assertThat(result.getUsername()).isEqualTo(cateringAdmin.getUsername());
-        assertThat(result.getSeatNumber()).isEqualTo(cateringAdmin.getSeatNumber());
+        assertThat(result.getUserId()).isEqualTo(order.getUserId());
         assertThat(result.getOrderLines().size()).isEqualTo(order.getOrderLines().size());
         assertThat(result.getComment()).isEqualTo(order.getComment());
         assertThat(result.getReservationDetails()).isNull();
@@ -65,8 +62,6 @@ public class OrderDetailDtoMapperTest {
         order.setHoldUntil(LocalDate.now().minusDays(1));
         order.getOrderLines().forEach(orderLine -> orderLine.setStatus(OrderStatus.CREATED));
 
-        UserDetailsDto cateringAdmin = UserFixture.mutable();
-        when(userService.findOne(order.getUserId())).thenReturn(cateringAdmin);
         when(orderLineDtoMapper.map(any(OrderLine.class))).thenReturn(OrderLineDtoFixture.mutable());
 
         OrderDetailDto result = mapper.map(order);
@@ -83,8 +78,6 @@ public class OrderDetailDtoMapperTest {
         order.setHoldUntil(LocalDate.now());
         order.getOrderLines().forEach(orderLine -> orderLine.setStatus(OrderStatus.CREATED));
 
-        UserDetailsDto cateringAdmin = UserFixture.mutable();
-        when(userService.findOne(order.getUserId())).thenReturn(cateringAdmin);
         when(orderLineDtoMapper.map(any(OrderLine.class))).thenReturn(OrderLineDtoFixture.mutable());
 
         OrderDetailDto result = mapper.map(order);
@@ -101,8 +94,6 @@ public class OrderDetailDtoMapperTest {
         order.setHoldUntil(LocalDate.now().plusDays(1));
         order.getOrderLines().forEach(orderLine -> orderLine.setStatus(OrderStatus.CREATED));
 
-        UserDetailsDto cateringAdmin = UserFixture.mutable();
-        when(userService.findOne(order.getUserId())).thenReturn(cateringAdmin);
         when(orderLineDtoMapper.map(any(OrderLine.class))).thenReturn(OrderLineDtoFixture.mutable());
 
         OrderDetailDto result = mapper.map(order);
@@ -119,8 +110,6 @@ public class OrderDetailDtoMapperTest {
         order.setHoldUntil(LocalDate.now().minusDays(1));
         order.getOrderLines().forEach(orderLine -> orderLine.setStatus(OrderStatus.QUEUED));
 
-        UserDetailsDto cateringAdmin = UserFixture.mutable();
-        when(userService.findOne(order.getUserId())).thenReturn(cateringAdmin);
         when(orderLineDtoMapper.map(any(OrderLine.class))).thenReturn(OrderLineDtoFixture.mutable());
 
         OrderDetailDto result = mapper.map(order);

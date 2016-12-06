@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 
 public class OrderDtoFixture {
     public static OrderDetailDto mutable(){
-        return new OrderDetailDto(1L, new BigDecimal(11), LocalDateTime.now().toString(), "jay", 1, OrderStatus.QUEUED, Lists
+        return new OrderDetailDto(1L, new BigDecimal(11), LocalDateTime.now().toString(), 1L,
+                OrderStatus.QUEUED, Lists
                 .newArrayList(OrderLineDtoFixture.mutable()), "I've got your name written in a " +
                 "rose tattoo :)", null);
     }

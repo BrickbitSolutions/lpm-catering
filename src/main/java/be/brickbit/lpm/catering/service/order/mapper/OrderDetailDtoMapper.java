@@ -20,21 +20,15 @@ import be.brickbit.lpm.core.client.dto.UserDetailsDto;
 public class OrderDetailDtoMapper implements OrderMapper<OrderDetailDto> {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private OrderLineDtoMapper orderLineMapper;
 
     @Override
     public OrderDetailDto map(Order order) {
-        UserDetailsDto user = userService.findOne(order.getUserId());
-
         return new OrderDetailDto(
                 order.getId(),
                 PriceUtil.calculateTotalPrice(order),
                 order.getTimestamp().format(DateUtils.getDateTimeFormat()),
-                user.getUsername(),
-                user.getSeatNumber(),
+                order.getUserId(),
                 OrderUtils.determineOrderStatus(order),
                 order.getOrderLines().stream().map(orderLineMapper::map).collect(Collectors.toList()),
                 order.getComment(),
