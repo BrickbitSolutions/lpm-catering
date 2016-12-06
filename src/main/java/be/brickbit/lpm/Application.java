@@ -12,7 +12,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableAsync
 @EnableScheduling
 @EnableCaching
 public class Application {
