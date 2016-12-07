@@ -63,13 +63,6 @@ public class OrderController extends AbstractController {
         orderService.processOrder(id);
     }
 
-    @RequestMapping(value = "/{id}/notify", method = RequestMethod.PUT)
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void notifyReady(@PathVariable("id") Long id) {
-        orderService.notifyReady(id);
-    }
-
     @RequestMapping(value = "/{id}/process/reservation", method = RequestMethod.PUT)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
