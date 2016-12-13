@@ -2,15 +2,12 @@ package be.brickbit.lpm.catering.service.product.dto;
 
 import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.ProductType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
+@Value
 public class ProductDto {
     private Long id;
     private String name;
@@ -21,4 +18,5 @@ public class ProductDto {
     private Integer stockLevel;
     private Boolean available;
     private Boolean reservationOnly;
+    private List<SupplementDto> supplements;
 }

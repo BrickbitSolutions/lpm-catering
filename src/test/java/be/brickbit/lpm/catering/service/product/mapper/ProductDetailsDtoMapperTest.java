@@ -3,8 +3,11 @@ package be.brickbit.lpm.catering.service.product.mapper;
 import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.fixture.ProductFixture;
 import be.brickbit.lpm.catering.fixture.ReceiptDtoFixture;
+import be.brickbit.lpm.catering.fixture.SupplementDtoFixture;
 import be.brickbit.lpm.catering.service.product.dto.ProductDetailsDto;
 import be.brickbit.lpm.catering.service.product.dto.ReceiptDto;
+import be.brickbit.lpm.catering.service.product.dto.SupplementDto;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -42,6 +45,7 @@ public class ProductDetailsDtoMapperTest {
     public void testMap() throws Exception {
         Product product = ProductFixture.getPizza();
         ReceiptDto receiptLine1Dto = ReceiptDtoFixture.getReceiptLinePizza();
+        SupplementDto supplementDto = SupplementDtoFixture.mutable();
 
         when(receiptDtoMapper.map(product.getReceipt().get(0))).thenReturn(receiptLine1Dto);
 

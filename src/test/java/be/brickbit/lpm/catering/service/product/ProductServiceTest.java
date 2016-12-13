@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import be.brickbit.lpm.catering.domain.ProductType;
+import be.brickbit.lpm.catering.fixture.ProductDtoFixture;
 import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.service.product.command.EditProductCommand;
 import be.brickbit.lpm.catering.service.product.command.EditProductPreparationCommand;
@@ -60,7 +61,7 @@ public class ProductServiceTest {
     public void testSaveProduct() throws Exception {
         CreateProductCommand createProductCommand = CreateProductCommandFixture.mutable();
         Product product = new Product();
-        ProductDto productDto = new ProductDto();
+        ProductDto productDto = ProductDtoFixture.mutable();
 
         when(productCommandToEntityMapper.map(createProductCommand)).thenReturn(product);
         when(dtoMapper.map(product)).thenReturn(productDto);
@@ -112,7 +113,7 @@ public class ProductServiceTest {
         ProductType productType = ProductType.FOOD;
 
         when(productRepository.findByProductType(productType)).thenReturn(products);
-        when(dtoMapper.map(any(Product.class))).thenReturn(new ProductDto());
+        when(dtoMapper.map(any(Product.class))).thenReturn(ProductDtoFixture.mutable());
 
         List<ProductDto> result = productService.findAllByType(productType, false, false, dtoMapper);
 
@@ -125,7 +126,7 @@ public class ProductServiceTest {
         ProductType productType = ProductType.FOOD;
 
         when(productRepository.findByProductTypeAndAvailableTrue(productType)).thenReturn(products);
-        when(dtoMapper.map(any(Product.class))).thenReturn(new ProductDto());
+        when(dtoMapper.map(any(Product.class))).thenReturn(ProductDtoFixture.mutable());
 
         List<ProductDto> result = productService.findAllByType(productType, true, false, dtoMapper);
 
@@ -138,7 +139,7 @@ public class ProductServiceTest {
         ProductType productType = ProductType.FOOD;
 
         when(productRepository.findByProductTypeAndAvailableTrueAndReservationOnlyTrue(productType)).thenReturn(products);
-        when(dtoMapper.map(any(Product.class))).thenReturn(new ProductDto());
+        when(dtoMapper.map(any(Product.class))).thenReturn(ProductDtoFixture.mutable());
 
         List<ProductDto> result = productService.findAllByType(productType, true, true, dtoMapper);
 
@@ -211,7 +212,7 @@ public class ProductServiceTest {
 
         Product product = ProductFixture.getJupiler();
         EditProductCommand command = new EditProductCommand();
-        ProductDto productDto = new ProductDto();
+        ProductDto productDto = ProductDtoFixture.mutable();
 
         when(productRepository.findOne(productId)).thenReturn(product);
         when(dtoMapper.map(product)).thenReturn(productDto);
@@ -228,7 +229,7 @@ public class ProductServiceTest {
 
         Product product = ProductFixture.getJupiler();
         EditProductPreparationCommand command = new EditProductPreparationCommand();
-        ProductDto productDto = new ProductDto();
+        ProductDto productDto = ProductDtoFixture.mutable();
 
         when(productRepository.findOne(productId)).thenReturn(product);
         when(dtoMapper.map(product)).thenReturn(productDto);

@@ -1,5 +1,7 @@
 package be.brickbit.lpm.catering.fixture;
 
+import com.google.common.collect.Lists;
+
 import be.brickbit.lpm.catering.service.product.command.EditProductCommand;
 
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomDecimal;
@@ -11,7 +13,8 @@ public class EditProductCommandFixture {
         return new EditProductCommand(
                 randomString(),
                 randomDecimal(),
-                false
+                false,
+                Lists.newArrayList()
         );
     }
 }

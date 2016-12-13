@@ -1,29 +1,39 @@
 package be.brickbit.lpm.catering.service.product.mapper;
 
 import be.brickbit.lpm.catering.domain.Product;
+import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.fixture.ProductFixture;
+import be.brickbit.lpm.catering.fixture.SupplementDtoFixture;
 import be.brickbit.lpm.catering.service.product.dto.ProductDto;
+import be.brickbit.lpm.catering.service.product.dto.SupplementDto;
 import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductDtoMapperTest {
 
-    private ProductDtoMapper mapper;
+    @Mock
+    private SupplementDtoMapper supplementDtoMapper;
 
-    @Before
-    public void setUp() throws Exception {
-        mapper = new ProductDtoMapper();
-    }
+    @InjectMocks
+    private ProductDtoMapper mapper;
 
     @Test
     public void testMap() throws Exception {
-        Product product = ProductFixture.getJupiler();
+        Product product = ProductFixture.getPizza();
+        SupplementDto supplementDto = SupplementDtoFixture.mutable();
+
+        when(supplementDtoMapper.map(any(StockProduct.class))).thenReturn(supplementDto);
+
         ProductDto productDto = mapper.map(product);
 
         assertThat(productDto.getClearanceType()).isEqualTo(product.getClearance());
@@ -36,5 +46,6 @@ public class ProductDtoMapperTest {
         assertThat(productDto.getAvgConsumption()).isEqualTo(product.getAvgConsumption());
         assertThat(productDto.getAvailable()).isEqualTo(product.getAvailable());
         assertThat(productDto.getReservationOnly()).isEqualTo(product.getReservationOnly());
+        assertThat(productDto.getSupplements()).containsExactly(supplementDto);
     }
 }

@@ -20,9 +20,11 @@ public class ProductDetailsDto {
     }
 
     public ProductDetailsDto(List<ReceiptDto> someProductsToInclude) {
-        productsToInclude = someProductsToInclude;
-        instructions = "";
-        queueName = "";
-        timerInMinutes = 0;
+        this(
+                "",
+                "",
+                0,
+                someProductsToInclude
+        );
     }
 }

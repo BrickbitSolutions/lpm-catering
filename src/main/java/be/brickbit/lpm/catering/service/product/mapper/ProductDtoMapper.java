@@ -1,10 +1,17 @@
 package be.brickbit.lpm.catering.service.product.mapper;
 
+import com.google.common.collect.Lists;
+
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.stream.Collectors;
 
+import be.brickbit.lpm.catering.service.product.dto.SupplementDto;
 import be.brickbit.lpm.catering.service.stockflow.util.StockFlowUtil;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import be.brickbit.lpm.catering.domain.Product;
 import be.brickbit.lpm.catering.domain.ProductReceiptLine;
@@ -12,6 +19,9 @@ import be.brickbit.lpm.catering.service.product.dto.ProductDto;
 
 @Component
 public class ProductDtoMapper implements ProductMapper<ProductDto> {
+
+	@Autowired
+	private SupplementDtoMapper supplementDtoMapper;
 
 	@Override
 	public ProductDto map(Product someProduct) {
@@ -24,7 +34,17 @@ public class ProductDtoMapper implements ProductMapper<ProductDto> {
 				someProduct.getAvgConsumption(),
 				getStockLevel(someProduct.getReceipt()),
                 someProduct.getAvailable(),
-				someProduct.getReservationOnly());
+				someProduct.getReservationOnly(),
+				mapSupplements(someProduct)
+		);
+	}
+
+	private List<SupplementDto> mapSupplements(Product someProduct) {
+		if(CollectionUtils.isEmpty(someProduct.getSupplements())){
+			return Lists.newArrayList();
+		}
+
+		return someProduct.getSupplements().stream().map(supplementDtoMapper::map).collect(Collectors.toList());
 	}
 
 	private Integer getStockLevel(List<ProductReceiptLine> receipt) {

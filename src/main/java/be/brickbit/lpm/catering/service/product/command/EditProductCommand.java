@@ -3,6 +3,7 @@ package be.brickbit.lpm.catering.service.product.command;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -22,4 +23,5 @@ public class EditProductCommand {
     private BigDecimal price;
     @NotNull(message = "Reservation Only is required.")
     private Boolean reservationOnly;
+    private List<Long> supplements;
 }
