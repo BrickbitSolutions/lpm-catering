@@ -7,5 +7,5 @@ import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 import be.brickbit.lpm.infrastructure.Service;
 
 public interface IStockFlowService extends Service<StockFlow> {
-    <T> T save(StockFlowCommand command, UserPrincipalDto someUser, StockFlowMapper<T> dtoMapper);
+    <T> T save(StockFlowCommand command, Long userId, StockFlowMapper<T> dtoMapper);
 }

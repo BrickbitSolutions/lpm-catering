@@ -24,7 +24,7 @@ public class WalletControllerIT extends AbstractControllerIT {
     @Test
     public void getsWallet() throws Exception {
         Wallet wallet = WalletFixture.mutable();
-        wallet.setUserId(userDetails().getId());
+        wallet.setUserId(userPrincipal().getId());
 
         insert(wallet);
 
@@ -36,11 +36,11 @@ public class WalletControllerIT extends AbstractControllerIT {
     @Test
     public void getsWalletForUserId() throws Exception {
         Wallet wallet = WalletFixture.mutable();
-        wallet.setUserId(userDetails().getId());
+        wallet.setUserId(userPrincipal().getId());
 
         insert(wallet);
 
-        performGet(String.format("/user/wallet?userId=%d", userDetails().getId()))
+        performGet(String.format("/user/wallet?userId=%d", userPrincipal().getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.amount", equalTo(wallet.getAmount().doubleValue())));
     }
@@ -49,13 +49,13 @@ public class WalletControllerIT extends AbstractControllerIT {
     public void addsAmountToWallet() throws Exception {
         BigDecimal startCapital = randomDecimal(10.0, 100.0);
         Wallet wallet = WalletFixture.mutable();
-        wallet.setUserId(userDetails().getId());
+        wallet.setUserId(userPrincipal().getId());
         wallet.setAmount(startCapital);
 
         insert(wallet);
 
         EditWalletAmountCommand command = EditWalletAmountCommandFixture.mutable();
-        command.setUserId(userDetails().getId());
+        command.setUserId(userPrincipal().getId());
         command.setAmount(randomDecimal(1.0, 10.0));
 
         performPost("/user/wallet/add", command)
@@ -63,7 +63,7 @@ public class WalletControllerIT extends AbstractControllerIT {
 
         Wallet result = new JPAQuery(getEntityManager())
                 .from(QWallet.wallet)
-                .where(QWallet.wallet.userId.eq(userDetails().getId()))
+                .where(QWallet.wallet.userId.eq(userPrincipal().getId()))
                 .uniqueResult(QWallet.wallet);
 
         assertThat(result).isNotNull();
@@ -74,13 +74,13 @@ public class WalletControllerIT extends AbstractControllerIT {
     public void subtractsAmountToWallet() throws Exception {
         BigDecimal startCapital = randomDecimal(10.0, 100.0);
         Wallet wallet = WalletFixture.mutable();
-        wallet.setUserId(userDetails().getId());
+        wallet.setUserId(userPrincipal().getId());
         wallet.setAmount(startCapital);
 
         insert(wallet);
 
         EditWalletAmountCommand command = EditWalletAmountCommandFixture.mutable();
-        command.setUserId(userDetails().getId());
+        command.setUserId(userPrincipal().getId());
         command.setAmount(randomDecimal(1.0, 10.0));
 
         performPost("/user/wallet/substract", command)
@@ -88,7 +88,7 @@ public class WalletControllerIT extends AbstractControllerIT {
 
         Wallet result = new JPAQuery(getEntityManager())
                 .from(QWallet.wallet)
-                .where(QWallet.wallet.userId.eq(userDetails().getId()))
+                .where(QWallet.wallet.userId.eq(userPrincipal().getId()))
                 .uniqueResult(QWallet.wallet);
 
         assertThat(result).isNotNull();

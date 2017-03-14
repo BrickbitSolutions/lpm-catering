@@ -8,14 +8,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import be.brickbit.lpm.catering.config.LpmUserAuthenticationConverter.LpmTokenPrincipal;
 import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.domain.PreparationTask;
 import be.brickbit.lpm.catering.fixture.PreparationTaskFixture;
 import be.brickbit.lpm.catering.fixture.UserFixture;
 import be.brickbit.lpm.catering.repository.PreparationTaskRepository;
-import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,11 +37,11 @@ public class TaskServiceImplTest {
     public void updateTaskWithStatus() throws Exception {
         PreparationTask preparationTask = PreparationTaskFixture.mutable();
         preparationTask.setId(1L);
-        UserPrincipalDto user = UserFixture.mutablePrincipal();
+        LpmTokenPrincipal user = UserFixture.mutablePrincipal();
 
         when(preparationTaskRepository.findOne(preparationTask.getId())).thenReturn(preparationTask);
 
-        taskService.updateTaskWithStatus(1L, OrderStatus.IN_PROGRESS, user);
+        taskService.updateTaskWithStatus(1L, OrderStatus.IN_PROGRESS, user.getId());
 
         assertThat(preparationTask.getStartTime()).isNotNull();
         assertThat(preparationTask.getUserId()).isEqualTo(user.getId());
@@ -55,7 +56,7 @@ public class TaskServiceImplTest {
 
         when(preparationTaskRepository.findOne(1L)).thenReturn(null);
 
-        taskService.updateTaskWithStatus(1L, OrderStatus.IN_PROGRESS, UserFixture.mutablePrincipal());
+        taskService.updateTaskWithStatus(1L, OrderStatus.IN_PROGRESS, randomLong());
     }
 
 }

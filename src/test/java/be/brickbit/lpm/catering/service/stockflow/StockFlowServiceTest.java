@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.service.stockflow;
 
 import com.google.common.collect.Lists;
 
+import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,7 +48,8 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		StockFlowDto result = stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
+		StockFlowDto result = stockFlowService.save(command, randomLong(),
+				dtoMapper);
 
 		assertThat(result).isSameAs(dto);
 
@@ -69,7 +71,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
+		stockFlowService.save(command, randomLong(), dtoMapper);
 
 		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
 	}
@@ -91,7 +93,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
+		stockFlowService.save(command, randomLong(), dtoMapper);
 
 		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(3);
 		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(detail
@@ -113,7 +115,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
+		stockFlowService.save(command, randomLong(), dtoMapper);
 
 		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
 	}
@@ -137,7 +139,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
+		stockFlowService.save(command, randomLong(), dtoMapper);
 
 		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(3);
 		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(detail
@@ -163,7 +165,7 @@ public class StockFlowServiceTest {
 		when(stockFlowCommandToEntityMapper.map(command)).thenReturn(entity);
 		when(dtoMapper.map(entity)).thenReturn(dto);
 
-		stockFlowService.save(command, UserFixture.mutablePrincipal(), dtoMapper);
+		stockFlowService.save(command, randomLong(), dtoMapper);
 
 		assertThat(detail.getStockProduct().getStockLevel()).isEqualTo(4);
 		assertThat(detail.getStockProduct().getRemainingConsumptions()).isEqualTo(1);

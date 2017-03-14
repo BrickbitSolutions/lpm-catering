@@ -13,9 +13,9 @@ import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 import be.brickbit.lpm.infrastructure.Service;
 
 public interface IOrderService extends Service<Order> {
-    <T> T placeDirectOrder(DirectOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user);
+    <T> T placeDirectOrder(DirectOrderCommand command, OrderMapper<T> dtoMapper, Long userId);
 
-    <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user);
+    <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, Long userId);
 
     @Transactional
     void handleReservation(Long id);

@@ -42,7 +42,7 @@ public class TaskControllerIT extends AbstractControllerIT {
                 .uniqueResult(QPreparationTask.preparationTask);
 
         assertThat(result.getStartTime()).isNotNull();
-        assertThat(result.getUserId()).isEqualTo(userDetails().getId());
+        assertThat(result.getUserId()).isEqualTo(userPrincipal().getId());
         assertThat(result.getStatus()).isEqualTo(IN_PROGRESS);
     }
 
@@ -60,7 +60,7 @@ public class TaskControllerIT extends AbstractControllerIT {
                 preparationTask
         );
 
-        stubCore("/user/1", 200, userDetails());
+        stubCore("/user/1", 200, userPrincipal());
 
         performPut(String.format("/task/%s/complete", preparationTask.getId()), null)
                 .andExpect(status().isNoContent());

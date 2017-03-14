@@ -22,12 +22,12 @@ public class TaskController extends AbstractController {
     @RequestMapping(value = "/{id}/start", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void startedTask(@PathVariable("id") Long id) {
-        taskService.updateTaskWithStatus(id, OrderStatus.IN_PROGRESS, getCurrentUser());
+        taskService.updateTaskWithStatus(id, OrderStatus.IN_PROGRESS, getCurrentUser().getId());
     }
 
     @RequestMapping(value = "/{id}/complete", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void completeTask(@PathVariable("id") Long id) {
-        taskService.updateTaskWithStatus(id, OrderStatus.READY, getCurrentUser());
+        taskService.updateTaskWithStatus(id, OrderStatus.READY, getCurrentUser().getId());
     }
 }

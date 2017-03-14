@@ -1,23 +1,24 @@
-package be.brickbit.lpm.infrastructure;
+package be.brickbit.lpm.catering.config;
 
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import be.brickbit.lpm.catering.config.LpmUserAuthenticationConverter;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 
 @Component
+@Profile("test")
 public class OAuthPrincipalExtractor implements PrincipalExtractor {
     @Override
-    public UserPrincipalDto extractPrincipal(Map<String, Object> map) {
-        return new UserPrincipalDto(
+    public LpmUserAuthenticationConverter.LpmTokenPrincipal extractPrincipal(Map<String, Object> map) {
+        return new LpmUserAuthenticationConverter.LpmTokenPrincipal(
                 extractLong(map, "id"),
-                extractString(map, "username"),
-                extractString(map, "mood"),
-                extractList(map, "authorities")
+                extractString(map, "username")
         );
     }
 

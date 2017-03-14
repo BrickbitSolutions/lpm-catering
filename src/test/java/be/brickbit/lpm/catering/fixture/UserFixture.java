@@ -2,6 +2,7 @@ package be.brickbit.lpm.catering.fixture;
 
 import java.util.Arrays;
 
+import be.brickbit.lpm.catering.config.LpmUserAuthenticationConverter;
 import be.brickbit.lpm.core.client.dto.UserDetailsDto;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 
@@ -24,12 +25,10 @@ public class UserFixture {
         );
     }
 
-    public static UserPrincipalDto mutablePrincipal() {
-        return new UserPrincipalDto(
+    public static LpmUserAuthenticationConverter.LpmTokenPrincipal mutablePrincipal() {
+        return new LpmUserAuthenticationConverter.LpmTokenPrincipal(
                 randomLong(),
-                randomString(),
-                randomString(),
-                Arrays.asList("ROLE_ADMIN", "ROLE_USER")
+                randomString()
         );
     }
 }

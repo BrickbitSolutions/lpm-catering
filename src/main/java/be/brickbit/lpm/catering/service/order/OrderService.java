@@ -70,9 +70,9 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 
     @Override
     @Transactional
-    public <T> T placeDirectOrder(DirectOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user) {
+    public <T> T placeDirectOrder(DirectOrderCommand command, OrderMapper<T> dtoMapper, Long userId) {
         Order order = directOrderCommandMapper.map(command);
-        order.setPlacedByUserId(user.getId());
+        order.setPlacedByUserId(userId);
 
         checkValidOrder(order);
 
@@ -87,10 +87,10 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 
     @Override
     @Transactional
-    public <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user) {
+    public <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, Long userId) {
         Order order = remoteOrderCommandToEntityMapper.map(command);
-        order.setPlacedByUserId(user.getId());
-        order.setUserId(user.getId());
+        order.setPlacedByUserId(userId);
+        order.setUserId(userId);
 
         checkValidOrder(order);
 

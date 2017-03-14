@@ -31,7 +31,7 @@ public class TaskServiceImpl implements TaskService {
     private SimpMessagingTemplate messagingTemplate;
 
     @Override
-    public void updateTaskWithStatus(Long taskId, OrderStatus status, UserPrincipalDto currentUser) {
+    public void updateTaskWithStatus(Long taskId, OrderStatus status, Long userId) {
         Optional<PreparationTask> task = Optional.ofNullable(preparationTaskRepository.findOne(taskId));
 
         if (task.isPresent()) {
@@ -41,7 +41,7 @@ public class TaskServiceImpl implements TaskService {
             switch (status) {
                 case IN_PROGRESS:
                     task.get().setStartTime(LocalDateTime.now());
-                    task.get().setUserId(currentUser.getId());
+                    task.get().setUserId(userId);
                     break;
                 case READY:
                     pushToQueue(orderService.findOrderByOrderLineId(task.get().getOrderLine().getId(), orderDtoMapper));

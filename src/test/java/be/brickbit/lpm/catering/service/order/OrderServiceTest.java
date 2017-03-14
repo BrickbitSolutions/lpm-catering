@@ -14,6 +14,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import java.time.LocalDate;
 import java.util.List;
 
+import be.brickbit.lpm.catering.config.LpmUserAuthenticationConverter.LpmTokenPrincipal;
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.OrderLine;
 import be.brickbit.lpm.catering.domain.OrderStatus;
@@ -112,7 +113,7 @@ public class OrderServiceTest {
         when(queueService.queueOrder(order, queueDtoMapper)).thenReturn(Lists.newArrayList(queueDto));
         when(userService.findOne(order.getUserId())).thenReturn(user);
 
-        OrderDetailDto result = orderService.placeDirectOrder(command, dtoMapper, UserFixture.mutablePrincipal());
+        OrderDetailDto result = orderService.placeDirectOrder(command, dtoMapper, randomLong());
 
         assertThat(result).isSameAs(orderDetailDto);
 
@@ -134,7 +135,7 @@ public class OrderServiceTest {
         expectedException.expect(ServiceException.class);
         expectedException.expectMessage("Order contains disabled products!");
 
-        orderService.placeDirectOrder(command, dtoMapper, UserFixture.mutablePrincipal());
+        orderService.placeDirectOrder(command, dtoMapper, randomLong());
     }
 
     @Test
@@ -167,7 +168,7 @@ public class OrderServiceTest {
         expectedException.expect(ServiceException.class);
         expectedException.expectMessage("Not enough 'Pizza' in stock to process order!");
 
-        orderService.placeDirectOrder(command, dtoMapper, UserFixture.mutablePrincipal());
+        orderService.placeDirectOrder(command, dtoMapper, randomLong());
     }
 
     @Test
@@ -186,14 +187,14 @@ public class OrderServiceTest {
         expectedException.expectMessage("Order containing reservation only products " +
                 "must have a hold until date!");
 
-        orderService.placeDirectOrder(command, dtoMapper, UserFixture.mutablePrincipal());
+        orderService.placeDirectOrder(command, dtoMapper, randomLong());
     }
 
     @Test
     public void placesRemoteOrder() throws Exception {
         RemoteOrderCommand command = RemoteOrderCommandFixture.getRemoteOrderCommand();
         UserDetailsDto user = UserFixture.mutable(21);
-        UserPrincipalDto principal = UserFixture.mutablePrincipal();
+        LpmTokenPrincipal principal = UserFixture.mutablePrincipal();
 
         Order order = OrderFixture.mutable();
         OrderDetailDto orderDetailDto = OrderDtoFixture.mutable();
@@ -204,7 +205,7 @@ public class OrderServiceTest {
         when(queueService.queueOrder(order, queueDtoMapper)).thenReturn(Lists.newArrayList(queueDto));
         when(userService.findOne(principal.getId())).thenReturn(user);
 
-        OrderDetailDto result = orderService.placeRemoteOrder(command, dtoMapper, principal);
+        OrderDetailDto result = orderService.placeRemoteOrder(command, dtoMapper, principal.getId());
 
         verify(messagingTemplate).convertAndSend("/topic/kitchen.queue." + queueDto.getQueueName(), queueDto);
         verify(messagingTemplate).convertAndSend("/topic/zanzibar.queue", orderDetailDto);
@@ -226,13 +227,13 @@ public class OrderServiceTest {
         expectedException.expect(ServiceException.class);
         expectedException.expectMessage("Order contains disabled products!");
 
-        orderService.placeRemoteOrder(command, dtoMapper, UserFixture.mutablePrincipal());
+        orderService.placeRemoteOrder(command, dtoMapper, randomLong());
     }
 
     @Test
     public void refusesRemoteOrderWithOutOfStockProducts() throws Exception {
         UserDetailsDto user = UserFixture.mutable(21);
-        UserPrincipalDto principal = UserFixture.mutablePrincipal();
+        LpmTokenPrincipal principal = UserFixture.mutablePrincipal();
         RemoteOrderCommand command = RemoteOrderCommandFixture.getRemoteOrderCommand();
 
         //Set Stock on 0
@@ -259,13 +260,13 @@ public class OrderServiceTest {
         expectedException.expect(ServiceException.class);
         expectedException.expectMessage("Not enough 'Pizza' in stock to process order!");
 
-        orderService.placeRemoteOrder(command, dtoMapper, principal);
+        orderService.placeRemoteOrder(command, dtoMapper, principal.getId());
     }
 
     @Test
     public void refusesRemoteOrderWithReservationOnlyProductAndNoHoldUntilDate() throws Exception {
         UserDetailsDto user = UserFixture.mutable(21);
-        UserPrincipalDto principal = UserFixture.mutablePrincipal();
+        LpmTokenPrincipal principal = UserFixture.mutablePrincipal();
 
         RemoteOrderCommand command = RemoteOrderCommandFixture.getRemoteOrderCommand();
         command.setHoldUntil(null);
@@ -280,7 +281,7 @@ public class OrderServiceTest {
         expectedException.expectMessage("Order containing reservation only products " +
                 "must have a hold until date!");
 
-        orderService.placeRemoteOrder(command, dtoMapper, principal);
+        orderService.placeRemoteOrder(command, dtoMapper, principal.getId());
     }
 
     @Test
@@ -445,7 +446,7 @@ public class OrderServiceTest {
         when(dtoMapper.map(order)).thenReturn(orderDetailDto);
         when(userService.findOne(order.getUserId())).thenReturn(user);
 
-        orderService.placeDirectOrder(command, dtoMapper, UserFixture.mutablePrincipal());
+        orderService.placeDirectOrder(command, dtoMapper, randomLong());
 
         assertThat(order.getHoldUntil()).isEqualTo(command.getHoldUntil());
         verify(orderRepository, times(1)).save(order);
@@ -454,7 +455,7 @@ public class OrderServiceTest {
     @Test
     public void createsRemoteOrderReservation() throws Exception {
         UserDetailsDto user = UserFixture.mutable(21);
-        UserPrincipalDto principal = UserFixture.mutablePrincipal();
+        LpmTokenPrincipal principal = UserFixture.mutablePrincipal();
 
         RemoteOrderCommand command = RemoteOrderCommandFixture.getRemoteOrderCommand();
         command.setHoldUntil(randomLocalDate());
@@ -466,7 +467,7 @@ public class OrderServiceTest {
         when(dtoMapper.map(order)).thenReturn(orderDetailDto);
         when(userService.findOne(principal.getId())).thenReturn(user);
 
-        orderService.placeRemoteOrder(command, dtoMapper, principal);
+        orderService.placeRemoteOrder(command, dtoMapper, principal.getId());
 
         assertThat(order.getHoldUntil()).isEqualTo(command.getHoldUntil());
         verify(orderRepository, times(1)).save(order);

@@ -74,13 +74,13 @@ public class OrderController extends AbstractController {
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDetailDto saveDirectOrder(@RequestBody @Valid DirectOrderCommand command) {
-        return orderService.placeDirectOrder(command, orderDetailDtoMapper, getCurrentUser());
+        return orderService.placeDirectOrder(command, orderDetailDtoMapper, getCurrentUser().getId());
     }
 
     @RequestMapping(value = "/remote", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @PreAuthorize(value = "hasAnyRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDetailDto saveRemoteOrder(@RequestBody @Valid RemoteOrderCommand command) {
-        return orderService.placeRemoteOrder(command, orderDetailDtoMapper, getCurrentUser());
+        return orderService.placeRemoteOrder(command, orderDetailDtoMapper, getCurrentUser().getId());
     }
 }

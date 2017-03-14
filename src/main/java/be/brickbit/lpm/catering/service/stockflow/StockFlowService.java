@@ -26,9 +26,9 @@ public class StockFlowService extends AbstractService<StockFlow> implements ISto
 
     @Override
     @Transactional
-    public <T> T save(StockFlowCommand command, UserPrincipalDto someUser, StockFlowMapper<T> dtoMapper) {
+    public <T> T save(StockFlowCommand command, Long userId, StockFlowMapper<T> dtoMapper) {
         StockFlow stockFlow = stockProductStockFlowCommandToEntityMapper.map(command);
-        stockFlow.setUserId(someUser.getId());
+        stockFlow.setUserId(userId);
 
         stockFlowRepository.save(stockFlow);
 

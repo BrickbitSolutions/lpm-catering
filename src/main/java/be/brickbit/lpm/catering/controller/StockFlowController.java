@@ -42,7 +42,7 @@ public class StockFlowController extends AbstractController {
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
 	@ResponseStatus(HttpStatus.CREATED)
 	public StockFlowDto save(@RequestBody @Valid StockFlowCommand command) {
-		return stockFlowService.save(command, getCurrentUser(), stockFlowDtoMapper);
+		return stockFlowService.save(command, getCurrentUser().getId(), stockFlowDtoMapper);
 	}
 
     @RequestMapping(value = "/type", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

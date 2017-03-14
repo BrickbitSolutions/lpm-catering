@@ -11,6 +11,8 @@ import be.brickbit.lpm.catering.service.product.command.EditProductPreparationCo
 import be.brickbit.lpm.catering.service.product.mapper.ProductMerger;
 import be.brickbit.lpm.catering.service.product.mapper.ProductPreparationMerger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

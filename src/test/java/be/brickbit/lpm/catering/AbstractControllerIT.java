@@ -20,6 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Arrays;
 
 import be.brickbit.lpm.Application;
+import be.brickbit.lpm.catering.config.LpmUserAuthenticationConverter;
 import be.brickbit.lpm.core.client.dto.UserDetailsDto;
 import be.brickbit.lpm.core.client.dto.UserPrincipalDto;
 
@@ -49,24 +50,20 @@ public abstract class AbstractControllerIT extends AbstractIT {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    private UserPrincipalDto principalDto;
-    private UserDetailsDto userDetailsDto;
+    private LpmUserAuthenticationConverter.LpmTokenPrincipal lpmTokenPrincipal;
 
     @Before
     public void setUp() throws Exception {
-        principalDto = new UserPrincipalDto(
+        UserPrincipalDto principalDto = new UserPrincipalDto(
                 1L,
                 "admin",
                 randomString(),
                 Arrays.asList("ROLE_ADMIN", "ROLE_USER")
         );
 
-        userDetailsDto = new UserDetailsDto(
-                1L,
-                "admin",
-                25,
-                1,
-                randomString()
+        lpmTokenPrincipal = new LpmUserAuthenticationConverter.LpmTokenPrincipal(
+                principalDto.getId(),
+                principalDto.getUsername()
         );
 
         stubFor(WireMock.get(urlEqualTo("/user/me"))
@@ -83,27 +80,17 @@ public abstract class AbstractControllerIT extends AbstractIT {
     }
 
     /**
-     * Configures the test to run with the given userDetails userPrincipal. Otherwise a default userDetails is used.
+     * Configures the test to run with the given userDetails userPrincipal. Otherwise a default
+     * userDetails is used.
+     *
      * @param user userDetails userPrincipal.
      */
-    protected void setOauthUser(UserPrincipalDto user){
-        this.principalDto = user;
+    protected void setOauthUser(LpmUserAuthenticationConverter.LpmTokenPrincipal user) {
+        this.lpmTokenPrincipal = user;
     }
 
-    /**
-     * Configures the test with the given userDetails details. Otherwise a default userDetails is used.
-     * @param user userDetails userPrincipal.
-     */
-    protected void setOauthUserDetails(UserDetailsDto user){
-        this.userDetailsDto = user;
-    }
-
-    protected UserPrincipalDto userPrincipal(){
-        return this.principalDto;
-    }
-
-    protected UserDetailsDto userDetails(){
-        return this.userDetailsDto;
+    protected LpmUserAuthenticationConverter.LpmTokenPrincipal userPrincipal() {
+        return this.lpmTokenPrincipal;
     }
 
     protected String convertToJson(Object object) throws JsonProcessingException {
@@ -115,7 +102,7 @@ public abstract class AbstractControllerIT extends AbstractIT {
                 get(url)
                         .header("Authorization", "Bearer LPM-test-token")
                         .accept(APPLICATION_JSON))
-                        .andDo(print());
+                .andDo(print());
     }
 
     protected ResultActions performPost(String url, Object command) throws Exception {
@@ -125,7 +112,7 @@ public abstract class AbstractControllerIT extends AbstractIT {
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .content(convertToJson(command)))
-                        .andDo(print());
+                .andDo(print());
     }
 
     protected ResultActions performPut(String url, Object command) throws Exception {
@@ -135,7 +122,7 @@ public abstract class AbstractControllerIT extends AbstractIT {
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON)
                         .content(convertToJson(command)))
-                        .andDo(print());
+                .andDo(print());
     }
 
     protected ResultActions performDelete(String url) throws Exception {
