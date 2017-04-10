@@ -2,9 +2,10 @@ package be.brickbit.lpm.catering.service.order.mapper;
 
 import be.brickbit.lpm.catering.domain.Order;
 import be.brickbit.lpm.catering.domain.OrderLine;
+import be.brickbit.lpm.catering.fixture.CreateOrderCommandFixture;
 import be.brickbit.lpm.catering.fixture.OrderLineFixture;
-import be.brickbit.lpm.catering.fixture.RemoteOrderCommandFixture;
-import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
+import be.brickbit.lpm.catering.service.order.command.CreateOrderCommand;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,17 +16,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RemoteOrderCommandToEntityMapperTest {
+public class CreateOrderCommandToEntityMapperTest {
 
     @Mock
     private OrderLineCommandToEntityMapper orderLineCommandToEntityMapper;
 
     @InjectMocks
-    private RemoteOrderCommandToEntityMapper mapper;
+    private CreateOrderCommandToEntityMapper mapper;
 
     @Test
     public void testMap() throws Exception {
-        RemoteOrderCommand command = RemoteOrderCommandFixture.getRemoteOrderCommand();
+        CreateOrderCommand command = CreateOrderCommandFixture.getRemoteOrderCommand();
 
         OrderLine jupilerOrderLine = OrderLineFixture.getJupilerOrderLine();
         OrderLine pizzaOrderLine = OrderLineFixture.getPizzaOrderLine();

@@ -80,7 +80,7 @@ public class StockProductController extends AbstractController {
         return stockProductService.findAll(stockProductDtoMapper);
     }
 
-    @RequestMapping(value = "/types", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/type", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN')")
     public List<ProductType> getAllProductTypes() {
         return Arrays.asList(ProductType.values());

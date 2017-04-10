@@ -17,7 +17,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RemoteOrderCommand {
+public class CreateOrderCommand {
+    private Long userId;
     @Valid
     @NotNull(message = "Orderlines may not be null")
     @Size(min = 1, message = "Order must have orderlines")

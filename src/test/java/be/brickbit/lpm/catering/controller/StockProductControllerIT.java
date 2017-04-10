@@ -151,7 +151,7 @@ public class StockProductControllerIT extends AbstractControllerIT {
 
     @Test
     public void getsAllProductTypes() throws Exception {
-        performGet("/stockproduct/types")
+        performGet("/stockproduct/type")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", containsInAnyOrder(
                         "FOOD",

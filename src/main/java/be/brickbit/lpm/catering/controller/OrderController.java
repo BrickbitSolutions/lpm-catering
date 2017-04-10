@@ -3,6 +3,7 @@ package be.brickbit.lpm.catering.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import be.brickbit.lpm.catering.domain.OrderStatus;
 import be.brickbit.lpm.catering.service.order.IOrderService;
-import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
-import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
+import be.brickbit.lpm.catering.service.order.command.CreateOrderCommand;
 import be.brickbit.lpm.catering.service.order.dto.OrderDetailDto;
 import be.brickbit.lpm.catering.service.order.mapper.OrderDetailDtoMapper;
 import be.brickbit.lpm.infrastructure.AbstractController;
@@ -37,11 +38,25 @@ public class OrderController extends AbstractController {
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderDetailDto> getAllOrders(@RequestParam(value = "status", required = false) OrderStatus orderStatus) {
-        if(orderStatus == null){
+        if (orderStatus == null) {
             return orderService.findAll(orderDetailDtoMapper);
-        }else{
+        } else {
             return orderService.findOrderByStatus(orderStatus, orderDetailDtoMapper);
         }
+    }
+
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
+    @PreAuthorize(value = "hasAnyRole('USER')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrderDetailDto createOrder(@RequestBody @Valid CreateOrderCommand command, HttpServletRequest request) {
+        if (command.getUserId() != null &&
+                !(request.isUserInRole("ADMIN") ||
+                request.isUserInRole("CATERING_ADMIN") ||
+                request.isUserInRole("CATERING_CREW"))) {
+            throw new AccessDeniedException("You are not authorized to create orders for other users");
+        }
+
+        return orderService.createOrder(command, orderDetailDtoMapper, getCurrentUser());
     }
 
     @RequestMapping(value = "/history", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -68,19 +83,5 @@ public class OrderController extends AbstractController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void processReservation(@PathVariable("id") Long id) {
         orderService.handleReservation(id);
-    }
-
-    @RequestMapping(value = "/direct", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
-    @ResponseStatus(HttpStatus.CREATED)
-    public OrderDetailDto saveDirectOrder(@RequestBody @Valid DirectOrderCommand command) {
-        return orderService.placeDirectOrder(command, orderDetailDtoMapper, getCurrentUser());
-    }
-
-    @RequestMapping(value = "/remote", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
-    @PreAuthorize(value = "hasAnyRole('USER')")
-    @ResponseStatus(HttpStatus.CREATED)
-    public OrderDetailDto saveRemoteOrder(@RequestBody @Valid RemoteOrderCommand command) {
-        return orderService.placeRemoteOrder(command, orderDetailDtoMapper, getCurrentUser());
     }
 }

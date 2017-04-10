@@ -17,12 +17,10 @@ import be.brickbit.lpm.catering.domain.ProductReceiptLine;
 import be.brickbit.lpm.catering.domain.StockProduct;
 import be.brickbit.lpm.catering.repository.OrderRepository;
 import be.brickbit.lpm.catering.repository.StockProductRepository;
-import be.brickbit.lpm.catering.service.order.command.DirectOrderCommand;
-import be.brickbit.lpm.catering.service.order.command.RemoteOrderCommand;
-import be.brickbit.lpm.catering.service.order.mapper.DirectOrderCommandToOrderEntityMapper;
+import be.brickbit.lpm.catering.service.order.command.CreateOrderCommand;
 import be.brickbit.lpm.catering.service.order.mapper.OrderDetailDtoMapper;
 import be.brickbit.lpm.catering.service.order.mapper.OrderMapper;
-import be.brickbit.lpm.catering.service.order.mapper.RemoteOrderCommandToEntityMapper;
+import be.brickbit.lpm.catering.service.order.mapper.CreateOrderCommandToEntityMapper;
 import be.brickbit.lpm.catering.service.order.util.PriceUtil;
 import be.brickbit.lpm.catering.service.queue.QueueService;
 import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
@@ -45,10 +43,7 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     private StockProductRepository stockProductRepository;
 
     @Autowired
-    private DirectOrderCommandToOrderEntityMapper directOrderCommandMapper;
-
-    @Autowired
-    private RemoteOrderCommandToEntityMapper remoteOrderCommandToEntityMapper;
+    private CreateOrderCommandToEntityMapper createOrderCommandToEntityMapper;
 
     @Autowired
     private OrderDetailDtoMapper orderDtoMapper;
@@ -70,37 +65,29 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 
     @Override
     @Transactional
-    public <T> T placeDirectOrder(DirectOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user) {
-        Order order = directOrderCommandMapper.map(command);
+    public <T> T createOrder(CreateOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto
+            user) {
+        Boolean isOrderForAuthenticatedUser = command.getUserId() == null || command.getUserId().equals(user.getId());
+
+        Order order = createOrderCommandToEntityMapper.map(command);
         order.setPlacedByUserId(user.getId());
+
+        if (isOrderForAuthenticatedUser) {
+            order.setUserId(user.getId());
+        } else {
+            order.setUserId(command.getUserId());
+        }
 
         checkValidOrder(order);
 
         if (command.getHoldUntil() == null) {
-            handleOrder(order, OrderStatus.COMPLETED);
+            handleOrder(order, isOrderForAuthenticatedUser ? OrderStatus.READY : OrderStatus.COMPLETED);
+            if(isOrderForAuthenticatedUser){
+                pushToTakeOutQueue(order);
+            }
         } else {
             createReservation(order, command.getHoldUntil());
         }
-
-        return dtoMapper.map(order);
-    }
-
-    @Override
-    @Transactional
-    public <T> T placeRemoteOrder(RemoteOrderCommand command, OrderMapper<T> dtoMapper, UserPrincipalDto user) {
-        Order order = remoteOrderCommandToEntityMapper.map(command);
-        order.setPlacedByUserId(user.getId());
-        order.setUserId(user.getId());
-
-        checkValidOrder(order);
-
-        if (command.getHoldUntil() == null) {
-            handleOrder(order, OrderStatus.READY);
-        } else {
-            createReservation(order, command.getHoldUntil());
-        }
-
-        pushToTakeOutQueue(order);
 
         return dtoMapper.map(order);
     }
@@ -110,17 +97,17 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
     public void handleReservation(Long id) {
         Order order = orderRepository.findOne(id);
 
-        if(order.getHoldUntil() == null){
+        if (order.getHoldUntil() == null) {
             throw new ServiceException("Order is not a reservation.");
         }
 
-        if(LocalDate.now().isBefore(order.getHoldUntil())){
+        if (LocalDate.now().isBefore(order.getHoldUntil())) {
             throw new ServiceException("Reservation cannot be handled yet.");
         }
 
-        if(OrderUtils.determineOrderStatus(order) == OrderStatus.CREATED){
+        if (OrderUtils.determineOrderStatus(order) == OrderStatus.CREATED) {
             handleOrder(order, OrderStatus.READY);
-        }else{
+        } else {
             throw new ServiceException("Reservation is already being handled.");
         }
     }
@@ -143,16 +130,16 @@ public class OrderService extends AbstractService<Order> implements IOrderServic
 
         order.getOrderLines().stream().map(OrderLine::getProduct)
                 .forEach(product -> {
-                    if(!product.getAvailable()){
+                    if (!product.getAvailable()) {
                         throw new ServiceException("Order contains disabled products!");
                     }
 
-                    if(product.getClearance().getClearanceLevel() > user.getAge()){
+                    if (product.getClearance().getClearanceLevel() > user.getAge()) {
                         throw new ServiceException("Order contains products who are lawfully " +
                                 "forbidden for the current user.");
                     }
 
-                    if(product.getReservationOnly() && order.getHoldUntil() == null){
+                    if (product.getReservationOnly() && order.getHoldUntil() == null) {
                         throw new ServiceException("Order containing reservation only products " +
                                 "must have a hold until date!");
                     }

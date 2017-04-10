@@ -28,7 +28,7 @@ public class ClearanceController extends AbstractController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserClearanceDto getUserClearances(@RequestParam(value = "userId", required = false) Long userId) {
         Long userIdToQuery = userId == null ? getCurrentUser().getId() : userId;

@@ -29,15 +29,14 @@ public class QueueController {
     @Autowired
     private QueueDtoMapper queueDtoMapper;
 
-    @RequestMapping(value = "/{queueName}", method = RequestMethod.GET, produces = MediaType
-            .APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/{queueName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     public List<QueueDto> getQueueTasks(@PathVariable String queueName) {
         return queueService.findAllTasks(queueName, queueDtoMapper);
     }
 
-    @RequestMapping(value = "/name", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PreAuthorize(value = "hasAnyRole('ADMIN', 'CATERING_ADMIN', 'CATERING_CREW')")
     @ResponseStatus(HttpStatus.OK)
     public List<String> findAllQueueNames() {

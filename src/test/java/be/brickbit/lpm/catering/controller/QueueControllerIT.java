@@ -61,7 +61,7 @@ public class QueueControllerIT extends AbstractControllerIT {
                 preparationTask
         );
 
-        performGet("/queue/name")
+        performGet("/queue")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", containsInAnyOrder(
                         preparationTask.getOrderLine().getProduct().getPreparation().getQueueName()
