@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,8 @@ import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
 @Service
 public class OrderServiceImpl extends AbstractService<Order> implements OrderService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);
+
 	@Autowired
 	private OrderRepository orderRepository;
 
@@ -199,9 +203,11 @@ public class OrderServiceImpl extends AbstractService<Order> implements OrderSer
 	@Override
 	public void notifyReady(Long id) {
 		Order order = orderRepository.findOne(id);
-
-		userService.notify(order.getUserId(), "Your order (#%s) is (partially) ready and waiting" +
-				" for you at the catering!");
+		try {
+			userService.notify(order.getUserId(), "Your order (#%s) is (partially) ready and waiting for you at the catering!");
+		}catch (ServiceException se){
+			LOGGER.warn(se.getMessage());
+		}
 	}
 
 	@Transactional(readOnly = true)

@@ -40,7 +40,6 @@ public class TaskController extends AbstractController {
 		taskService.updateTaskWithStatus(id, OrderStatus.READY, getCurrentUser());
 		OrderDetailDto orderDetail = orderService.findByTaskId(1L, orderDtoMapper);
 		pushToTakeOutQueue(orderDetail);
-		orderService.notifyReady(orderDetail.getId());
 	}
 
 	private void pushToTakeOutQueue(OrderDetailDto message) {
