@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import be.brickbit.lpm.catering.controller.dto.OrderDetailDto;
@@ -38,7 +39,7 @@ public class TaskController extends AbstractController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void completeTask(@PathVariable("id") Long id) {
 		taskService.updateTaskWithStatus(id, OrderStatus.READY, getCurrentUser());
-		OrderDetailDto orderDetail = orderService.findByTaskId(1L, orderDtoMapper);
+		OrderDetailDto orderDetail = orderService.findByTaskId(id, orderDtoMapper);
 		pushToTakeOutQueue(orderDetail);
 	}
 
