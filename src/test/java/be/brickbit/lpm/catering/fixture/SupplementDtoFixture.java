@@ -1,6 +1,6 @@
 package be.brickbit.lpm.catering.fixture;
 
-import be.brickbit.lpm.catering.service.product.dto.SupplementDto;
+import be.brickbit.lpm.catering.controller.dto.SupplementDto;
 
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLong;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomString;

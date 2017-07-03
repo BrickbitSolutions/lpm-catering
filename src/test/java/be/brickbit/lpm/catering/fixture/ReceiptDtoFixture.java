@@ -1,6 +1,6 @@
 package be.brickbit.lpm.catering.fixture;
 
-import be.brickbit.lpm.catering.service.product.dto.ReceiptDto;
+import be.brickbit.lpm.catering.controller.dto.ReceiptDto;
 
 public class ReceiptDtoFixture {
     public static ReceiptDto getReceiptLine1Dto(){

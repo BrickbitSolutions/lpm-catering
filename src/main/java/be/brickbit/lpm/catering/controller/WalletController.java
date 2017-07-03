@@ -15,8 +15,8 @@ import javax.validation.Valid;
 
 import be.brickbit.lpm.catering.service.wallet.WalletService;
 import be.brickbit.lpm.catering.service.wallet.command.EditWalletAmountCommand;
-import be.brickbit.lpm.catering.service.wallet.dto.WalletDto;
-import be.brickbit.lpm.catering.service.wallet.mapper.WalletDtoMapper;
+import be.brickbit.lpm.catering.controller.dto.WalletDto;
+import be.brickbit.lpm.catering.controller.mapper.WalletDtoMapper;
 import be.brickbit.lpm.infrastructure.AbstractController;
 
 @RequestMapping(value = "/user/wallet")

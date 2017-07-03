@@ -1,6 +1,6 @@
 package be.brickbit.lpm.catering.fixture;
 
-import be.brickbit.lpm.catering.service.wallet.dto.WalletDto;
+import be.brickbit.lpm.catering.controller.dto.WalletDto;
 
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomDecimal;
 

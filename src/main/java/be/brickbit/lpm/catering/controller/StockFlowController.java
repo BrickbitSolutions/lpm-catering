@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import be.brickbit.lpm.catering.service.stockflow.IStockFlowService;
+import be.brickbit.lpm.catering.service.stockflow.StockFlowService;
 import be.brickbit.lpm.catering.service.stockflow.command.StockFlowCommand;
-import be.brickbit.lpm.catering.service.stockflow.dto.StockFlowDto;
-import be.brickbit.lpm.catering.service.stockflow.mapper.StockFlowDtoMapper;
+import be.brickbit.lpm.catering.controller.dto.StockFlowDto;
+import be.brickbit.lpm.catering.controller.mapper.StockFlowDtoMapper;
 import be.brickbit.lpm.infrastructure.AbstractController;
 
 @RequestMapping("/stock/flow")
@@ -27,7 +27,7 @@ import be.brickbit.lpm.infrastructure.AbstractController;
 public class StockFlowController extends AbstractController {
 
 	@Autowired
-	private IStockFlowService stockFlowService;
+	private StockFlowService stockFlowService;
 
 	@Autowired
 	private StockFlowDtoMapper stockFlowDtoMapper;

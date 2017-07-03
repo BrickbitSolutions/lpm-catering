@@ -1,7 +1,7 @@
 package be.brickbit.lpm.catering.fixture;
 
 import be.brickbit.lpm.catering.domain.OrderStatus;
-import be.brickbit.lpm.catering.service.order.dto.OrderLineDto;
+import be.brickbit.lpm.catering.controller.dto.OrderLineDto;
 
 public class OrderLineDtoFixture {
     public static OrderLineDto mutable() {

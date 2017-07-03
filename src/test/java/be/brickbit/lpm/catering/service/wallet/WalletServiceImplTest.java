@@ -14,8 +14,8 @@ import be.brickbit.lpm.catering.domain.Wallet;
 import be.brickbit.lpm.catering.fixture.WalletDtoFixture;
 import be.brickbit.lpm.catering.fixture.WalletFixture;
 import be.brickbit.lpm.catering.repository.WalletRepository;
-import be.brickbit.lpm.catering.service.wallet.dto.WalletDto;
-import be.brickbit.lpm.catering.service.wallet.mapper.WalletDtoMapper;
+import be.brickbit.lpm.catering.controller.dto.WalletDto;
+import be.brickbit.lpm.catering.controller.mapper.WalletDtoMapper;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomDecimal;

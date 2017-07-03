@@ -1,14 +1,14 @@
 package be.brickbit.lpm.catering.controller;
 
 import be.brickbit.lpm.catering.domain.ProductType;
-import be.brickbit.lpm.catering.service.product.IProductService;
+import be.brickbit.lpm.catering.service.product.ProductService;
 import be.brickbit.lpm.catering.service.product.command.CreateProductCommand;
 import be.brickbit.lpm.catering.service.product.command.EditProductCommand;
 import be.brickbit.lpm.catering.service.product.command.EditProductPreparationCommand;
-import be.brickbit.lpm.catering.service.product.dto.ProductDetailsDto;
-import be.brickbit.lpm.catering.service.product.dto.ProductDto;
-import be.brickbit.lpm.catering.service.product.mapper.ProductDetailsDtoMapper;
-import be.brickbit.lpm.catering.service.product.mapper.ProductDtoMapper;
+import be.brickbit.lpm.catering.controller.dto.ProductDetailsDto;
+import be.brickbit.lpm.catering.controller.dto.ProductDto;
+import be.brickbit.lpm.catering.controller.mapper.ProductDetailsDtoMapper;
+import be.brickbit.lpm.catering.controller.mapper.ProductDtoMapper;
 import be.brickbit.lpm.infrastructure.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ import java.util.List;
 public class ProductController extends AbstractController{
 
     @Autowired
-    private IProductService productService;
+    private ProductService productService;
 
     @Autowired
     private ProductDtoMapper productDtoMapper;

@@ -2,7 +2,7 @@ package be.brickbit.lpm.catering.fixture;
 
 import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.ProductType;
-import be.brickbit.lpm.catering.service.stockproduct.dto.StockProductDto;
+import be.brickbit.lpm.catering.controller.dto.StockProductDto;
 
 public class StockProductDtoFixture {
     public static StockProductDto getStockProductDto(){

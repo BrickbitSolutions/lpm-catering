@@ -19,11 +19,11 @@ import javax.validation.Valid;
 
 import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.ProductType;
-import be.brickbit.lpm.catering.service.stockproduct.IStockProductService;
+import be.brickbit.lpm.catering.service.stockproduct.StockProductService;
 import be.brickbit.lpm.catering.service.stockproduct.command.EditStockProductCommand;
 import be.brickbit.lpm.catering.service.stockproduct.command.StockProductCommand;
-import be.brickbit.lpm.catering.service.stockproduct.dto.StockProductDto;
-import be.brickbit.lpm.catering.service.stockproduct.mapper.StockProductDtoMapper;
+import be.brickbit.lpm.catering.controller.dto.StockProductDto;
+import be.brickbit.lpm.catering.controller.dto.StockProductDtoMapper;
 import be.brickbit.lpm.infrastructure.AbstractController;
 
 @RequestMapping(value = "stockproduct")
@@ -31,7 +31,7 @@ import be.brickbit.lpm.infrastructure.AbstractController;
 public class StockProductController extends AbstractController {
 
     @Autowired
-    private IStockProductService stockProductService;
+    private StockProductService stockProductService;
 
     @Autowired
     private StockProductDtoMapper stockProductDtoMapper;

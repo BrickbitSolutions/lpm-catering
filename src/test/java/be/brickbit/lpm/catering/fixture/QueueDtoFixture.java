@@ -2,7 +2,7 @@ package be.brickbit.lpm.catering.fixture;
 
 import com.google.common.collect.Lists;
 
-import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
+import be.brickbit.lpm.catering.controller.dto.QueueDto;
 
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomInt;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomLocalDateTime;

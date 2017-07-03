@@ -3,31 +3,47 @@ package be.brickbit.lpm.catering.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.*;
 
+import be.brickbit.lpm.catering.controller.dto.OrderDetailDto;
+import be.brickbit.lpm.catering.controller.mapper.OrderDetailDtoMapper;
 import be.brickbit.lpm.catering.domain.OrderStatus;
+import be.brickbit.lpm.catering.service.order.OrderService;
 import be.brickbit.lpm.catering.service.task.TaskService;
 import be.brickbit.lpm.infrastructure.AbstractController;
 
 @RestController
 @RequestMapping("task")
 public class TaskController extends AbstractController {
-    @Autowired
-    private TaskService taskService;
+	@Autowired
+	private TaskService taskService;
 
-    @RequestMapping(value = "/{id}/start", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void startedTask(@PathVariable("id") Long id) {
-        taskService.updateTaskWithStatus(id, OrderStatus.IN_PROGRESS, getCurrentUser());
-    }
+	@Autowired
+	private OrderDetailDtoMapper orderDtoMapper;
 
-    @RequestMapping(value = "/{id}/complete", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void completeTask(@PathVariable("id") Long id) {
-        taskService.updateTaskWithStatus(id, OrderStatus.READY, getCurrentUser());
-    }
+	@Autowired
+	private OrderService orderService;
+
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
+
+	@RequestMapping(value = "/{id}/start", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void startedTask(@PathVariable("id") Long id) {
+		taskService.updateTaskWithStatus(id, OrderStatus.IN_PROGRESS, getCurrentUser());
+	}
+
+	@RequestMapping(value = "/{id}/complete", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void completeTask(@PathVariable("id") Long id) {
+		taskService.updateTaskWithStatus(id, OrderStatus.READY, getCurrentUser());
+		OrderDetailDto orderDetail = orderService.findByTaskId(1L, orderDtoMapper);
+		pushToTakeOutQueue(orderDetail);
+		orderService.notifyReady(orderDetail.getId());
+	}
+
+	private void pushToTakeOutQueue(OrderDetailDto message) {
+		messagingTemplate.convertAndSend("/topic/zanzibar.queue", message);
+	}
 }

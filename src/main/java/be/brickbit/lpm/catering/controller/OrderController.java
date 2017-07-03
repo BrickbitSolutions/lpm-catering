@@ -19,17 +19,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import be.brickbit.lpm.catering.domain.OrderStatus;
-import be.brickbit.lpm.catering.service.order.IOrderService;
+import be.brickbit.lpm.catering.service.order.OrderService;
 import be.brickbit.lpm.catering.service.order.command.CreateOrderCommand;
-import be.brickbit.lpm.catering.service.order.dto.OrderDetailDto;
-import be.brickbit.lpm.catering.service.order.mapper.OrderDetailDtoMapper;
+import be.brickbit.lpm.catering.controller.dto.OrderDetailDto;
+import be.brickbit.lpm.catering.controller.mapper.OrderDetailDtoMapper;
 import be.brickbit.lpm.infrastructure.AbstractController;
 
 @RequestMapping("/order")
 @RestController
 public class OrderController extends AbstractController {
     @Autowired
-    private IOrderService orderService;
+    private OrderService orderService;
 
     @Autowired
     private OrderDetailDtoMapper orderDetailDtoMapper;

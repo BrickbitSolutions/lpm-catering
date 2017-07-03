@@ -30,9 +30,9 @@ import be.brickbit.lpm.catering.fixture.CreateProductCommandFixture;
 import be.brickbit.lpm.catering.fixture.ProductFixture;
 import be.brickbit.lpm.catering.repository.ProductRepository;
 import be.brickbit.lpm.catering.service.product.command.CreateProductCommand;
-import be.brickbit.lpm.catering.service.product.dto.ProductDto;
+import be.brickbit.lpm.catering.controller.dto.ProductDto;
 import be.brickbit.lpm.catering.service.product.mapper.CreateProductCommandToEntityMapper;
-import be.brickbit.lpm.catering.service.product.mapper.ProductDtoMapper;
+import be.brickbit.lpm.catering.controller.mapper.ProductDtoMapper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductServiceTest {
@@ -52,7 +52,7 @@ public class ProductServiceTest {
     private ProductPreparationMerger productPreparationMerger;
 
     @InjectMocks
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();

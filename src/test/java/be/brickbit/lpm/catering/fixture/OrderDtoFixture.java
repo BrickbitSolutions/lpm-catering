@@ -1,7 +1,7 @@
 package be.brickbit.lpm.catering.fixture;
 
 import be.brickbit.lpm.catering.domain.OrderStatus;
-import be.brickbit.lpm.catering.service.order.dto.OrderDetailDto;
+import be.brickbit.lpm.catering.controller.dto.OrderDetailDto;
 import org.assertj.core.util.Lists;
 
 import java.math.BigDecimal;

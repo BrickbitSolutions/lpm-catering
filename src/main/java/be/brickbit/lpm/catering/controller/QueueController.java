@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import be.brickbit.lpm.catering.service.product.IProductService;
+import be.brickbit.lpm.catering.service.product.ProductService;
 import be.brickbit.lpm.catering.service.queue.QueueService;
-import be.brickbit.lpm.catering.service.queue.dto.QueueDto;
-import be.brickbit.lpm.catering.service.queue.mapper.QueueDtoMapper;
+import be.brickbit.lpm.catering.controller.dto.QueueDto;
+import be.brickbit.lpm.catering.controller.mapper.QueueDtoMapper;
 
 @RestController
 @RequestMapping("/queue")
@@ -24,7 +24,7 @@ public class QueueController {
     private QueueService queueService;
 
     @Autowired
-    private IProductService productService;
+    private ProductService productService;
 
     @Autowired
     private QueueDtoMapper queueDtoMapper;

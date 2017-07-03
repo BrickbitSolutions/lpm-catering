@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 
 import be.brickbit.lpm.catering.domain.ClearanceType;
 import be.brickbit.lpm.catering.domain.ProductType;
-import be.brickbit.lpm.catering.service.product.dto.ProductDto;
+import be.brickbit.lpm.catering.controller.dto.ProductDto;
 
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomDecimal;
 import static be.brickbit.lpm.catering.util.RandomValueUtil.randomInt;
