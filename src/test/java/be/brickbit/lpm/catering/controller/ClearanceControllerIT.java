@@ -10,7 +10,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ClearanceControllerTest extends AbstractControllerIT {
+public class ClearanceControllerIT extends AbstractControllerIT {
     @Test
     public void returnsClearanceLevelsOver21() throws Exception {
         stubCore("/user/" + userPrincipal().getId(), 200, UserFixture.mutable(31));
